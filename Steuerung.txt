@@ -1,0 +1,14 @@
+Shift + F1 = Mod Menü
+beim Fliegen: Shift= Sinken ; Leertaste = Steigen.
+
+Bitte lass im Mod menu und in der JSON diese einstellungen so
+
+bei Freecam:
+    "freecamInvertPitch": true,
+    "freecamInvertWASD": true,
+    "freecamInvertYaw": true,
+
+
+bei Free orbit 360° mouse look Camera:
+    "mouseLookInvertPitch": false,
+    "mouseLookInvertYaw": true,

@@ -1,0 +1,36 @@
+# Mod Overview – Version 0.85
+
+
+| # | Category | Feature | Description | Status |
+|---|----------|---------|-------------|--------|
+| 1 | 🎮 Gameplay | Custom Ingame Time & Timer Freeze | Set a custom in-game time and freeze the timer | ✅ Implemented & Working |
+| 2 | 🎮 Gameplay | Aggressive Driving – Fare Tip Multiplier | Multiplies tips for aggressive driving | ✅ Implemented & Working |
+| 3 | 🎮 Gameplay | No Guide Arrow, No Destination Mark, "Another Day" Mode | Removes HUD navigation aids and enables Another Day mode | ✅ Implemented & Working |
+| 4 | 🎮 Gameplay | Taxi Teleporter | Teleport the taxi to chosen locations | ✅ Implemented & Working |
+| 5 | 🎮 Gameplay | Taxi Fly Mode | Allows the taxi to fly, but every Car lost his collision in this game Session and your car ist in flymode Buggy | ⚠️ Partially BAD Working |
+| 6 | 🎮 Gameplay | Change Max Speed Limit | Modify the vehicle's maximum speed limit | ❌ Not Working Yet |
+| 7 | 🔓 Unlocks | Unlock All Vehicles + Sega Master Unlock | Unlocks all vehicles and the Sega Master content | ✅ Implemented & Working |
+| 8 | 🎨 Visuals & Audio | Crazy Taxi Original Textures | Restores the original Crazy Taxi textures | ✅ Implemented & Working |
+| 9 | 🎨 Visuals & Audio | Restore Original Soundtrack | Restores the original game soundtrack | ✅ Implemented & Working |
+| 10 | 📷 Camera | Camera Location & Rotation | Fully interactive sliders for camera position and rotation | ✅ Implemented & Working |
+| 11 | 📷 Camera | Camera Quick Setup Buttons | Fast camera preset buttons | ✅ Implemented & Working |
+| 12 | 📷 Camera | Freecam | Free camera movement Space = Fly higher shift= fly lower | ✅ Implemented & Working | 
+| 13 | 📷 Camera | Mouse Look Around | Free orbit 360° mouse look | ✅ Implemented & Working |
+| 14 | ⚙️ System & Performance | Spawn & Chunk Distance Multiplier | Adjust spawn and chunk loading distance | ⚠️ Partially Working |
+| 15 | ⚙️ System & Performance | Realtime Keybinding Change | Change key bindings during runtime | ❌ Not Working Yet |
+
+## Legend
+
+| Symbol | Meaning |
+|--------|---------|
+| ✅ | Implemented & Working |
+| ⚠️ | Partially Working |
+| ❌ | Not Working Yet |
+
+## Summary
+
+| Status | Count |
+|--------|-------|
+| ✅ Working | 11 |
+| ⚠️ Partially Working | 2 |
+| ❌ Not Working | 2 |

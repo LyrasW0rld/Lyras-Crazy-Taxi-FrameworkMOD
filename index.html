@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- SEO: Title & Description -->
+  <title>Crazy Taxi Ultimate Mod Menu & Restoration Suite v0.85 — First Multi-Mod Loader, Freecam, DC Textures & Soundtrack</title>
+  <meta name="description" content="The premier all-in-one mod suite and first multi-mod loader for Crazy Taxi PC (Steam). Restores Dreamcast textures and original Offspring & Bad Religion soundtrack. Features 360° freecam, taxi fly mode, teleporter, timer freeze, fare tip multiplier, unlock all vehicles. Free and open source." />
+
+  <!-- SEO: Search Keywords & Buzzers -->
+  <meta name="keywords" content="Crazy Taxi mod, Crazy Taxi PC mod, Crazy Taxi Steam mod, Crazy Taxi mod menu, Crazy Taxi mod loader, Crazy Taxi multi mod framework, Crazy Taxi freecam, Crazy Taxi free camera, Crazy Taxi original soundtrack mod, Crazy Taxi Offspring Bad Religion, Crazy Taxi texture restoration, Crazy Taxi Dreamcast textures, Crazy Taxi fly mode, Crazy Taxi teleporter, Crazy Taxi timer freeze, Crazy Taxi unlock all vehicles, Crazy Taxi bike unlock, Crazy Taxi mod framework, Crazy Taxi DLL mod, Crazy Taxi dinput8, Crazy Taxi SEGA mod, Crazy Taxi trainer, Crazy Taxi unlimited time, Crazy Taxi 360 camera, PC game modding, SEGA Dreamcast, arcade racing mod, open source game mod, Lyras Framework" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Crazy Taxi Ultimate Mod Menu & Restoration Suite v0.85" />
+  <meta property="og:description" content="The first multi-mod loader and comprehensive restoration suite for Crazy Taxi PC. 15 engine modules, original soundtrack & textures, freecam, fly mode, and memory hooks." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="assets/screenshot2.png" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Crazy Taxi Ultimate Mod Menu v0.85 — Multi-Mod Loader" />
+  <meta name="twitter:description" content="First multi-mod loader for Crazy Taxi PC. Freecam, Dreamcast textures, original soundtrack, teleporter, and 15 engine modules. Open source." />
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Crazy Taxi Ultimate Mod Menu & Restoration Suite",
+    "applicationCategory": "GameApplication",
+    "operatingSystem": "Windows",
+    "softwareVersion": "0.85",
+    "description": "The first multi-mod loader and technical restoration framework for Crazy Taxi on PC. Supports multiple concurrent mods, original soundtrack & textures restoration, freecam, timer freeze, and deep DirectX 9 memory hooks.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "license": "https://creativecommons.org/licenses/by-nc/4.0/"
+  }
+  </script>
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23f5c518'/%3E%3Cpath d='M7 16l6 6 12-12' stroke='%230a0a0f' stroke-width='4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+</head>
+<body>
+
+  <!-- =========================================== -->
+  <!-- NAVIGATION BAR (Large & Prominent)           -->
+  <!-- =========================================== -->
+  <nav id="main-nav">
+    <div class="nav-inner">
+      <a href="#hero" class="nav-brand" aria-label="Crazy Taxi Ultimate Mod Framework Home">
+        <img src="assets/banner.webp" alt="Crazy Taxi Ultimate Mod Framework" class="nav-brand-img" />
+      </a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#about">Architecture</a></li>
+        <li><a href="#features">Feature Matrix</a></li>
+        <li><a href="#install">Installation</a></li>
+        <li><a href="#controls">Controls</a></li>
+        <li><a href="#technical">Memory Engine</a></li>
+        <li><a href="#download" class="nav-cta">Download v0.85</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- =========================================== -->
+  <!-- HERO SECTION                                -->
+  <!-- =========================================== -->
+  <header id="hero">
+    <div class="hero-bg">
+      <img src="assets/screenshot2.png" alt="Crazy Taxi PC aerial freecam gameplay capture" loading="eager" />
+      <div class="hero-overlay"></div>
+    </div>
+    <div class="hero-content">
+      <p class="hero-kicker">First Multi-Mod Loader &amp; Restoration Framework</p>
+      <h1>Crazy Taxi<br /><span class="hero-highlight">Ultimate Mod Menu</span></h1>
+      <p class="hero-sub">
+        The definitive technical suite and the first multi-mod loader for Crazy Taxi on PC. 
+        Enables concurrent multi-mod execution, restores original arcade soundtrack &amp; Dreamcast textures, 
+        and unlocks 360° freecam, taxi fly mode, teleporter, and deep DirectX 9 runtime hooks.
+      </p>
+      <div class="hero-actions">
+        <a href="#download" class="btn btn-primary">Download Suite v0.85</a>
+        <a href="#features" class="btn btn-ghost">Explore Feature Matrix</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-num">v0.85</span>
+          <span class="stat-label">Core Suite</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">15</span>
+          <span class="stat-label">Engine Modules</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">1st</span>
+          <span class="stat-label">Multi-Mod Loader</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">1</span>
+          <span class="stat-label">Hook File (dinput8.dll)</span>
+        </div>
+      </div>
+    </div>
+    <div class="scroll-indicator" aria-hidden="true">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </header>
+
+  <!-- =========================================== -->
+  <!-- ARCHITECTURE & MULTI-MOD LOADER OVERVIEW    -->
+  <!-- =========================================== -->
+  <section id="about" class="section">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-text">
+          <p class="section-kicker">System Architecture</p>
+          <h2>The First True Multi-Mod Loader for Crazy Taxi</h2>
+          <p>
+            Historically, modifying Crazy Taxi on Steam meant dealing with broken single-purpose ASI scripts, permanently altered game executables, and mutually exclusive hacks. 
+            <strong>Crazy Taxi Ultimate Mod Menu</strong> establishes the first unified multi-mod loading framework capable of chaining and running multiple mods simultaneously.
+          </p>
+          <p>
+            Using a non-intrusive DirectInput8 proxy hook (<code>dinput8.dll</code>), the framework hooks into the game's DirectX 9 rendering pipeline and Sega physics loop upon startup. Only a single hook file is placed in the game directory — all core asset archives remain 100% untouched.
+          </p>
+          <div class="about-spec-box">
+            <div class="spec-row">
+              <span class="spec-label">Mod Loader Core:</span>
+              <span class="spec-val">DirectInput8 Proxy Architecture (dinput8.dll)</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-label">Multi-Mod Concurrency:</span>
+              <span class="spec-val">Simultaneous live modules (Lyras Framework + DC Restoration 2.0)</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-label">Runtime Control:</span>
+              <span class="spec-val">In-game DirectX 9 GUI overlay with real-time parameter tuning</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-label">Installation Impact:</span>
+              <span class="spec-val">1 Hook File in game root — clean zero-footprint removal</span>
+            </div>
+          </div>
+        </div>
+        <div class="about-image">
+          <img src="assets/screenshot1.png" alt="Crazy Taxi mod menu overlay showing live multi-mod management and parameter controls" loading="lazy" />
+          <div class="about-image-caption">Real-time Direct3D 9 overlay: Toggle multiple mods and tune engine parameters on the fly</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================== -->
+  <!-- FEATURE SPECIFICATIONS & MATRIX (TABLE)     -->
+  <!-- =========================================== -->
+  <section id="features" class="section section-dark">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-kicker">Technical Specifications</p>
+        <h2>Engine Features &amp; Implementation Matrix</h2>
+        <p class="section-intro">
+          Full technical overview of all 15 core engine hooks, memory patches, and gameplay features in Version 0.85. 
+          Click on any video demonstration button to expand a high-resolution cinema player directly beneath the feature row.
+        </p>
+      </div>
+
+      <!-- Filter Controls -->
+      <div class="table-filter-bar">
+        <span class="filter-label">Filter Category:</span>
+        <button class="filter-btn active" data-filter="all">All Modules (15)</button>
+        <button class="filter-btn" data-filter="Gameplay">Gameplay (6)</button>
+        <button class="filter-btn" data-filter="Unlocks">Unlocks (1)</button>
+        <button class="filter-btn" data-filter="Visuals & Audio">Visuals &amp; Audio (2)</button>
+        <button class="filter-btn" data-filter="Camera">Camera (4)</button>
+        <button class="filter-btn" data-filter="System & Performance">System &amp; Performance (2)</button>
+      </div>
+
+      <!-- Professional Feature Matrix Table -->
+      <div class="matrix-table-wrapper">
+        <table class="matrix-table" id="feature-matrix-table">
+          <thead>
+            <tr>
+              <th class="col-num">#</th>
+              <th class="col-cat">Category</th>
+              <th class="col-feature">Feature Name</th>
+              <th class="col-desc">Technical Description</th>
+              <th class="col-status">Status</th>
+              <th class="col-video">Demonstration</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <!-- Feature 1 -->
+            <tr class="feature-row" data-category="Gameplay" data-feature-id="1">
+              <td class="col-num">01</td>
+              <td class="col-cat"><span class="cat-badge">Gameplay</span></td>
+              <td class="col-feature"><strong>Custom Ingame Time &amp; Timer Freeze</strong></td>
+              <td class="col-desc">Write directly to <code>0x016a41a4</code> frame timer. Freeze the game round countdown indefinitely or set arbitrary round lengths.</td>
+              <td class="col-status"><span class="badge-status status-working">✅ Implemented &amp; Working</span></td>
+              <td class="col-video">
+                <button class="demo-trigger-btn" data-video-id="1jdCbgbZ_v-ADOFsZbawza0s5zG8z9Rwo" data-title="Custom Ingame Time & Timer Freeze">
+                  <span class="play-icon">▶</span>
+                  <span class="btn-text">Watch Video</span>
+                </button>
+              </td>
+            </tr>
+            <tr class="video-drawer-row" id="drawer-1">
+              <td colspan="6">
+                <div class="video-drawer-content">
+                  <div class="drawer-header">
+                    <div class="drawer-title-group">
+                      <span class="hd-badge">1080p Full HD</span>
+                      <h4>Video Demonstration: Custom Ingame Time &amp; Timer Freeze</h4>
+                    </div>
+                    <div class="drawer-action-group">
+                      <a href="https://drive.google.com/file/d/1jdCbgbZ_v-ADOFsZbawza0s5zG8z9Rwo/view?usp=sharing" target="_blank" rel="noopener" class="drive-source-link">Drive Full HD ↗</a>
+                      <button class="drawer-close-btn" data-close="drawer-1">Close Player ✕</button>
+                    </div>
+                  </div>
+                  <div class="drawer-player-frame">
+                    <iframe title="Custom Ingame Time &amp; Timer Freeze Demonstration" allowfullscreen allow="autoplay"></iframe>
+                  </div>
+                  <div class="drawer-player-footer">
+                    <span class="hd-status-text">✅ Stream automatically requested in 1080p</span>
+                    <span class="hd-fallback-text">If bandwidth drops, force 1080p via ⚙️ in the player or open the Drive source link.</span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Feature 2 -->
+            <tr class="feature-row" data-category="Gameplay" data-feature-id="2">
+              <td class="col-num">02</td>
+              <td class="col-cat"><span class="cat-badge">Gameplay</span></td>
+              <td class="col-feature"><strong>Aggressive Driving – Fare Tip Multiplier</strong></td>
+              <td class="col-desc">Hooks the stunt tip finalizer at <code>0x004a8de7</code>. Scalable multiplier for tips earned through Crazy Drifts, Crazy Jumps, and near-misses.</td>
+              <td class="col-status"><span class="badge-status status-working">✅ Implemented &amp; Working</span></td>
+              <td class="col-video">
+                <button class="demo-trigger-btn" data-video-id="1jV4J_oUs5IzIR60rKOvq6EX-6nqveLcr" data-title="Aggressive Driving – Fare Tip Multiplier">
+                  <span class="play-icon">▶</span>
+                  <span class="btn-text">Watch Video</span>
+                </button>
+              </td>
+            </tr>
+            <tr class="video-drawer-row" id="drawer-2">
+              <td colspan="6">
+                <div class="video-drawer-content">
+                  <div class="drawer-header">
+                    <div class="drawer-title-group">
+                      <span class="hd-badge">1080p Full HD</span>
+                      <h4>Video Demonstration: Aggressive Driving – Fare Tip Multiplier</h4>
+                    </div>
+                    <div class="drawer-action-group">
+                      <a href="https://drive.google.com/file/d/1jV4J_oUs5IzIR60rKOvq6EX-6nqveLcr/view?usp=sharing" target="_blank" rel="noopener" class="drive-source-link">Drive Full HD ↗</a>
+                      <button class="drawer-close-btn" data-close="drawer-2">Close Player ✕</button>
+                    </div>
+                  </div>
+                  <div class="drawer-player-frame">
+                    <iframe title="Aggressive Driving – Fare Tip Multiplier Demonstration" allowfullscreen allow="autoplay"></iframe>
+                  </div>
+                  <div class="drawer-player-footer">
+                    <span class="hd-status-text">✅ Stream automatically requested in 1080p</span>
+                    <span class="hd-fallback-text">If bandwidth drops, force 1080p via ⚙️ in the player or open the Drive source link.</span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Feature 3 -->
+            <tr class="feature-row" data-category="Gameplay" data-feature-id="3">
+              <td class="col-num">03</td>
+              <td class="col-cat"><span class="cat-badge">Gameplay</span></td>
+              <td class="col-feature"><strong>No Guide Arrow, No Destination Mark, "Another Day" Mode</strong></td>
+              <td class="col-desc">Removes HUD navigation aids (<code>0x016ef0bc</code>, <code>0x016eeea0</code>) and activates Sega's hidden internal "Another Day" alternate passenger configuration (<code>0x01662304</code>).</td>
+              <td class="col-status"><span class="badge-status status-working">✅ Implemented &amp; Working</span></td>
+              <td class="col-video">
+                <button class="demo-trigger-btn" data-video-id="1TRJHS0jFD0TOw3iAb5NVqKKYCGgVwOBM" data-title="No Guide Arrow, No Destination Mark & Another Day">
+                  <span class="play-icon">▶</span>
+                  <span class="btn-text">Watch Video</span>
+                </button>
+              </td>
+            </tr>
+            <tr class="video-drawer-row" id="drawer-3">
+              <td colspan="6">
+                <div class="video-drawer-content">
+                  <div class="drawer-header">
+                    <div class="drawer-title-group">
+                      <span class="hd-badge">1080p Full HD</span>
+                      <h4>Video Demonstration: No Guide Arrow, No Destination Mark &amp; Another Day Mode</h4>
+                    </div>
+                    <div class="drawer-action-group">
+                      <a href="https://drive.google.com/file/d/1TRJHS0jFD0TOw3iAb5NVqKKYCGgVwOBM/view?usp=sharing" target="_blank" rel="noopener" class="drive-source-link">Drive Full HD ↗</a>
+                      <button class="drawer-close-btn" data-close="drawer-3">Close Player ✕</button>
+                    </div>
+                  </div>
+                  <div class="drawer-player-frame">
+                    <iframe title="No Guide Arrow, No Destination Mark &amp; Another Day Mode Demonstration" allowfullscreen allow="autoplay"></iframe>
+                  </div>
+                  <div class="drawer-player-footer">
+                    <span class="hd-status-text">✅ Stream automatically requested in 1080p</span>
+                    <span class="hd-fallback-text">If bandwidth drops, force 1080p via ⚙️ in the player or open the Drive source link.</span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Feature 4 -->
+            <tr class="feature-row" data-category="Gameplay" data-feature-id="4">
+              <td class="col-num">04</td>
+              <td class="col-cat"><span class="cat-badge">Gameplay</span></td>
+              <td class="col-feature"><strong>Taxi Teleporter</strong></td>
+              <td class="col-desc">Instantly teleports player vehicle coordinate vectors (<code>0x01661574</code>..<code>7c</code>) to landmark locations and quick unstuck recovery targets.</td>
+              <td class="col-status"><span class="badge-status status-working">✅ Implemented &amp; Working</span></td>
+              <td class="col-video">
+                <button class="demo-trigger-btn" data-video-id="11p16ACtCvwOtylnjknRRvjfRqtxrGwD7" data-title="Taxi Teleporter">
+                  <span class="play-icon">▶</span>
+                  <span class="btn-text">Watch Video</span>
+                </button>
+              </td>
+            </tr>
+            <tr class="video-drawer-row" id="drawer-4">
+              <td colspan="6">
+                <div class="video-drawer-content">
+                  <div class="drawer-header">
+                    <div class="drawer-title-group">
+                      <span class="hd-badge">1080p Full HD</span>
+                      <h4>Video Demonstration: Taxi Teleporter</h4>
+                    </div>
+                    <div class="drawer-action-group">
+                      <a href="https://drive.google.com/file/d/11p16ACtCvwOtylnjknRRvjfRqtxrGwD7/view?usp=sharing" target="_blank" rel="noopener" class="drive-source-link">Drive Full HD ↗</a>
+                      <button class="drawer-close-btn" data-close="drawer-4">Close Player ✕</button>
+                    </div>
+                  </div>
+                  <div class="drawer-player-frame">
+                    <iframe title="Taxi Teleporter Demonstration" allowfullscreen allow="autoplay"></iframe>
+                  </div>
+                  <div class="drawer-player-footer">
+                    <span class="hd-status-text">✅ Stream automatically requested in 1080p</span>
+                    <span class="hd-fallback-text">If bandwidth drops, force 1080p via ⚙️ in the player or open the Drive source link.</span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Feature 5 -->
+            <tr class="feature-row" data-category="Gameplay" data-feature-id="5">
+              <td class="col-num">05</td>
+              <td class="col-cat"><span class="cat-badge">Gameplay</span></td>
+              <td class="col-feature"><strong>Taxi Fly Mode</strong></td>
+              <td class="col-desc">Bypasses vehicle ground gravity and pitch snapback. Enables free 3D taxi flight. Note: Dynamic car collisions are disabled during flight sessions.</td>
+              <td class="col-status"><span class="badge-status status-partial">⚠️ Partially Working</span></td>
+              <td class="col-video">
+                <button class="demo-trigger-btn" data-video-id="1O37sELPbuVJxt-hrMChiU0_5Bb4n_kPB" data-title="Experimental Taxi Fly Mode">
+                  <span class="play-icon">▶</span>
+                  <span class="btn-text">Watch Video</span>
+                </button>
+              </td>
+            </tr>
+            <tr class="video-drawer-row" id="drawer-5">
+              <td colspan="6">
+                <div class="video-drawer-content">
+                  <div class="drawer-header">
+                    <div class="drawer-title-group">
+                      <span class="hd-badge">1080p Full HD</span>
+                      <h4>Video Demonstration: Experimental Taxi Fly Mode</h4>
+                    </div>
+                    <div class="drawer-action-group">
+                      <a href="https://drive.google.com/file/d/1O37sELPbuVJxt-hrMChiU0_5Bb4n_kPB/view?usp=sharing" target="_blank" rel="noopener" class="drive-source-link">Drive Full HD ↗</a>
+                      <button class="drawer-close-btn" data-close="drawer-5">Close Player ✕</button>
+                    </div>
+                  </div>
+                  <div class="drawer-player-frame">
+                    <iframe title="Experimental Taxi Fly Mode Demonstration" allowfullscreen allow="autoplay"></iframe>
+                  </div>
+                  <div class="drawer-player-footer">
+                    <span class="hd-status-text">✅ Stream automatically requested in 1080p</span>
+                    <span class="hd-fallback-text">If bandwidth drops, force 1080p via ⚙️ in the player or open the Drive source link.</span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Feature 6 -->
+            <tr class="feature-row" data-category="Gameplay" data-feature-id="6">
+              <td class="col-num">06</td>
+              <td class="col-cat"><span class="cat-badge">Gameplay</span></td>
+              <td class="col-feature"><strong>Change Max Speed Limit</strong></td>
+              <td class="col-desc">Scales vehicle propulsion limits cleanly up to 220 MPH without physics snapback or modifying ambient NPC traffic vehicles.</td>
+              <td class="col-status"><span class="badge-status status-wip">❌ Not Working Yet</span></td>
+              <td class="col-video">
+                <span class="no-demo-badge">Under Development</span>
+              </td>
+            </tr>
+
+            <!-- Feature 7 -->
+            <tr class="feature-row" data-category="Unlocks" data-feature-id="7">
+              <td class="col-num">07</td>
+              <td class="col-cat"><span class="cat-badge">Unlocks</span></td>
+              <td class="col-feature"><strong>Unlock All Vehicles + Sega Master Unlock</strong></td>
+              <td class="col-desc">Writes unlock bitmasks to <code>0x0164fa58</code> (0xFF) and <code>0x016aa3c0</code> (0xFFFFFFFF). Unlocks all cabs, bikes, and Sega Master secrets.</td>
+              <td class="col-status"><span class="badge-status status-working">✅ Implemented &amp; Working</span></td>
+              <td class="col-video">
+                <button class="demo-trigger-btn" data-video-id="1iiIJiPsYid5OqyXLc4Kr-ohj31i3yHGY" data-title="Unlock All Vehicles + Sega Master">
+                  <span class="play-icon">▶</span>
+                  <span class="btn-text">Watch Video</span>
+                </button>
+              </td>
+            </tr>
+            <tr class="video-drawer-row" id="drawer-7">
+              <td colspan="6">
+                <div class="video-drawer-content">
+                  <div class="drawer-header">
+                    <div class="drawer-title-group">
+                      <span class="hd-badge">1080p Full HD</span>
+                      <h4>Video Demonstration: Unlock All Vehicles + Sega Master Content</h4>
+                    </div>
+                    <div class="drawer-action-group">
+                      <a href="https://drive.google.com/file/d/1iiIJiPsYid5OqyXLc4Kr-ohj31i3yHGY/view?usp=sharing" target="_blank" rel="noopener" class="drive-source-link">Drive Full HD ↗</a>
+                      <button class="drawer-close-btn" data-close="drawer-7">Close Player ✕</button>
+                    </div>
+                  </div>
+                  <div class="drawer-player-frame">
+                    <iframe title="Unlock All Vehicles + Sega Master Content Demonstration" allowfullscreen allow="autoplay"></iframe>
+                  </div>
+                  <div class="drawer-player-footer">
+                    <span class="hd-status-text">✅ Stream automatically requested in 1080p</span>
+                    <span class="hd-fallback-text">If bandwidth drops, force 1080p via ⚙️ in the player or open the Drive source link.</span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Feature 8 -->
+            <tr class="feature-row" data-category="Visuals & Audio" data-feature-id="8">
+              <td class="col-num">08</td>
+              <td class="col-cat"><span class="cat-badge">Visuals &amp; Audio</span></td>
+              <td class="col-feature"><strong>Crazy Taxi Original Textures</strong></td>
+              <td class="col-desc">Restores the authentic Dreamcast-era branded commercial textures (Tower Records, Pizza Hut, KFC, FILA) stripped from the Steam release.</td>
+              <td class="col-status"><span class="badge-status status-working">✅ Implemented &amp; Working</span></td>
+              <td class="col-video">
+                <button class="demo-trigger-btn" data-video-id="1OMvf8PlltgMsnH2HXjsGcCODqUQaVFvD" data-title="Original Dreamcast Textures Restoration">
+                  <span class="play-icon">▶</span>
+                  <span class="btn-text">Watch Video</span>
+                </button>
+              </td>
+            </tr>
+            <tr class="video-drawer-row" id="drawer-8">
+              <td colspan="6">
+                <div class="video-drawer-content">
+                  <div class="drawer-header">
+                    <div class="drawer-title-group">
+                      <span class="hd-badge">1080p Full HD</span>
+                      <h4>Video Demonstration: Original Dreamcast Textures Restoration</h4>
+                    </div>
+                    <div class="drawer-action-group">
+                      <a href="https://drive.google.com/file/d/1OMvf8PlltgMsnH2HXjsGcCODqUQaVFvD/view?usp=sharing" target="_blank" rel="noopener" class="drive-source-link">Drive Full HD ↗</a>
+                      <button class="drawer-close-btn" data-close="drawer-8">Close Player ✕</button>
+                    </div>
+                  </div>
+                  <div class="drawer-player-frame">
+                    <iframe title="Original Dreamcast Textures Restoration Demonstration" allowfullscreen allow="autoplay"></iframe>
+                  </div>
+                  <div class="drawer-player-footer">
+                    <span class="hd-status-text">✅ Stream automatically requested in 1080p</span>
+                    <span class="hd-fallback-text">If bandwidth drops, force 1080p via ⚙️ in the player or open the Drive source link.</span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Feature 9 -->
+            <tr class="feature-row" data-category="Visuals & Audio" data-feature-id="9">
+              <td class="col-num">09</td>
+              <td class="col-cat"><span class="cat-badge">Visuals &amp; Audio</span></td>
+              <td class="col-feature"><strong>Restore Original Soundtrack</strong></td>
+              <td class="col-desc">Restores the legendary arcade soundtrack by The Offspring and Bad Religion, seamlessly replacing the generic replacement audio.</td>
+              <td class="col-status"><span class="badge-status status-working">✅ Implemented &amp; Working</span></td>
+              <td class="col-video">
+                <button class="demo-trigger-btn" data-video-id="1n5RxbKcDnI9r5itsQNsjbM6JM1hlyRKv" data-title="Restore Original Soundtrack">
+                  <span class="play-icon">▶</span>
+                  <span class="btn-text">Watch Video</span>
+                </button>
+              </td>
+            </tr>
+            <tr class="video-drawer-row" id="drawer-9">
+              <td colspan="6">
+                <div class="video-drawer-content">
+                  <div class="drawer-header">
+                    <div class="drawer-title-group">
+                      <span class="hd-badge">1080p Full HD</span>
+                      <h4>Video Demonstration: Original Soundtrack (The Offspring &amp; Bad Religion)</h4>
+                    </div>
+                    <div class="drawer-action-group">
+                      <a href="https://drive.google.com/file/d/1n5RxbKcDnI9r5itsQNsjbM6JM1hlyRKv/view?usp=sharing" target="_blank" rel="noopener" class="drive-source-link">Drive Full HD ↗</a>
+                      <button class="drawer-close-btn" data-close="drawer-9">Close Player ✕</button>
+                    </div>
+                  </div>
+                  <div class="drawer-player-frame">
+                    <iframe title="Original Soundtrack (The Offspring &amp; Bad Religion) Demonstration" allowfullscreen allow="autoplay"></iframe>
+                  </div>
+                  <div class="drawer-player-footer">
+                    <span class="hd-status-text">✅ Stream automatically requested in 1080p</span>
+                    <span class="hd-fallback-text">If bandwidth drops, force 1080p via ⚙️ in the player or open the Drive source link.</span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Feature 10 -->
+            <tr class="feature-row" data-category="Camera" data-feature-id="10">
+              <td class="col-num">10</td>
+              <td class="col-cat"><span class="cat-badge">Camera</span></td>
+              <td class="col-feature"><strong>Camera Location &amp; Rotation</strong></td>
+              <td class="col-desc">Direct interactive sliders for camera eye vector (<code>0x01661494</code>..<code>9c</code>), target vector (<code>0x016614f8</code>..<code>1500</code>), and roll angle.</td>
+              <td class="col-status"><span class="badge-status status-working">✅ Implemented &amp; Working</span></td>
+              <td class="col-video">
+                <button class="demo-trigger-btn" data-video-id="1wGXZoMbexsQ8LTGPhIR2bZb7-xMIKQV9" data-title="Camera Location & Rotation">
+                  <span class="play-icon">▶</span>
+                  <span class="btn-text">Watch Video</span>
+                </button>
+              </td>
+            </tr>
+            <tr class="video-drawer-row" id="drawer-10">
+              <td colspan="6">
+                <div class="video-drawer-content">
+                  <div class="drawer-header">
+                    <div class="drawer-title-group">
+                      <span class="hd-badge">1080p Full HD</span>
+                      <h4>Video Demonstration: Camera Location &amp; Rotation Sliders</h4>
+                    </div>
+                    <div class="drawer-action-group">
+                      <a href="https://drive.google.com/file/d/1wGXZoMbexsQ8LTGPhIR2bZb7-xMIKQV9/view?usp=sharing" target="_blank" rel="noopener" class="drive-source-link">Drive Full HD ↗</a>
+                      <button class="drawer-close-btn" data-close="drawer-10">Close Player ✕</button>
+                    </div>
+                  </div>
+                  <div class="drawer-player-frame">
+                    <iframe title="Camera Location &amp; Rotation Sliders Demonstration" allowfullscreen allow="autoplay"></iframe>
+                  </div>
+                  <div class="drawer-player-footer">
+                    <span class="hd-status-text">✅ Stream automatically requested in 1080p</span>
+                    <span class="hd-fallback-text">If bandwidth drops, force 1080p via ⚙️ in the player or open the Drive source link.</span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Feature 11 -->
+            <tr class="feature-row" data-category="Camera" data-feature-id="11">
+              <td class="col-num">11</td>
+              <td class="col-cat"><span class="cat-badge">Camera</span></td>
+              <td class="col-feature"><strong>Camera Quick Setup Buttons</strong></td>
+              <td class="col-desc">Instant one-click presets for default chase cam, bumper perspective, cinematic high-angle, and top-down map inspection.</td>
+              <td class="col-status"><span class="badge-status status-working">✅ Implemented &amp; Working</span></td>
+              <td class="col-video">
+                <button class="demo-trigger-btn" data-video-id="1wGXZoMbexsQ8LTGPhIR2bZb7-xMIKQV9" data-title="Camera Quick Setup Buttons">
+                  <span class="play-icon">▶</span>
+                  <span class="btn-text">Watch Video</span>
+                </button>
+              </td>
+            </tr>
+            <tr class="video-drawer-row" id="drawer-11">
+              <td colspan="6">
+                <div class="video-drawer-content">
+                  <div class="drawer-header">
+                    <div class="drawer-title-group">
+                      <span class="hd-badge">1080p Full HD</span>
+                      <h4>Video Demonstration: Camera Quick Setup Presets</h4>
+                    </div>
+                    <div class="drawer-action-group">
+                      <a href="https://drive.google.com/file/d/1wGXZoMbexsQ8LTGPhIR2bZb7-xMIKQV9/view?usp=sharing" target="_blank" rel="noopener" class="drive-source-link">Drive Full HD ↗</a>
+                      <button class="drawer-close-btn" data-close="drawer-11">Close Player ✕</button>
+                    </div>
+                  </div>
+                  <div class="drawer-player-frame">
+                    <iframe title="Camera Quick Setup Presets Demonstration" allowfullscreen allow="autoplay"></iframe>
+                  </div>
+                  <div class="drawer-player-footer">
+                    <span class="hd-status-text">✅ Stream automatically requested in 1080p</span>
+                    <span class="hd-fallback-text">If bandwidth drops, force 1080p via ⚙️ in the player or open the Drive source link.</span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Feature 12 -->
+            <tr class="feature-row" data-category="Camera" data-feature-id="12">
+              <td class="col-num">12</td>
+              <td class="col-cat"><span class="cat-badge">Camera</span></td>
+              <td class="col-feature"><strong>Freecam (Full 3D Camera Detachment)</strong></td>
+              <td class="col-desc">Hooks camera update routine at <code>0x0051f582</code>. Detaches view entirely with WASD lateral flight, Space to ascend, and Shift to descend.</td>
+              <td class="col-status"><span class="badge-status status-working">✅ Implemented &amp; Working</span></td>
+              <td class="col-video">
+                <button class="demo-trigger-btn" data-video-id="1gtb-adRv9bzfRtvcLB4pr52_-r9nwvKo" data-title="Freecam 3D Exploration">
+                  <span class="play-icon">▶</span>
+                  <span class="btn-text">Watch Video</span>
+                </button>
+              </td>
+            </tr>
+            <tr class="video-drawer-row" id="drawer-12">
+              <td colspan="6">
+                <div class="video-drawer-content">
+                  <div class="drawer-header">
+                    <div class="drawer-title-group">
+                      <span class="hd-badge">1080p Full HD</span>
+                      <h4>Video Demonstration: Freecam 3D Camera Detachment</h4>
+                    </div>
+                    <div class="drawer-action-group">
+                      <a href="https://drive.google.com/file/d/1gtb-adRv9bzfRtvcLB4pr52_-r9nwvKo/view?usp=sharing" target="_blank" rel="noopener" class="drive-source-link">Drive Full HD ↗</a>
+                      <button class="drawer-close-btn" data-close="drawer-12">Close Player ✕</button>
+                    </div>
+                  </div>
+                  <div class="drawer-player-frame">
+                    <iframe title="Freecam 3D Camera Detachment Demonstration" allowfullscreen allow="autoplay"></iframe>
+                  </div>
+                  <div class="drawer-player-footer">
+                    <span class="hd-status-text">✅ Stream automatically requested in 1080p</span>
+                    <span class="hd-fallback-text">If bandwidth drops, force 1080p via ⚙️ in the player or open the Drive source link.</span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Feature 13 -->
+            <tr class="feature-row" data-category="Camera" data-feature-id="13">
+              <td class="col-num">13</td>
+              <td class="col-cat"><span class="cat-badge">Camera</span></td>
+              <td class="col-feature"><strong>Mouse Look Around (360° Orbit)</strong></td>
+              <td class="col-desc">Smooth 360-degree orbit mouse look around vehicle with customizable pitch/yaw axis inversion settings stored in JSON config.</td>
+              <td class="col-status"><span class="badge-status status-working">✅ Implemented &amp; Working</span></td>
+              <td class="col-video">
+                <button class="demo-trigger-btn" data-video-id="1tUebbtEkbxZzrM-o2iG5SffZM3VWeMe9" data-title="Mouse Look Around (360° Orbit)">
+                  <span class="play-icon">▶</span>
+                  <span class="btn-text">Watch Video</span>
+                </button>
+              </td>
+            </tr>
+            <tr class="video-drawer-row" id="drawer-13">
+              <td colspan="6">
+                <div class="video-drawer-content">
+                  <div class="drawer-header">
+                    <div class="drawer-title-group">
+                      <span class="hd-badge">1080p Full HD</span>
+                      <h4>Video Demonstration: 360° Mouse Look Around</h4>
+                    </div>
+                    <div class="drawer-action-group">
+                      <a href="https://drive.google.com/file/d/1tUebbtEkbxZzrM-o2iG5SffZM3VWeMe9/view?usp=sharing" target="_blank" rel="noopener" class="drive-source-link">Drive Full HD ↗</a>
+                      <button class="drawer-close-btn" data-close="drawer-13">Close Player ✕</button>
+                    </div>
+                  </div>
+                  <div class="drawer-player-frame">
+                    <iframe title="360° Mouse Look Around Demonstration" allowfullscreen allow="autoplay"></iframe>
+                  </div>
+                  <div class="drawer-player-footer">
+                    <span class="hd-status-text">✅ Stream automatically requested in 1080p</span>
+                    <span class="hd-fallback-text">If bandwidth drops, force 1080p via ⚙️ in the player or open the Drive source link.</span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Feature 14 -->
+            <tr class="feature-row" data-category="System & Performance" data-feature-id="14">
+              <td class="col-num">14</td>
+              <td class="col-cat"><span class="cat-badge">System &amp; Performance</span></td>
+              <td class="col-feature"><strong>Spawn &amp; Chunk Distance Multiplier</strong></td>
+              <td class="col-desc">Patches camera chunk culling constants at <code>0x005a10a8</code> (850.0f) and <code>0x0059f9f8</code> (450.0f) to expand view and streaming distance.</td>
+              <td class="col-status"><span class="badge-status status-partial">⚠️ Partially Working</span></td>
+              <td class="col-video">
+                <button class="demo-trigger-btn" data-video-id="1ar-8GRP8xgeldXD7AwF7yZtxp6rCmps9" data-title="Spawn & Chunk Distance Multiplier">
+                  <span class="play-icon">▶</span>
+                  <span class="btn-text">Watch Video</span>
+                </button>
+              </td>
+            </tr>
+            <tr class="video-drawer-row" id="drawer-14">
+              <td colspan="6">
+                <div class="video-drawer-content">
+                  <div class="drawer-header">
+                    <div class="drawer-title-group">
+                      <span class="hd-badge">1080p Full HD</span>
+                      <h4>Video Demonstration: Spawn &amp; Chunk Distance Multiplier</h4>
+                    </div>
+                    <div class="drawer-action-group">
+                      <a href="https://drive.google.com/file/d/1ar-8GRP8xgeldXD7AwF7yZtxp6rCmps9/view?usp=sharing" target="_blank" rel="noopener" class="drive-source-link">Drive Full HD ↗</a>
+                      <button class="drawer-close-btn" data-close="drawer-14">Close Player ✕</button>
+                    </div>
+                  </div>
+                  <div class="drawer-player-frame">
+                    <iframe title="Spawn &amp; Chunk Distance Multiplier Demonstration" allowfullscreen allow="autoplay"></iframe>
+                  </div>
+                  <div class="drawer-player-footer">
+                    <span class="hd-status-text">✅ Stream automatically requested in 1080p</span>
+                    <span class="hd-fallback-text">If bandwidth drops, force 1080p via ⚙️ in the player or open the Drive source link.</span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Feature 15 -->
+            <tr class="feature-row" data-category="System & Performance" data-feature-id="15">
+              <td class="col-num">15</td>
+              <td class="col-cat"><span class="cat-badge">System &amp; Performance</span></td>
+              <td class="col-feature"><strong>Realtime Keybinding Change</strong></td>
+              <td class="col-desc">Runtime DirectInput hardware keyboard poller interception at <code>0x00486390</code> to rebind controller keys without game restarts.</td>
+              <td class="col-status"><span class="badge-status status-wip">❌ Not Working Yet</span></td>
+              <td class="col-video">
+                <span class="no-demo-badge">Under Development</span>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Implementation Summary Box -->
+      <div class="matrix-summary-box">
+        <div class="summary-item">
+          <span class="summary-count count-working">11</span>
+          <span class="summary-label">✅ Implemented &amp; Working</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-count count-partial">2</span>
+          <span class="summary-label">⚠️ Partially Working</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-count count-wip">2</span>
+          <span class="summary-label">❌ Not Working Yet</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-count">15</span>
+          <span class="summary-label">Total Engine Modules</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================== -->
+  <!-- INSTALLATION SECTION & VIDEO GUIDE          -->
+  <!-- =========================================== -->
+  <section id="install" class="section">
+    <div class="container">
+      <p class="section-kicker">Deployment Guide</p>
+      <h2>Zero-Installer Drag &amp; Drop Setup</h2>
+      <p class="section-intro">
+        The framework requires no installer executable (.exe) and makes zero modifications to original game archives. 
+        Follow the 4 steps or watch the full installation walkthrough below.
+      </p>
+
+      <!-- Video Installation Walkthrough Player -->
+      <div class="install-video-card">
+        <div class="install-video-header">
+          <div>
+            <div class="drawer-title-group" style="margin-bottom: 8px;">
+              <span class="badge-status status-working">Official Guide</span>
+              <span class="hd-badge">1080p Full HD</span>
+            </div>
+            <h3>Video Walkthrough: Manual Installation Process</h3>
+          </div>
+          <div class="drawer-action-group">
+            <a href="https://drive.google.com/file/d/1AnG25OxuzFjtlp4fxVieIHz1H1mbqZLk/view?usp=sharing" target="_blank" rel="noopener" class="drive-source-link">Drive Full HD ↗</a>
+            <button class="btn btn-primary" id="launch-install-video-btn" data-video-id="1AnG25OxuzFjtlp4fxVieIHz1H1mbqZLk">
+              ▶ Load Video Player
+            </button>
+          </div>
+        </div>
+        <div class="install-video-container" id="install-video-container" style="display:none;">
+          <iframe id="install-video-iframe" title="Crazy Taxi Mod Manual Installation Guide Video" allowfullscreen allow="autoplay"></iframe>
+        </div>
+      </div>
+
+      <!-- Installation Steps -->
+      <div class="install-steps-grid">
+        <div class="install-step-card">
+          <span class="step-badge">STEP 01</span>
+          <h3>Extract Package</h3>
+          <p>Download and open <code>Lyras Framwork MOD.zip</code>. The package contains <code>dinput8.dll</code> and the <code>mods/</code> directory.</p>
+        </div>
+        <div class="install-step-card">
+          <span class="step-badge">STEP 02</span>
+          <h3>Locate Game Directory</h3>
+          <p>Navigate to the directory containing <code>Crazy Taxi.exe</code>, typically located under:</p>
+          <code class="path-display">C:\Program Files (x86)\Steam\steamapps\common\Crazy Taxi\</code>
+        </div>
+        <div class="install-step-card">
+          <span class="step-badge">STEP 03</span>
+          <h3>Copy 1 Hook File &amp; Mods</h3>
+          <p>Drag <code>dinput8.dll</code> and the <code>mods/</code> folder into the game directory beside <code>Crazy Taxi.exe</code>. Clean up any obsolete <code>CT-DC.asi</code> files if previously installed.</p>
+        </div>
+        <div class="install-step-card">
+          <span class="step-badge">STEP 04</span>
+          <h3>Launch Game</h3>
+          <p>Run <code>Crazy Taxi.exe</code>. The proxy loader automatically hooks in. Press <kbd>Shift</kbd> + <kbd>F1</kbd> (or <kbd>F7</kbd> / <kbd>F10</kbd>) at any time to open the mod menu.</p>
+        </div>
+      </div>
+
+      <div class="uninstallation-notice">
+        <strong>Uninstallation Procedure:</strong> Delete <code>dinput8.dll</code> and the <code>mods/</code> directory from the game root. 
+        Crazy Taxi immediately returns to its clean vanilla state without needing file verification.
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================== -->
+  <!-- CONTROLS & KEYBINDINGS                      -->
+  <!-- =========================================== -->
+  <section id="controls" class="section section-dark">
+    <div class="container">
+      <p class="section-kicker">Input Specifications</p>
+      <h2>Controls &amp; Keybindings</h2>
+      <p class="section-intro">
+        Pre-configured keybindings and input routing designed for responsive keyboard control and cinematic camera manipulation.
+      </p>
+
+      <div class="controls-grid">
+        <div class="controls-card">
+          <h3>Mod Menu &amp; Overlay</h3>
+          <div class="binding-row">
+            <span class="binding-keys"><kbd>Shift</kbd> + <kbd>F1</kbd></span>
+            <span class="binding-desc">Toggle Mod Menu (Primary)</span>
+          </div>
+          <div class="binding-row">
+            <span class="binding-keys"><kbd>F7</kbd> / <kbd>F10</kbd></span>
+            <span class="binding-desc">Alternative Menu Toggle Hotkeys</span>
+          </div>
+        </div>
+
+        <div class="controls-card">
+          <h3>Modern WASD Vehicle Driving</h3>
+          <div class="binding-row">
+            <span class="binding-keys"><kbd>W</kbd></span>
+            <span class="binding-desc">Accelerate Forward (Automatic Gear D)</span>
+          </div>
+          <div class="binding-row">
+            <span class="binding-keys"><kbd>S</kbd></span>
+            <span class="binding-desc">Brake / Reverse (Automatic Gear R)</span>
+          </div>
+          <div class="binding-row">
+            <span class="binding-keys"><kbd>A</kbd> / <kbd>D</kbd></span>
+            <span class="binding-desc">Steer Left / Steer Right</span>
+          </div>
+          <div class="binding-row">
+            <span class="binding-keys"><kbd>Left Shift</kbd></span>
+            <span class="binding-desc">Crazy Dash / Instant Turbo Boost</span>
+          </div>
+          <div class="binding-row">
+            <span class="binding-keys"><kbd>Space</kbd></span>
+            <span class="binding-desc">Handbrake / Crazy Drift Initiation</span>
+          </div>
+        </div>
+
+        <div class="controls-card">
+          <h3>3D Freecam Manipulation</h3>
+          <div class="binding-row">
+            <span class="binding-keys"><kbd>Mouse</kbd></span>
+            <span class="binding-desc">360-Degree Free Look Orientation</span>
+          </div>
+          <div class="binding-row">
+            <span class="binding-keys"><kbd>W</kbd> / <kbd>S</kbd></span>
+            <span class="binding-desc">Move Camera Forward / Backward</span>
+          </div>
+          <div class="binding-row">
+            <span class="binding-keys"><kbd>A</kbd> / <kbd>D</kbd></span>
+            <span class="binding-desc">Camera Strafe Left / Right</span>
+          </div>
+          <div class="binding-row">
+            <span class="binding-keys"><kbd>Space</kbd></span>
+            <span class="binding-desc">Ascend (+Y Altitude Vector)</span>
+          </div>
+          <div class="binding-row">
+            <span class="binding-keys"><kbd>Shift</kbd></span>
+            <span class="binding-desc">Descend (-Y Altitude Vector)</span>
+          </div>
+        </div>
+
+        <div class="controls-card">
+          <h3>Taxi Flight Controls</h3>
+          <div class="binding-row">
+            <span class="binding-keys"><kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd></span>
+            <span class="binding-desc">3D Vehicle Flight Propulsion</span>
+          </div>
+          <div class="binding-row">
+            <span class="binding-keys"><kbd>Space</kbd></span>
+            <span class="binding-desc">Flight Ascend (+Y Elevation)</span>
+          </div>
+          <div class="binding-row">
+            <span class="binding-keys"><kbd>Left Ctrl</kbd></span>
+            <span class="binding-desc">Flight Descend (-Y Elevation)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================== -->
+  <!-- TECHNICAL MEMORY ENGINE (game_features.h)   -->
+  <!-- =========================================== -->
+  <section id="technical" class="section">
+    <div class="container">
+      <p class="section-kicker">Developer Reference</p>
+      <h2>Reversed Memory Addresses &amp; Engine Internals</h2>
+      <p class="section-intro">
+        Extracted directly from <code>game_features.h</code>. All memory offsets are relative to <code>Crazy Taxi.exe</code> base address.
+      </p>
+
+      <div class="tech-tab-nav">
+        <button class="tab-btn active" data-tab="tab-player">Player &amp; Vehicle</button>
+        <button class="tab-btn" data-tab="tab-camera">Camera Subsystem</button>
+        <button class="tab-btn" data-tab="tab-input">Input &amp; DirectInput</button>
+        <button class="tab-btn" data-tab="tab-gameplay">Economy &amp; Timer</button>
+        <button class="tab-btn" data-tab="tab-sega">Sega Internal Flags</button>
+        <button class="tab-btn" data-tab="tab-stream">Sector Streaming &amp; Collision</button>
+      </div>
+
+      <div class="tech-tab-content">
+        <!-- Player & Vehicle -->
+        <div class="tab-pane active" id="tab-player">
+          <table class="data-table">
+            <thead><tr><th>Symbol</th><th>Memory Address</th><th>Data Type &amp; Operational Notes</th></tr></thead>
+            <tbody>
+              <tr><td><code>ADDR_GAME_FLAG</code></td><td><code>0x016a2cfc</code></td><td>uint32 (3 = Active Gameplay Session, 0 = Menus / Attract Demo)</td></tr>
+              <tr><td><code>ADDR_GAME_MODE</code></td><td><code>0x016a2818</code></td><td>uint32 (4 = Arcade Mode, 0xE / 14 = Original / Crazy Box)</td></tr>
+              <tr><td><code>ADDR_VEHICLE_STATE</code></td><td><code>0x01661474</code></td><td>uint32 (8 = Attract AI Driver, &lt; 8 = Player Controlled)</td></tr>
+              <tr><td><code>ADDR_PLAYER_X / Y / Z</code></td><td><code>0x01661574..7c</code></td><td>float[3] (Absolute vehicle position in 3D world space)</td></tr>
+              <tr><td><code>ADDR_PLAYER_SPEED</code></td><td><code>0x0166158c</code></td><td>float (Current forward vehicle velocity)</td></tr>
+              <tr><td><code>ADDR_PLAYER_FALL_SPD</code></td><td><code>0x016614b0</code></td><td>float (Vertical falling speed accumulator)</td></tr>
+              <tr><td><code>ADDR_PLAYER_DELTA_X / Z</code></td><td><code>0x016614ac / b4</code></td><td>float (Horizontal momentum delta vector)</td></tr>
+              <tr><td><code>ADDR_VEHICLE_YAW_BAM</code></td><td><code>0x01661478</code></td><td>16-bit BAM integer (0..65535 = 0..360° heading)</td></tr>
+              <tr><td><code>ADDR_VEHICLE_PITCH_BAM</code></td><td><code>0x0166147a</code></td><td>int16 BAM (Vehicle inclination angle)</td></tr>
+              <tr><td><code>ADDR_VEHICLE_ROLL_BAM</code></td><td><code>0x0166147c</code></td><td>int16 BAM (Vehicle lateral roll angle)</td></tr>
+              <tr><td><code>ADDR_GROUND_COLLISION</code></td><td><code>0x01661596</code></td><td>uint8 (1 = Wheels on ground / road contact)</td></tr>
+              <tr><td><code>ADDR_GRAVITY_CONST</code></td><td><code>0x0166148c</code></td><td>float (Default: 5.0f vehicle gravity)</td></tr>
+              <tr><td><code>ADDR_GRAVITY_RDATA</code></td><td><code>0x0059fd4c</code></td><td>Master 5.0f constant loaded by core physics loop</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Camera Subsystem -->
+        <div class="tab-pane" id="tab-camera">
+          <table class="data-table">
+            <thead><tr><th>Symbol</th><th>Memory Address</th><th>Data Type &amp; Operational Notes</th></tr></thead>
+            <tbody>
+              <tr><td><code>ADDR_CAM_EYE_X / Y / Z</code></td><td><code>0x01661494..9c</code></td><td>float[3] (World camera eye position coordinates)</td></tr>
+              <tr><td><code>ADDR_CAM_TARGET_X / Y / Z</code></td><td><code>0x016614f8..500</code></td><td>float[3] (World camera focal target coordinates)</td></tr>
+              <tr><td><code>ADDR_CAM_ROLL</code></td><td><code>0x016614c8</code></td><td>16-bit BAM integer (Camera roll orientation)</td></tr>
+              <tr><td><code>ADDR_CAM_VIEW_MATRIX</code></td><td><code>0x01661530</code></td><td>16 floats (Active DirectX 9 View Matrix / D3DMATRIX)</td></tr>
+              <tr><td><code>ADDR_CAM_UPDATE_CALL</code></td><td><code>0x0051f582</code></td><td>Hook call site for freecam injection</td></tr>
+              <tr><td><code>ADDR_CAM_LOOKAT_FN</code></td><td><code>0x0049b200</code></td><td>Engine native LookAt calculation function</td></tr>
+              <tr><td><code>ADDR_FAR_Z_RDATA</code></td><td><code>0x005a0150</code></td><td>float (Master Camera Far-Z Clip Plane, default: 15000.0f)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Input & DirectInput -->
+        <div class="tab-pane" id="tab-input">
+          <table class="data-table">
+            <thead><tr><th>Symbol</th><th>Memory Address</th><th>Data Type &amp; Operational Notes</th></tr></thead>
+            <tbody>
+              <tr><td><code>ADDR_MAIN_INPUT_LOOP</code></td><td><code>0x004ea3a8</code></td><td>call 0x004F2ED0 (Per-frame input commit in main engine loop)</td></tr>
+              <tr><td><code>ADDR_INPUT_BUTTONS</code></td><td><code>0x016a2848</code></td><td>uint32 bitmask (Raw controller input buffer)</td></tr>
+              <tr><td><code>ADDR_INPUT_BUTTONS_2</code></td><td><code>0x016a287c</code></td><td>uint32 bitmask (Filtered/latched input buffer used by physics)</td></tr>
+              <tr><td><code>ADDR_INPUT_STEER_AXIS</code></td><td><code>0x016a2858</code></td><td>int16 signed (-32767..32767 steering deflection)</td></tr>
+              <tr><td><code>ADDR_INPUT_ACCEL_AXIS</code></td><td><code>0x016a285a</code></td><td>uint16 (0..65535 progressive accelerator pedal)</td></tr>
+              <tr><td><code>ADDR_INPUT_BRAKE_AXIS</code></td><td><code>0x016a285c</code></td><td>uint16 (0..65535 progressive brake pedal)</td></tr>
+              <tr><td><code>ADDR_INPUT_BTN_GEAR_D / R</code></td><td><code>0x016a2865 / 66</code></td><td>uint8 (Gear shift state: Drive / Reverse)</td></tr>
+              <tr><td><code>ADDR_INPUT_GEAR_STATE</code></td><td><code>0x016a2873</code></td><td>uint8 (0 or 2 = Drive, 1 = Reverse)</td></tr>
+              <tr><td><code>ADDR_KEYBOARD_POLL_FN</code></td><td><code>0x00486390</code></td><td>Native DirectInput keyboard poller function</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Economy & Timer -->
+        <div class="tab-pane" id="tab-gameplay">
+          <table class="data-table">
+            <thead><tr><th>Symbol</th><th>Memory Address</th><th>Data Type &amp; Operational Notes</th></tr></thead>
+            <tbody>
+              <tr><td><code>ADDR_TOTAL_MONEY</code></td><td><code>0x016f10e0</code></td><td>uint32 (Total accumulated cash in cents: $1.00 = 100)</td></tr>
+              <tr><td><code>ADDR_CURRENT_FARE_TIPS</code></td><td><code>0x016a41c8</code></td><td>uint32 (Active passenger tip pool in cents)</td></tr>
+              <tr><td><code>ADDR_GAME_TIMER</code></td><td><code>0x016a41a4</code></td><td>uint32 (In-game round timer in 60 FPS frames: 3000 = 50s, 356400 = 99m)</td></tr>
+              <tr><td><code>ADDR_STUNT_TIP_ADD</code></td><td><code>0x004a8de7</code></td><td>Opcode: add [0x16a41c8], ecx (Stunt reward calculation hook)</td></tr>
+              <tr><td><code>ADDR_FARE_CUTSCENE</code></td><td><code>0x016f2164</code></td><td>uint32 (Passenger cutscene animation state: &gt; 0 during pickup/dropoff)</td></tr>
+              <tr><td><code>ADDR_PASSENGER_OBJ</code></td><td><code>0x016f21b0</code></td><td>Pointer to active passenger memory structure</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Sega Internal Flags -->
+        <div class="tab-pane" id="tab-sega">
+          <table class="data-table">
+            <thead><tr><th>Symbol</th><th>Memory Address</th><th>Data Type &amp; Operational Notes</th></tr></thead>
+            <tbody>
+              <tr><td><code>ADDR_SEGA_UNLOCK_ALL</code></td><td><code>0x0164fa58</code></td><td>uint8 (0xFF = Unlock all special bikes and Crazy Box challenges)</td></tr>
+              <tr><td><code>ADDR_SEGA_UNLOCK_MASK</code></td><td><code>0x016aa3c0</code></td><td>uint32 (0xFFFFFFFF = Unlock all characters and vehicle options)</td></tr>
+              <tr><td><code>ADDR_SEGA_CHAR_SELECT</code></td><td><code>0x016a9b30</code></td><td>int (0..3 = Standard Cabs, 4..7 = Unlockable Bikes)</td></tr>
+              <tr><td><code>ADDR_SEGA_ANOTHER_DAY</code></td><td><code>0x01662304</code></td><td>int (1 = Enable Sega's internal "Another Day" mode)</td></tr>
+              <tr><td><code>ADDR_SEGA_NO_ARROWS</code></td><td><code>0x016ef0bc</code></td><td>int (1 = Suppress overhead directional destination guide arrow)</td></tr>
+              <tr><td><code>ADDR_SEGA_NO_DEST_MARK</code></td><td><code>0x016eeea0</code></td><td>int (1 = Suppress ground dropoff destination boundary zone)</td></tr>
+              <tr><td><code>ADDR_SEGA_BIKE_MODE</code></td><td><code>0x016aa3c4</code></td><td>int (Bit 0x20 = Bike Physics Mode)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Sector Streaming & Collision -->
+        <div class="tab-pane" id="tab-stream">
+          <table class="data-table">
+            <thead><tr><th>Symbol</th><th>Memory Address</th><th>Data Type &amp; Operational Notes</th></tr></thead>
+            <tbody>
+              <tr><td><code>ADDR_CHUNK_DIST_CAMERA</code></td><td><code>0x005a10a8</code></td><td>float (Default 850.0f camera sector chunk culling radius)</td></tr>
+              <tr><td><code>ADDR_CHUNK_DIST_FAR</code></td><td><code>0x0059f9f8</code></td><td>float (Default 450.0f far chunk culling distance)</td></tr>
+              <tr><td><code>ADDR_COLLISION_WORLD</code></td><td><code>0x004dc580</code></td><td>Master world terrain, scenery, and boundary collision routine</td></tr>
+              <tr><td><code>ADDR_COLLISION_TRAFFIC</code></td><td><code>0x004dc660</code></td><td>Master NPC traffic vehicle and dynamic obstacle collision handler</td></tr>
+              <tr><td><code>ADDR_LOAD_CHUNKS_AROUND</code></td><td><code>0x00504090</code></td><td>Native sector chunk &amp; texture streamer (__cdecl)</td></tr>
+              <tr><td><code>ADDR_VEHICLE_UPDATE_FN</code></td><td><code>0x0051d940</code></td><td>Master vehicle physics simulation loop</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Exported API Interface -->
+      <div class="code-export-box">
+        <h3>Direct C++ Export Interface (game_features.h)</h3>
+        <pre><code>// Direct C++ Framework Interface - Version 0.85
+bool   InitGameFeatures();
+void   ShutdownGameFeatures();
+void   UpdateGameFeaturesPerFrame();
+void   ApplySoundtrackSetting(bool original);
+
+bool   IsInGame();
+bool   GetTaxiPosition(float&amp; x, float&amp; y, float&amp; z);
+bool   GetTaxiSpeed(float&amp; speed);
+bool   GetTaxiMoney(float&amp; totalDollars, float&amp; rideTips);
+void   SetInGameTimerSeconds(int seconds);
+void   SetInGameTimerMinutes(int minutes);
+int    GetInGameTimerSeconds();
+bool   TeleportTaxi(float x, float y, float z);
+bool   GetGroundCollision();
+
+bool   GetCameraEyePosition(float&amp; x, float&amp; y, float&amp; z);
+bool   GetCameraTargetPosition(float&amp; x, float&amp; y, float&amp; z);
+void   TeleportFreecamToTaxi();
+void   MoveFreecam(float dRight, float dUp, float dFwd);
+void   ResetMouseLook();
+
+extern "C" __declspec(dllexport) void ProcessKeyboardBuffer(BYTE* pBuf);</code></pre>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================== -->
+  <!-- DOWNLOAD PACKAGE                            -->
+  <!-- =========================================== -->
+  <section id="download" class="section section-dark">
+    <div class="container text-center">
+      <p class="section-kicker">Releases &amp; Source</p>
+      <h2>Download Framework Suite v0.85</h2>
+      <p class="section-intro center-block">
+        Download the compiled release package or explore the complete open-source codebase. 
+        Compatible with the standard Steam and PC retail releases of Crazy Taxi.
+      </p>
+
+      <div class="download-grid">
+        <div class="download-card">
+          <div class="dl-badge">RECOMMENDED FOR PLAYERS</div>
+          <h3>Lyras Framework MOD Release (v0.85)</h3>
+          <p>
+            Complete ready-to-run package containing <code>dinput8.dll</code>, <code>Framework_MOD.dll</code>, 
+            Dreamcast Restoration 2.0 textures, and pre-configured JSON configuration.
+          </p>
+          <div class="dl-meta-info">
+            <span>Package: ZIP Archive</span>
+            <span>Size: ~333 KB</span>
+          </div>
+          <a href="Lyras Framwork MOD.zip" class="btn btn-primary btn-block" download>
+            Download Release Package
+          </a>
+        </div>
+
+        <div class="download-card">
+          <div class="dl-badge">FOR DEVELOPERS</div>
+          <h3>Open Source Codebase</h3>
+          <p>
+            Full C++ source code including Direct3D 9 hooking routines, memory offsets, and build scripts. 
+            Requires Microsoft Visual Studio 2022+ and DirectX 9 SDK.
+          </p>
+          <div class="dl-meta-info">
+            <span>Package: 7z Compressed</span>
+            <span>Size: ~40 KB</span>
+          </div>
+          <a href="Open Source CODE.7z" class="btn btn-ghost btn-block" download>
+            Download Source Code (.7z)
+          </a>
+        </div>
+      </div>
+
+      <div class="license-banner">
+        Released under the <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)</a> license. 
+        Free for non-commercial distribution and community extension with author attribution.
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================== -->
+  <!-- GALLERY                                     -->
+  <!-- =========================================== -->
+  <section id="gallery" class="section">
+    <div class="container">
+      <p class="section-kicker">Visual Verification</p>
+      <h2>In-Game Capture Gallery</h2>
+      <div class="gallery-grid">
+        <figure class="gallery-item">
+          <img src="assets/screenshot1.png" alt="In-game Direct3D 9 overlay showing live mod parameter toggles" loading="lazy" />
+          <figcaption>Direct3D 9 in-game overlay with live parameter controls</figcaption>
+        </figure>
+        <figure class="gallery-item">
+          <img src="assets/screenshot2.png" alt="High-altitude freecam view overlooking the city and ocean map" loading="lazy" />
+          <figcaption>High-altitude 360° freecam exploration across the San Francisco map</figcaption>
+        </figure>
+        <figure class="gallery-item">
+          <img src="assets/titlescreen.png" alt="Crazy Taxi arcade title screen with active framework hook status" loading="lazy" />
+          <figcaption>Arcade title screen demonstrating active framework hook verification</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================== -->
+  <!-- FOOTER                                      -->
+  <!-- =========================================== -->
+  <footer id="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <img src="assets/banner.webp" alt="Crazy Taxi Ultimate Mod Framework" class="footer-logo" />
+          <p>Crazy Taxi Ultimate Mod Menu &amp; Restoration Suite (v0.85) — Multi-Mod Loader &amp; DirectX 9 Framework</p>
+        </div>
+        <div class="footer-links">
+          <a href="#about">Architecture</a>
+          <a href="#features">Feature Matrix</a>
+          <a href="#install">Installation</a>
+          <a href="#controls">Controls</a>
+          <a href="#technical">Memory Engine</a>
+          <a href="#download">Download</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>Created by <strong>Lyra</strong>. Licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a>.</p>
+        <p class="footer-disclaimer">Crazy Taxi is a registered trademark of SEGA Corporation. This project is an independent non-commercial open-source modification and is not affiliated with, authorized, or endorsed by SEGA.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
