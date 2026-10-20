@@ -1,0 +1,128 @@
+In den von dir hochgeladenen Quellcodedateien (`TextureEngine.cpp`, `LyrasTextureMod_main.cpp` und `build_extract_textures_2.py`) befinden sich tatsächlich die kompletten internen Speicheradressen der **Sega-Textur- & Rendering-Engine**, die auf der Projekt-Webseite überhaupt nicht aufgelistet sind.
+
+Hier ist die vollständige Übersicht der wichtigsten Textur-, Hook- und Renderer-Adressen aus den Dateien, unterteilt nach ihrer Funktion:
+
+---
+
+### 1. Die 4 zentralen Funktions-Hooks & IAT-Adressen (Code-Hooks)
+
+Diese Adressen werden genutzt, um das Laden und Binden von Texturen in Echtzeit abzufangen:
+
+* **`0x00492230` (`LoadModelTexture`)**: Interne Funktion zum Laden von 3D-Modell-Texturen, wobei der Tabellen-Pointer in `edx` und der Index (`tableIndex`) als Argument übergeben wird.
+
+
+* **`0x0048B7A0` (`LoadStageTexture`)**: Interne Funktion zum Laden von Map-/Stage-Texturen, die den Tabellen-Eintrag (`entryPtr`) in `eax` und die Textur-ID (`id`) in `ecx` erwartet.
+
+
+* **`0x00481200` (`SegaRenderer::SetTexture`)**: Funktion, die vor dem Setzen einer Textur im Renderer aufgerufen wird und das aktuelle Textur-Objekt (`pTexObj`) im Register `eax` hält.
+
+
+* **`0x005342B4` (IAT-Eintrag für `D3DXCreateTextureFromFileInMemoryEx`)**: Die Import-Address-Table-Adresse in der `Crazy Taxi.exe`, die direkt im Speicher überschrieben wird, um das Laden von Menü-/UI-Texturen und `.jpk`-Archiven über `d3dx9_43.dll` umzuleiten.
+
+
+
+---
+
+### 2. Globale Renderer- & Master-Textur-Tabellen im RAM
+
+Diese Adressen verwalten zur Laufzeit alle aktiven Direct3D-9-Texturobjekte und Geräte-Pointer:
+
+* **`0x01B09938` (Master Texture Table Base)**: Die Basisadresse der globalen Master-Texturtabelle im Spielspeicher, die bis zu `0x2000` (8.192) Einträge zu je **24 Bytes** umfasst (`0x01B09938 + (id * 24)`).
+
+
+* **Offset `+0x00` im Master-Eintrag**: Zeigt auf das interne Sega-Texturobjekt (`pTexObj`), in welchem wiederum bei **Offset `+0x0C**` der eigentliche `IDirect3DTexture9*`-Pointer gespeichert ist (und vom Mod ausgetauscht wird).
+
+
+* **Offset `+0x10` im Master-Eintrag**: Speichert den `pData`-Datenpointer der geladenen Textur.
+
+
+* **Index-Aufteilung (`0x7D0`)**: Alle Einträge unterhalb von Index `0x7D0` (2000) gehören zu Modell-/Basis-Texturen (`texDC0`), während alle Einträge ab `0x7D0` zur aktuell geladenen Stage gehören (`chunkIndex = id - 0x7D0`).
+
+
+
+
+* **`0x01B7A6E0` (`baseIdx` für Modell-Texturen)**: Ein globaler `uint32_t`-Wert, der beim Laden einer Modell-Textur auf den `tableIndex` addiert wird, um die endgültige `masterId` in der Master-Tabelle (`0x01B09938`) zu bestimmen.
+
+
+* **`0x01B7A838` (`activeStageTable`)**: Enthält den Pointer auf die statische Texturtabelle der aktuell aktiven Map (z. B. `texDC1`, `texDC2` oder `texDC3`).
+
+
+* **`0x01B7AC00` (`pSegaRenderer`)**: Globaler Pointer auf die Sega-Renderer-Instanz, aus der bei **Offset `+0x18**` das aktive `IDirect3DDevice9*` ausgelesen wird.
+
+
+* **`0x01B7AB04` (`pContainer` Fallback)**: Alternativer globaler Container-Pointer, über den bei **Offset `+0x08**` ebenfalls das `IDirect3DDevice9*` abgegriffen werden kann.
+
+
+
+---
+
+### 3. Virtueller Textur-Datenbereich (`pData` Memory-Mapping)
+
+* **`0x0CB40000` bis `0x0E000000` / `0x0F000000**`: Die Basisadresse, ab der die rohen Texturdaten (`pData`) im Speicher adressiert werden. Die Differenz `pData - 0x0CB40000` ergibt exakt den relativen Byte-Offset (`relOffset` bzw. `GBIX`) der Textur innerhalb der jeweiligen `.bin`-Archivdatei im Ordner `data_little/`.
+
+
+
+---
+
+### 4. Alle 26 statischen Sega-Textur-Tabellen (`SEGA_TABLES`)
+
+In der `Crazy Taxi.exe` befinden sich ab `0x0135EFD0` insgesamt 26 statische Lookup-Tabellen (jeweils 16-Byte-Strukturen aus `dims`, `fmt`, `pData` bei `+0x08` und `pTex`), die direkt mit den `.bin`-Dateien in `data_little/` verknüpft sind:
+
+#### A. 3D-Welt-, Fahrzeug- und Objekt-Texturen (`tex*`)
+
+* **`0x01361BA0` (`texDC0`)**: Haupt-Texturtabelle für Fahrzeuge, Fahrer, Passagiere und allgemeine 3D-Objekte (Archiv-Hash `0x5436974C`).
+
+
+* **`0x01364620` (`texDC1`)**: Welt-/Stage-Texturen für Map 1 / Arcade (Archiv-Hash `0x2331A7DA`).
+
+
+* **`0x01365B30` (`texDC2`)**: Welt-/Stage-Texturen für Map 2 / Original (Archiv-Hash `0xBA38F660`).
+
+
+* **`0x01366F80` (`texDC3`)**: Welt-/Stage-Texturen für Crazy Box / Map 3 (Archiv-Hash `0xCD3FC6F6`).
+
+
+
+#### B. Sprites, HUD & Menüs (`spr*`)
+
+* **`0x0135EFD0` (`sprDC0`)**: Allgemeine Dreamcast-Basis-Sprites (Archiv-Hash `0x8E8E5F62`).
+
+
+* **`0x0135FAF0` (`sprGAME`)**: Allgemeine In-Game-HUD-Sprites (Archiv-Hash `0xFC26A882`).
+
+
+* **`0x01360960` (`sprBOX`)**: Sprites für den Crazy-Box-Modus (Archiv-Hash `0x65DF85B6`).
+
+
+* **`0x01360B00` (`sprMENU`)**: Übergreifende Menü-Sprites (Archiv-Hash `0xA208A39D`).
+
+
+* **`0x013637E0` (`sprCOMM`)**: Common-Sprites (Archiv-Hash `0x77019AED`).
+
+
+* **`0x01363CA0` (`sprPAL`)**: PAL-Versions-Sprites (Archiv-Hash `0xFE240B5B`).
+
+
+
+#### C. Lokalisierte Sprite-Tabellen (Englisch, Japanisch, Französisch, Deutsch, Spanisch)
+
+* **Common/Credits (`sprC*`)**:
+* **`0x0135F790`** (`sprCENG`), **`0x0135F8D0`** (`sprCJAP`), **`0x0135FA10`** (`sprCFRE`), **`0x01360890`** (`sprCGER`), **`0x01360910`** (`sprCSPA`).
+
+
+
+
+* **Menü-Grafiken (`sprM*`)**:
+* **`0x01360E70`** (`sprMJAP`), **`0x01361480`** (`sprMENG`), **`0x01363710`** (`sprMFRE`), **`0x01363750`** (`sprMGER`), **`0x01363790`** (`sprMSPA`).
+
+
+
+
+* **Pause-/Prompt-Grafiken (`sprP*`)**:
+* **`0x01363F00`** (`sprPENG`), **`0x01364160`** (`sprPFRE`), **`0x013644A0`** (`sprPGER`), **`0x01364500`** (`sprPSPA`).
+
+
+
+
+* **In-Game-Textgrafiken (`sprG*`)**:
+* **`0x01364560`** (`sprGENG`), **`0x013645C0`** (`sprGJAP`).
