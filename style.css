@@ -85,10 +85,14 @@ code {
   font-family: 'JetBrains Mono', monospace;
   background: rgba(245, 197, 24, 0.08);
   color: var(--accent);
-  padding: 3px 7px;
+  padding: 2px 6px;
   border-radius: 4px;
   font-size: 0.88em;
   border: 1px solid rgba(245, 197, 24, 0.18);
+  display: inline;
+  vertical-align: baseline;
+  line-height: inherit;
+  word-break: break-word;
 }
 
 kbd {
@@ -1708,6 +1712,40 @@ pre code {
   font-weight: 600;
 }
 
+.dev-hero-actions {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  max-width: 1120px;
+  margin: 32px auto 0 auto;
+}
+
+.dev-hero-actions .btn {
+  padding: 14px 12px;
+  font-size: 0.90rem;
+  font-weight: 700;
+  width: 100%;
+  white-space: nowrap;
+  justify-content: center;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1060px) {
+  .dev-hero-actions {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 640px;
+    gap: 14px;
+  }
+}
+
+@media (max-width: 580px) {
+  .dev-hero-actions {
+    grid-template-columns: 1fr;
+    max-width: 100%;
+  }
+}
+
 .callout-box {
   background: rgba(245, 197, 24, 0.06);
   border: 1px solid rgba(245, 197, 24, 0.25);
@@ -1866,17 +1904,17 @@ pre code {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
   margin-top: 12px;
 }
 
 .rule-list li {
-  font-size: 0.88rem;
+  font-size: 0.90rem;
   color: var(--text-secondary);
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  line-height: 1.5;
+  position: relative;
+  padding-left: 26px;
+  line-height: 1.65;
+  display: block;
 }
 
 .rule-list li strong {
@@ -1884,8 +1922,12 @@ pre code {
 }
 
 .rule-list li .bullet {
+  position: absolute;
+  left: 0;
+  top: 0;
   color: var(--accent);
   font-weight: 800;
+  line-height: 1.65;
 }
 
 .table-search-bar {
@@ -2199,4 +2241,134 @@ pre code {
   color: #000000;
   font-weight: 700;
 }
+
+/* ============================================================
+   FAQ Section & Accordion Styles
+   ============================================================ */
+.faq-container {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.faq-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  transition: all 0.25s var(--ease);
+  overflow: hidden;
+}
+
+.faq-item:hover {
+  border-color: var(--border-light);
+  background: var(--bg-card-hover);
+}
+
+.faq-item[open] {
+  border-color: var(--accent);
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.4), 0 0 18px var(--accent-glow);
+}
+
+.faq-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 24px;
+  cursor: pointer;
+  user-select: none;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #ffffff;
+  list-style: none;
+  gap: 16px;
+}
+
+.faq-summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-question-text {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-align: left;
+}
+
+.faq-q-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  background: rgba(245, 197, 24, 0.15);
+  color: var(--accent);
+  font-size: 0.82rem;
+  font-weight: 800;
+  font-family: 'JetBrains Mono', monospace;
+  flex-shrink: 0;
+}
+
+.faq-chevron {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  transition: transform 0.25s var(--ease);
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.faq-item[open] .faq-chevron {
+  transform: rotate(180deg);
+}
+
+.faq-answer {
+  padding: 0 26px 24px 68px;
+  color: var(--text-secondary);
+  font-size: 0.96rem;
+  line-height: 1.75;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  padding-top: 18px;
+}
+
+.faq-answer p:not(:last-child) {
+  margin-bottom: 12px;
+}
+
+.faq-answer ul {
+  margin: 10px 0 14px 20px;
+  color: var(--text-secondary);
+}
+
+.faq-answer li {
+  margin-bottom: 6px;
+}
+
+.guide-pill-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.guide-pill {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
 
