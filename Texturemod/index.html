@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="google-site-verification" content="JlSjg06WPXkN_KYSbuymwhF-knzI8zecWYzzYxyAz18" />
+  <title>Crazy Taxi Texture Modder &amp; 2K HD Upscaler v0.88 — Real-Time Texture Editor (2026/2027)</title>
+  <meta name="description" content="Official documentation and download for Lyra's Drag &amp; Drop Texture Modder v0.88 for Crazy Taxi PC. Real-time 2K HD texture replacement, automatic mipmaps, POT dimension snapper, MS Paint alpha recovery, and 1-click restore. Fully integrated into Lyra's Crazy Taxi Framework Mod v0.91." />
+  <meta name="keywords" content="Crazy Taxi Texture Modder, Crazy Taxi Texture Upscaler, Crazy Taxi 2K HD Mod, Crazy Taxi Mod 2026, Crazy Taxi Mod 2027, Crazy Taxi Modding Framework, Crazy Taxi real time textures, Crazy Taxi PC HD mod, Crazy Taxi graphic mod, Crazy Taxi Steam texture replacement" />
+
+  <meta property="og:title" content="Crazy Taxi Texture Modder &amp; 2K HD Upscaler v0.88 — Real-Time Texture Editor" />
+  <meta property="og:description" content="Real-time texture replacement, up to 2K HD upscaling, auto-mipmaps, and 1-click original texture restore for Crazy Taxi PC. Natively built into Lyra's Framework Mod v0.91." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="../assets/screenshot1.png" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Crazy Taxi Texture Modder &amp; 2K HD Upscaler v0.88" />
+  <meta name="twitter:description" content="Real-time 2K HD texture replacement and auto-mipmap generation for Crazy Taxi on PC. Compatible with Steam and standalone releases." />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Lyra's Crazy Taxi Texture Modder & 2K HD Upscaler",
+    "alternateName": ["Crazy Taxi Texture Replacer", "Crazy Taxi 2K HD Mod", "LyrasTextureMod"],
+    "applicationCategory": "GameApplication",
+    "applicationSubCategory": "Video Game Texture Mod & Graphics Tool",
+    "operatingSystem": "Windows 11, Windows 10, Windows 8.1, Windows 7",
+    "softwareVersion": "0.88",
+    "description": "Real-time Direct3D 9 texture replacement engine for Crazy Taxi 1 PC. Supports up to 2048x2048 2K HD textures, automatic hardware/CPU mipmap pyramid creation, Power-of-Two snapping, MS Paint alpha reconstruction, and hotkey switching.",
+    "fileFormat": "application/zip",
+    "downloadUrl": "https://lyrasw0rld.github.io/Lyras-Crazy-Taxi-FrameworkMOD/LyrasTextureMod.zip",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "license": "https://creativecommons.org/licenses/by-nc/4.0/"
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23f5c518'/%3E%3Cpath d='M7 16l6 6 12-12' stroke='%230a0a0f' stroke-width='4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+</head>
+<body>
+
+  <nav id="main-nav">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-brand" aria-label="Crazy Taxi Ultimate Mod Framework Home">
+        <img src="../assets/banner.webp" alt="Crazy Taxi Ultimate Mod Framework" class="nav-brand-img" />
+      </a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="../index.html">Framework Home</a></li>
+        <li><a href="#install">Installation &amp; Usage</a></li>
+        <li><a href="#rules">Texture Rules &amp; Limits</a></li>
+        <li><a href="#downloads">Downloads</a></li>
+        <li><a href="../Mod-Developer/index.html">Mod Developer</a></li>
+        <li><a href="../LyrasTextureMod.zip" class="nav-cta" download>Download v0.88</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="subpage-hero">
+    <div class="container text-center">
+      <div class="breadcrumb-bar" style="justify-content: center;">
+        <a href="../index.html">Home</a>
+        <span>/</span>
+        <span class="current">Texture Modder</span>
+      </div>
+
+      <div class="subpage-badge">
+        <span>Texture Engine v0.88 &bull; Direct3D 9 Real-Time Injection</span>
+      </div>
+
+      <h1>Crazy Taxi 2K HD Texture Modder<br /><span class="hero-highlight">Drag &amp; Drop Real-Time Graphics Engine</span></h1>
+      
+      <p class="section-intro center-block">
+        The ultimate real-time texture modification engine for <strong>Crazy Taxi 1 on PC (Steam &amp; Standalone Releases)</strong>. 
+        Swap, upscale to 2K HD resolution, and edit vehicle decals, billboards, roads, and characters live while driving. 
+        Engineered for <strong>Crazy Taxi Mod 2026 / 2027</strong> with automatic mipmaps, Power-of-Two snapping, and MS Paint alpha restoration.
+      </p>
+
+      <div class="integration-notice-card">
+        <div class="notice-badge"><span class="check-icon">✓</span> Important Integration Notice</div>
+        <h3>Natively Integrated in Framework v0.91</h3>
+        <p>
+          <strong>Lyra's Texture Editor / Replacer (v0.88)</strong> is already natively integrated into <strong>Lyra's Framework Mod (v0.91)</strong> by default! If you download the standalone Texture Mod package (<code>LyrasTextureMod.zip</code>), please note that <strong>Lyra's Framework Mod is required as the foundational base</strong> for the DirectInput8 loader and Direct3D 9 hooks.
+        </p>
+      </div>
+
+      <div class="hero-actions" style="margin-top: 32px; margin-bottom: 0;">
+        <a href="../LyrasTextureMod.zip" class="btn btn-primary" download>Download Texture Mod (v0.88)</a>
+        <a href="../Crazy%20Taxi%20Texture%20Modding%20Guide.pdf" class="btn btn-ghost" target="_blank" rel="noopener">Texture Rules Guide (PDF)</a>
+        <a href="../TextureMod_SRC.7z" class="btn btn-ghost" download>Source Code (.7z)</a>
+      </div>
+    </div>
+  </header>
+
+  <section id="install" class="section section-dark">
+    <div class="container">
+      <div class="section-header text-center">
+        <p class="section-kicker">Deployment &amp; Workflow</p>
+        <h2>Installation &amp; Real-Time In-Game Usage</h2>
+        <p class="section-intro center-block">
+          Install the mod in seconds and modify textures on the fly. All core capabilities are verified and working:
+        </p>
+      </div>
+
+      <div class="hero-compat-bar" style="margin-bottom: 32px;">
+        <span class="compat-pill pill-verified">✓ Real-time texture replacement (no game restart required)</span>
+        <span class="compat-pill pill-verified">✓ Texture upscaling up to 2K resolution (2048x2048)</span>
+        <span class="compat-pill pill-verified">✓ Sorted texture directory structure</span>
+        <span class="compat-pill pill-verified">✓ Easy 1-click restoration of original textures (F10)</span>
+      </div>
+
+      <div class="about-details-grid">
+        <div class="compat-summary-box">
+          <h3 class="compat-box-title">3-Step Quick Start Guide</h3>
+          <div class="compat-box-list">
+            <div class="compat-box-item">
+              <span class="compat-check">✓</span>
+              <div>
+                <strong>Step 1 (Install):</strong> Extract <code>LyrasTextureMod.zip</code> and drop the extracted <code>LyrasTextureMod</code> folder into <code>&lt;Game Folder&gt;/mods/</code>. Done!
+              </div>
+            </div>
+            <div class="compat-box-item">
+              <span class="compat-check">✓</span>
+              <div>
+                <strong>Step 2 (Edit):</strong> Open <code>.../Crazy Taxi/mods/LyrasTextureMod/textures/</code> and edit any vehicle, prop, or world texture in Photoshop, GIMP, or MS Paint.
+              </div>
+            </div>
+            <div class="compat-box-item">
+              <span class="compat-check">✓</span>
+              <div>
+                <strong>Step 3 (Hot-Reload):</strong> Press <kbd>Shift</kbd> + <kbd>F1</kbd> to open the in-game Mod Menu or press <kbd>F9</kbd> while driving to reload textures instantly without restarting the game. Press <kbd>F10</kbd> to toggle between modded and vanilla textures.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="code-window" style="margin: 0;">
+          <div class="code-window-header">
+            <span class="code-window-title">Directory Hierarchy</span>
+          </div>
+          <pre><code>Crazy Taxi/
+├── Crazy Taxi.exe
+├── dinput8.dll
+└── mods/
+    ├── Framework_MOD/
+    │   └── Framework_MOD.dll (v0.91)
+    └── LyrasTextureMod/
+        ├── LyrasTextureMod.dll (v0.88)
+        ├── textures/ (Edit PNG / JPG here)
+        │   ├── 3D_OBJECT__texDC0__...png
+        │   └── originals/ (Vanilla backup)
+        └── cache/ (Fast .cache binaries)</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="rules" class="section">
+    <div class="container">
+      <div class="section-header text-center">
+        <p class="section-kicker">Technical Rules &amp; Limits</p>
+        <h2>Custom Texture Specifications &amp; Safeguards</h2>
+        <p class="section-intro center-block">
+          Official specifications extracted from the <strong>Crazy Taxi Texture Modding Guide</strong> to ensure stability and smooth 60 FPS gameplay.
+        </p>
+      </div>
+
+      <div class="rules-grid">
+        <div class="rule-card">
+          <div class="rule-header">
+            <span class="rule-tag tag-critical">Mandatory Rule</span>
+          </div>
+          <h3>Strict Power-of-Two (POT) Rule (2ⁿ)</h3>
+          <p>
+            Direct3D 9 texture hardware requires dimensions to be powers of two:
+          </p>
+          <p style="font-family: 'JetBrains Mono', monospace; color: var(--accent); font-weight: 700; font-size: 1.05rem;">
+            16, 32, 64, 128, 256, 512, 1024, 2048
+          </p>
+          <ul class="rule-list">
+            <li><span class="bullet">✓</span> <strong>Why 1280 broke performance:</strong> 1280 is Non-Power-of-Two (NPOT). Arbitrary 10x scalings violate GPU hardware expectations and cause stalls. Always upscale by binary factors.</li>
+            <li><span class="bullet">✓</span> <strong>2×:</strong> 128 → 256 &bull; <strong>4×:</strong> 128 → 512</li>
+            <li><span class="bullet">✓</span> <strong>8×:</strong> 128 → 1024 (Recommended HD standard)</li>
+            <li><span class="bullet">✓</span> <strong>16×:</strong> 128 → 2048 (Maximum safe limit)</li>
+          </ul>
+        </div>
+
+        <div class="rule-card">
+          <div class="rule-header">
+            <span class="rule-tag">Aspect Ratio &amp; Asset Types</span>
+          </div>
+          <h3>Preservation &amp; UV Mapping</h3>
+          <p>
+            Maintain original aspect ratios to avoid distorted decals or stretched buildings:
+          </p>
+          <ul class="rule-list">
+            <li><span class="bullet">✓</span> <strong>Square (1:1):</strong> 128×128 → 512×512 or 1024×1024.</li>
+            <li><span class="bullet">✓</span> <strong>Rectangular (2:1):</strong> 256×128 → 1024×512 or 2048×1024.</li>
+            <li><span class="bullet">✓</span> <strong>3D World &amp; Vehicles (3D_OBJECT__, 3D_STAGE__):</strong> Full upscaling up to 2048×2048 via normalized UV coordinates (0.0f - 1.0f).</li>
+            <li><span class="bullet">✓</span> <strong>2D HUD &amp; Menus (2D_SPRITE__, 2D_UI__):</strong> Up to 2× or 4× scaling supported. Check screen-space alignment.</li>
+          </ul>
+        </div>
+
+        <div class="rule-card">
+          <div class="rule-header">
+            <span class="rule-tag tag-critical">Naming Convention</span>
+          </div>
+          <h3>Deterministic File Naming</h3>
+          <p>
+            Never rename extracted texture files. The mod uses deterministic hash and offset lookups:
+          </p>
+          <code style="word-break: break-all; font-size: 0.82rem; display: block; margin: 10px 0;">
+            {Category}__{ArchiveName}__{ChunkIndex:04d}__GBIX_{Hex}__FMT_{Format}_{Width}x{Height}__HASH_{CRC32}.png
+          </code>
+          <p>
+            You may save as <code>.png</code>, <code>.jpg</code>, or <code>.jpeg</code>. The mod dynamically picks the file with the most recent timestamp.
+          </p>
+        </div>
+      </div>
+
+      <div style="margin-top: 36px;">
+        <h3 style="font-size: 1.35rem; margin-bottom: 16px; color: #ffffff;">Hard Engine Limits &amp; VRAM Budget</h3>
+        <div class="matrix-table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Constraint</th>
+                <th>Limit</th>
+                <th>Technical Consequence of Exceeding</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Max Texture Dimension</strong></td>
+                <td><code>2048 × 2048</code></td>
+                <td>Direct3D 9 texture allocation fails on resolutions ≥ 4096, triggering a fallback to native low-res textures.</td>
+              </tr>
+              <tr>
+                <td><strong>Max VRAM per Texture</strong></td>
+                <td><code>16 MB (2048 × 2048 32-bit ARGB)</code></td>
+                <td>Single textures above 16 MB cause GPU memory bus stalls.</td>
+              </tr>
+              <tr>
+                <td><strong>Process Memory Budget</strong></td>
+                <td><code>~1.8 GB (32-bit CrazyTaxi.exe)</code></td>
+                <td>Upscaling every texture to 2048 exhausts 32-bit address space. Recommended: 1024×1024 for cars/roads, 512×512 for secondary props.</td>
+              </tr>
+              <tr>
+                <td><strong>DirectX Sampler Filter</strong></td>
+                <td><code>8x Anisotropic Filtering</code></td>
+                <td>Handled automatically by the mod for all high-res replacements.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div style="margin-top: 36px;">
+        <details class="dev-accordion">
+          <summary>View Built-in Automated Safeguards (Dimension Snapper, Smart Alpha, Auto-Mipmaps)</summary>
+          <div class="dev-accordion-content">
+            <ul class="rule-list">
+              <li><span class="bullet">✓</span> <strong>HD Dimension Snapper &amp; Aspect Ratio Guardian:</strong> Automatically snaps and resamples non-power-of-two user images (e.g. 1280×1280) down to the nearest valid power-of-two (1024×1024) using high-quality bicubic filtering. Corrects distorted aspect ratios to fit the 3D model's UV layout.</li>
+              <li><span class="bullet">✓</span> <strong>Smart Format &amp; Alpha Restoration Engine (MS Paint &amp; JPG Friendly):</strong> When editors strip transparency and save 24-bit RGB, the engine automatically retrieves the original alpha channel from <code>originals/</code>. Pure magenta (<code>#FF00FF</code> / <code>RGB 255, 0, 255</code>) is also keyed to 100% transparent pixels.</li>
+              <li><span class="bullet">✓</span> <strong>Guaranteed Mipmap Pyramids &amp; 60 FPS:</strong> Generates hardware mip chains (<code>D3DUSAGE_AUTOGENMIPMAP</code>) or custom CPU 2×2 box-filter downsampling pyramids down to 1×1. Distant objects sample from tiny mip levels, preventing shimmering or aliasing at rock-solid 60 FPS.</li>
+              <li><span class="bullet">✓</span> <strong>Smart Binary Cache (cache/):</strong> Modified textures are compiled on startup into optimized <code>.cache</code> binaries. Subsequent game launches load custom textures in microseconds.</li>
+            </ul>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section id="downloads" class="section section-dark">
+    <div class="container text-center">
+      <p class="section-kicker">Releases &amp; Code</p>
+      <h2>Download Texture Mod Packages</h2>
+      <p class="section-intro center-block">
+        Download the standalone texture package, official PDF rules guide, or complete open-source C++ codebase.
+      </p>
+
+      <div class="download-grid">
+        <div class="download-card">
+          <div class="dl-badge">STANDALONE TEXTURE MOD</div>
+          <h3>Lyra's Texture Mod (v0.88)</h3>
+          <p>
+            Standalone texture modification package with pre-sorted texture directory, caching engine, and GDI progress screen. Requires Lyra's Framework Mod as base.
+          </p>
+          <div class="dl-meta-info">
+            <span>Package: ZIP Archive</span>
+            <span>Size: ~42.5 MB</span>
+          </div>
+          <a href="../LyrasTextureMod.zip" class="btn btn-primary btn-block" download>
+            Download Texture Mod (.zip)
+          </a>
+        </div>
+
+        <div class="download-card">
+          <div class="dl-badge">OFFICIAL DOCUMENTATION</div>
+          <h3>Texture Modding Guide (PDF)</h3>
+          <p>
+            Complete 4-page reference PDF detailing exact power-of-two dimensions, UV mappings, naming conventions, and Direct3D 9 architecture limits.
+          </p>
+          <div class="dl-meta-info">
+            <span>Format: Adobe PDF</span>
+            <span>Size: ~141 KB</span>
+          </div>
+          <a href="../Crazy%20Taxi%20Texture%20Modding%20Guide.pdf" class="btn btn-ghost btn-block" target="_blank" rel="noopener">
+            Download PDF Guide
+          </a>
+        </div>
+
+        <div class="download-card">
+          <div class="dl-badge">FOR DEVELOPERS &amp; MODDERS</div>
+          <h3>Open Source Code (Real-Time Edit)</h3>
+          <p>
+            Full C++ source code for real-time Direct3D 9 texture injection, GDI progress dialog, MinHook detours, and LTMC binary caching algorithms.
+          </p>
+          <div class="dl-meta-info">
+            <span>Package: 7z Compressed</span>
+            <span>Size: ~33.2 KB</span>
+          </div>
+          <a href="../TextureMod_SRC.7z" class="btn btn-ghost btn-block" download>
+            Download Source Code (.7z)
+          </a>
+        </div>
+      </div>
+
+      <div class="callout-box text-center center-block" style="max-width: 760px; margin-top: 40px;">
+        <p class="callout-text">
+          Need the foundational multi-mod loader? Download the complete <a href="../Lyras%20Framwork%20MOD.zip" download><strong>Lyra's Framework Mod v0.91</strong></a> or explore how to write custom plugins in the <a href="../Mod-Developer/index.html"><strong>Mod Developer Hub</strong></a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <footer id="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <img src="../assets/banner.webp" alt="Crazy Taxi Ultimate Mod Framework" class="footer-logo" />
+          <p>Crazy Taxi Real-Time Texture Modder (v0.88) &bull; Integrated in Lyra's Framework Mod (v0.91)</p>
+        </div>
+        <div class="footer-links">
+          <a href="../index.html">Framework Home</a>
+          <a href="#install">Installation</a>
+          <a href="#rules">Rules &amp; Limits</a>
+          <a href="#downloads">Downloads</a>
+          <a href="../Mod-Developer/index.html">Mod Developer</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>Created by <strong>Lyra</strong>. Licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a>.</p>
+        <p class="footer-disclaimer">Crazy Taxi is a registered trademark of SEGA Corporation. This non-commercial community project is not affiliated with or endorsed by SEGA.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../script.js"></script>
+</body>
+</html>

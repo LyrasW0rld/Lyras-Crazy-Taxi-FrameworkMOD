@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="google-site-verification" content="JlSjg06WPXkN_KYSbuymwhF-knzI8zecWYzzYxyAz18" />
+  <title>Crazy Taxi Mod Developer Guide &amp; Memory Offsets Reference — Build Your Mod (2026/2027)</title>
+  <meta name="description" content="Complete developer guide and reverse engineering reference for Crazy Taxi PC. Learn how to build standalone DLL submods for Lyra's Mod Framework, hook Direct3D 9 textures in real time, and explore all verified memory addresses, pointers, and offsets." />
+  <meta name="keywords" content="Crazy Taxi Modding Framework, Crazy Taxi Mod Developer Guide, Crazy Taxi reverse engineering, Crazy Taxi memory addresses, Crazy Taxi pointers offsets, Crazy Taxi Direct3D 9 hooks, Crazy Taxi submod development, Crazy Taxi Mod 2026, Crazy Taxi Mod 2027, Crazy Taxi C++ modding, Crazy Taxi Cheat Engine" />
+
+  <meta property="og:title" content="Crazy Taxi Mod Developer Guide &amp; Memory Offsets Reference" />
+  <meta property="og:description" content="Learn how to create custom C++ submods for Crazy Taxi and access the complete sorted reverse-engineered memory table." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="../assets/screenshot1.png" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Crazy Taxi Mod Developer Guide &amp; Memory Offsets" />
+  <meta name="twitter:description" content="Build standalone DLL plugins and explore complete Direct3D 9 and engine memory offsets for Crazy Taxi PC." />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Crazy Taxi Sub-Mod Development Guide and Reversed Memory Offsets Reference",
+    "description": "Comprehensive tutorial on building standalone DLL submods for Crazy Taxi on PC using Lyra's Mod Framework, accompanied by a complete sorted list of engine memory offsets and Direct3D 9 hooking routines.",
+    "author": {
+      "@type": "Person",
+      "name": "Lyra"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Lyras Crazy Taxi Framework"
+    },
+    "inLanguage": "en",
+    "version": "0.91"
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23f5c518'/%3E%3Cpath d='M7 16l6 6 12-12' stroke='%230a0a0f' stroke-width='4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+</head>
+<body>
+
+  <nav id="main-nav">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-brand" aria-label="Crazy Taxi Ultimate Mod Framework Home">
+        <img src="../assets/banner.webp" alt="Crazy Taxi Ultimate Mod Framework" class="nav-brand-img" />
+      </a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="../index.html">Framework Home</a></li>
+        <li><a href="#tutorial">Submod Guide</a></li>
+        <li><a href="#texture-internals">Texture Engine</a></li>
+        <li><a href="#offsets">Memory Offsets</a></li>
+        <li><a href="#downloads">Downloads</a></li>
+        <li><a href="../Texturemod/index.html">Texture Mod</a></li>
+        <li><a href="../offset.md" class="nav-cta" download>Download Offsets</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="subpage-hero">
+    <div class="container text-center">
+      <div class="breadcrumb-bar" style="justify-content: center;">
+        <a href="../index.html">Home</a>
+        <span>/</span>
+        <span class="current">Mod Developer Hub</span>
+      </div>
+
+      <div class="subpage-badge badge-dev">
+        <span>Developer Hub &bull; Crazy Taxi Modding Framework v0.91</span>
+      </div>
+
+      <h1>Build Your Own Crazy Taxi Mod<br /><span class="hero-highlight">Submod Development Guide &amp; Memory Reference</span></h1>
+      
+      <p class="section-intro center-block">
+        The definitive reverse engineering and plugin creation hub for <strong>Crazy Taxi 1 on PC (Steam, 2014 &amp; 2016 releases)</strong>. 
+        Build standalone C++ DLL plugins that integrate cleanly into Lyra's in-game Mod Menu (<kbd>Shift</kbd>+<kbd>F1</kbd>) using shared Dear ImGui styling, 
+        understand how the real-time Direct3D 9 texture injection engine works under the hood, and inspect the complete, sorted memory offset database.
+      </p>
+
+      <div class="hero-actions" style="margin-top: 32px; margin-bottom: 0;">
+        <a href="#tutorial" class="btn btn-primary">Start Submod Tutorial</a>
+        <a href="#offsets" class="btn btn-ghost">View Memory Offsets Table</a>
+        <a href="../offset.md" class="btn btn-ghost" download>Download Complete Offsets (.md)</a>
+        <a href="../TextureMod_SRC.7z" class="btn btn-ghost" download>Texture Mod Source (.7z)</a>
+      </div>
+    </div>
+  </header>
+
+  <section id="tutorial" class="section section-dark">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-kicker">Plugin Architecture &amp; C++ Guide</p>
+        <h2>1. How to Build Custom Sub-Mods (Beginner-Friendly Guide)</h2>
+        <p class="section-intro">
+          Lyra's Framework Mod is engineered with an open modular architecture. You can create your own DLL plugin in C++ and place it in the <code>mods/</code> directory. 
+          The framework detects it at runtime, registers it in the <kbd>Shift</kbd>+<kbd>F1</kbd> menu, and renders your custom UI widgets using a shared Dear ImGui context.
+        </p>
+      </div>
+
+      <div class="compat-summary-box" style="margin-top: 0; margin-bottom: 32px; width: 100%;">
+        <h3 class="compat-box-title">Loading Flow &amp; Shared Context</h3>
+        <p class="compat-box-desc" style="font-size: 1.02rem; line-height: 1.8;">
+          When <code>Crazy Taxi.exe</code> boots, <code>dinput8.dll</code> automatically scans the <code>mods/</code> directory and loads each compatible dynamic link library. 
+          <code>Framework_MOD.dll</code> inspects all loaded modules: if a DLL exports <code>GetSubModName()</code>, it is registered automatically as an interactive Sub-Mod!
+        </p>
+        <div class="compat-box-list" style="margin-bottom: 24px;">
+          <div class="compat-box-item">
+            <span class="compat-check">✓</span>
+            <div>
+              <strong>Shared ImGui &amp; Direct3D 9 Context:</strong> The framework passes its active <code>ImGuiContext*</code> and <code>IDirect3DDevice9*</code> pointer directly to your submod. Your mod renders buttons, sliders, and checkboxes with matching Sega Arcade pink/yellow styling.
+            </div>
+          </div>
+          <div class="compat-box-item">
+            <span class="compat-check">✓</span>
+            <div>
+              <strong>Zero Device Reset Conflicts:</strong> You never need to hook D3D9 <code>EndScene</code> or window procedures (WndProc) yourself. The host framework manages device resets, fullscreen transitions, and input interception cleanly.
+            </div>
+          </div>
+        </div>
+
+        <div class="code-window" style="margin: 0;">
+          <div class="code-window-header">
+            <span class="code-window-title">System Loading Hierarchy</span>
+          </div>
+          <pre><code>Crazy Taxi.exe
+  └── dinput8.dll (DirectInput8 Proxy Loader)
+        ├── mods/Framework_MOD/Framework_MOD.dll  (Host UI, D3D9 Hooks, Engine Guards)
+        └── mods/MyCustomMod/MyCustomMod.dll      (Your Sub-Mod)
+              ▲
+              │ Shares ImGuiContext* &amp; IDirect3DDevice9*
+              ▼
+        Framework Mod Menu (Shift+F1 Sidebar Tab)</code></pre>
+        </div>
+      </div>
+
+      <h3 style="font-size: 1.35rem; margin-top: 32px; margin-bottom: 16px; color: #ffffff;">Required Sub-Mod C ABI Exports</h3>
+      <div class="matrix-table-wrapper" style="margin-bottom: 32px;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Function Signature</th>
+              <th>Requirement</th>
+              <th>Purpose &amp; Operational Behavior</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>const char* GetSubModName()</code></td>
+              <td><span class="badge-status status-working">✓ Required</span></td>
+              <td>Identifies the DLL as a submod and sets the name displayed in the Shift+F1 sidebar menu.</td>
+            </tr>
+            <tr>
+              <td><code>const char* GetSubModAuthor()</code></td>
+              <td><span class="badge-status">Optional</span></td>
+              <td>Author name displayed in the submod header (default: "Community").</td>
+            </tr>
+            <tr>
+              <td><code>const char* GetSubModVersion()</code></td>
+              <td><span class="badge-status">Optional</span></td>
+              <td>Semantic version string (e.g. "1.0.0").</td>
+            </tr>
+            <tr>
+              <td><code>const char* GetSubModDescription()</code></td>
+              <td><span class="badge-status">Optional</span></td>
+              <td>Descriptive text rendered beneath the mod header in the UI.</td>
+            </tr>
+            <tr>
+              <td><code>bool IsSubModEnabled()</code></td>
+              <td><span class="badge-status status-working">✓ Required</span></td>
+              <td>Returns whether your mod's background hooks and logic are currently active.</td>
+            </tr>
+            <tr>
+              <td><code>void SetSubModEnabled(bool)</code></td>
+              <td><span class="badge-status status-working">✓ Required</span></td>
+              <td>Called when the user toggles the Enable/Disable switch in the menu.</td>
+            </tr>
+            <tr>
+              <td><code>void InitSubMod(void* ctx, IDirect3DDevice9* dev)</code></td>
+              <td><span class="badge-status status-working">✓ Required</span></td>
+              <td>Called once upon detection. Passes the host <code>ImGuiContext*</code> and Direct3D 9 device pointer.</td>
+            </tr>
+            <tr>
+              <td><code>void RenderSubModUI(void* ctx)</code></td>
+              <td><span class="badge-status status-working">✓ Required</span></td>
+              <td>Called every frame when your tab is active. Render your custom ImGui buttons, sliders, and checkboxes here!</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <details class="dev-accordion">
+        <summary>View Complete Starter Sub-Mod Source Code (my_mod.cpp — Turbo Taxi &amp; Tips)</summary>
+        <div class="dev-accordion-content">
+          <p>
+            This complete working submod adds a hotkey turbo boost on key <kbd>T</kbd>, an infinite fare tips option, and a 1-click vehicle orientation leveler.
+          </p>
+          <div class="code-window">
+            <div class="code-window-header">
+              <span class="code-window-title">my_mod.cpp</span>
+              <button class="download-pill-btn copy-code-btn" data-copy-target="starter-cpp-code">Copy Source Code</button>
+            </div>
+            <pre><code id="starter-cpp-code">#include &lt;windows.h&gt;
+#include &lt;d3d9.h&gt;
+#include "imgui.h"
+
+constexpr uintptr_t ADDR_GAME_FLAG   = 0x016A2CFC;
+constexpr uintptr_t ADDR_PLAYER_X    = 0x01661574;
+constexpr uintptr_t ADDR_PLAYER_Y    = 0x01661578;
+constexpr uintptr_t ADDR_PLAYER_Z    = 0x0166157C;
+constexpr uintptr_t ADDR_PLAYER_SPD  = 0x0166158C;
+constexpr uintptr_t ADDR_TOTAL_MONEY = 0x016F10E0;
+
+static bool  g_bEnabled     = true;
+static float g_BoostPower   = 1.5f;
+static bool  g_InfiniteTips = false;
+
+static DWORD WINAPI ModWorkerThread(LPVOID)
+{
+    while (true)
+    {
+        Sleep(16);
+
+        if (!g_bEnabled)
+            continue;
+
+        int* pGameFlag = (int*)ADDR_GAME_FLAG;
+        if (!pGameFlag || *pGameFlag != 3)
+            continue;
+
+        if ((GetAsyncKeyState('T') &amp; 0x8000) != 0)
+        {
+            float* pSpeed = (float*)ADDR_PLAYER_SPD;
+            if (pSpeed &amp;&amp; *pSpeed &lt; 140.0f)
+            {
+                *pSpeed *= g_BoostPower;
+            }
+        }
+
+        if (g_InfiniteTips)
+        {
+            int* pMoney = (int*)ADDR_TOTAL_MONEY;
+            if (pMoney &amp;&amp; *pMoney &lt; 500000)
+            {
+                *pMoney = 500000;
+            }
+        }
+    }
+    return 0;
+}
+
+extern "C" __declspec(dllexport) const char* GetSubModName()
+{
+    return "Turbo Taxi &amp; Tips";
+}
+
+extern "C" __declspec(dllexport) const char* GetSubModAuthor()
+{
+    return "Community Modder";
+}
+
+extern "C" __declspec(dllexport) const char* GetSubModVersion()
+{
+    return "1.0.0";
+}
+
+extern "C" __declspec(dllexport) const char* GetSubModDescription()
+{
+    return "Adds hotkey turbo boost and automated fare tip locking.";
+}
+
+extern "C" __declspec(dllexport) bool IsSubModEnabled()
+{
+    return g_bEnabled;
+}
+
+extern "C" __declspec(dllexport) void SetSubModEnabled(bool enabled)
+{
+    g_bEnabled = enabled;
+}
+
+extern "C" __declspec(dllexport) void InitSubMod(void* pImGuiContext, IDirect3DDevice9* pDevice)
+{
+    if (pImGuiContext)
+    {
+        ImGui::SetCurrentContext((ImGuiContext*)pImGuiContext);
+    }
+    CreateThread(NULL, 0, ModWorkerThread, NULL, 0, NULL);
+}
+
+extern "C" __declspec(dllexport) void RenderSubModUI(void* pImGuiContext)
+{
+    if (pImGuiContext &amp;&amp; ImGui::GetCurrentContext() != pImGuiContext)
+    {
+        ImGui::SetCurrentContext((ImGuiContext*)pImGuiContext);
+    }
+
+    ImGui::TextColored(ImVec4(1.0f, 0.4f, 0.7f, 1.0f), "Turbo Taxi Settings");
+    ImGui::Separator();
+    ImGui::Spacing();
+
+    ImGui::Checkbox("Enable Features", &amp;g_bEnabled);
+    ImGui::Spacing();
+
+    if (g_bEnabled)
+    {
+        ImGui::Text("Hold 'T' while driving to activate Turbo Boost.");
+        ImGui::SliderFloat("Boost Multiplier", &amp;g_BoostPower, 1.05f, 2.50f, "%.2fx");
+        ImGui::Spacing();
+
+        ImGui::Checkbox("Lock Money to $5,000.00", &amp;g_InfiniteTips);
+        ImGui::Spacing();
+
+        if (ImGui::Button("Instant Fix Taxi Orientation"))
+        {
+            int16_t* pPitch = (int16_t*)0x0166147A;
+            int16_t* pRoll  = (int16_t*)0x0166147C;
+            if (pPitch) *pPitch = 0;
+            if (pRoll)  *pRoll  = 0;
+        }
+    }
+}
+
+BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
+{
+    return TRUE;
+}</code></pre>
+          </div>
+        </div>
+      </details>
+
+      <details class="dev-accordion">
+        <summary>View CMake Build Configuration (CMakeLists.txt &amp; Build Commands)</summary>
+        <div class="dev-accordion-content">
+          <p>
+            Compile in 32-bit x86 using CMake and Visual Studio Developer Command Prompt:
+          </p>
+          <div class="code-window">
+            <pre><code>cmake_minimum_required(VERSION 3.20)
+project(TurboTaxiMod LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/imgui)
+
+add_library(TurboTaxiMod SHARED
+    my_mod.cpp
+    deps/imgui/imgui.cpp
+    deps/imgui/imgui_draw.cpp
+    deps/imgui/imgui_tables.cpp
+    deps/imgui/imgui_widgets.cpp
+)
+
+target_link_libraries(TurboTaxiMod PRIVATE d3d9)
+
+# Build Commands (Win32 x86):
+# call "C:\Program Files\Microsoft Visual Studio\18\Community\VC\Auxiliary\Build\vcvars32.bat"
+# cmake -B build -A Win32
+# cmake --build build --config Release</code></pre>
+          </div>
+        </div>
+      </details>
+
+      <details class="dev-accordion">
+        <summary>View Best Practices &amp; Crash Prevention Guidelines</summary>
+        <div class="dev-accordion-content">
+          <ul class="rule-list">
+            <li><span class="bullet">✓</span> <strong>Do NOT hook D3D9 EndScene or Reset again:</strong> <code>Framework_MOD.dll</code> already manages EndScene and device resets. Hooking it a second time introduces race conditions and device lost crashes. Always render UI via <code>RenderSubModUI</code>.</li>
+            <li><span class="bullet">✓</span> <strong>Do NOT install a second WndProc hook:</strong> <code>Framework_MOD.dll</code> intercepts input for Dear ImGui. Installing another window procedure hook breaks menu toggling.</li>
+            <li><span class="bullet">✓</span> <strong>Always check in-game state:</strong> Verify <code>*(int*)0x016A2CFC == 3</code> before writing coordinates. Memory structures are unallocated during menus and intro videos.</li>
+            <li><span class="bullet">✓</span> <strong>Use VirtualProtect for .rdata:</strong> If changing engine constants (e.g. Far-Z or Gravity), invoke <code>VirtualProtect</code> with <code>PAGE_EXECUTE_READWRITE</code> first.</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section id="texture-internals" class="section">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-kicker">Direct3D 9 Reverse Engineering</p>
+        <h2>2. How Texture Manipulation Works Under the Hood</h2>
+        <p class="section-intro">
+          Understanding the native Sega Dreamcast emulation layer and DirectX 9 memory pipeline allows modders to inject custom assets seamlessly without frame drops.
+        </p>
+      </div>
+
+      <div class="compat-summary-box" style="margin-top: 0; margin-bottom: 24px; width: 100%;">
+        <h3 class="compat-box-title">Direct3D 9 Texture Injection Pipeline</h3>
+        <p class="compat-box-desc" style="font-size: 1.02rem; line-height: 1.8;">
+          Crazy Taxi does not store textures as loose files on disk. Instead, the engine maps all textures into an internal <strong>Master Texture Descriptor Array at 0x01B09938</strong> containing 8,192 slots of 24 bytes each.
+        </p>
+        <div class="compat-box-list" style="margin-bottom: 24px;">
+          <div class="compat-box-item">
+            <span class="compat-check">✓</span>
+            <div>
+              <strong>Hot-Swapping pD3DTexture:</strong> At offset <code>+0x00</code> lies <code>pTexObj</code>. Following this pointer to <code>+0x0C</code> yields the active <code>IDirect3DTexture9*</code> COM pointer. Swapping this pointer instantly injects high-resolution textures into GPU VRAM without stutter or re-loading stages!
+            </div>
+          </div>
+          <div class="compat-box-item">
+            <span class="compat-check">✓</span>
+            <div>
+              <strong>GBIX Hash Lookups:</strong> Sega maps VRAM to virtual addresses from <code>0x0CB40000</code> to <code>0x0F000000</code>. The relative offset <code>pData - 0x0CB40000</code> matches the texture's GBIX identifier, providing O(1) hash map retrieval.
+            </div>
+          </div>
+        </div>
+
+        <div class="code-window" style="margin: 0;">
+          <div class="code-window-header">
+            <span class="code-window-title">Hook Points &amp; Virtual VRAM</span>
+          </div>
+          <pre><code>0x00492230 -> LoadModelTexture (Vehicles, characters in texDC0)
+0x0048B7A0 -> LoadStageTexture (Stage geometry in texDC1/2/3)
+0x00481200 -> SegaRenderer::SetTexture (DirectX 9 binding point)
+0x005342B4 -> IAT: D3DXCreateTextureFromFileInMemoryEx (UI / JPK)
+
+Master Table: 0x01B09938 + (slotId * 24)
+pTexObj:      MasterEntry + 0x00
+pD3DTexture:  *(IDirect3DTexture9**)(pTexObj + 0x0C)</code></pre>
+        </div>
+      </div>
+
+      <details class="dev-accordion">
+        <summary>View Technical Deep Dive: Master Texture Descriptor Array Layout (0x01B09938)</summary>
+        <div class="dev-accordion-content">
+          <p>
+            The master table has 8,192 (0x2000) entries. Each entry is 24 bytes (0x18):
+          </p>
+          <div class="code-window">
+            <pre><code>+0x00: void*    pTexObj   // Pointer to Sega Texture Object Wrapper
++0x04: uint32_t flags     // Engine render status flags
++0x08: float    width     // Original texture width (IEEE 754)
++0x0C: float    height    // Original texture height (IEEE 754)
++0x10: uint32_t pData     // Virtual VRAM pointer (0x0CB40000 + relOffset)
++0x14: uint32_t reserved  // Status flags
+
+Substructure pTexObj (+0x00):
++0x00: uint32_t             refCount
++0x0C: IDirect3DTexture9*   pD3DTexture  // Active hardware texture!</code></pre>
+          </div>
+        </div>
+      </details>
+
+      <details class="dev-accordion">
+        <summary>View How to Hook Native Functions in C++ (MinHook Trampolines &amp; Memory Safety)</summary>
+        <div class="dev-accordion-content">
+          <p>
+            To intercept engine routines without conflicts, use MinHook inside your submod thread. Always restore hooks cleanly on module unload:
+          </p>
+          <div class="code-window">
+            <div class="code-window-header">
+              <span class="code-window-title">hook_example.cpp</span>
+              <button class="download-pill-btn copy-code-btn" data-copy-target="hook-cpp-code">Copy Hook Code</button>
+            </div>
+            <pre><code id="hook-cpp-code">#include &lt;windows.h&gt;
+#include "MinHook.h"
+
+// Typedef for SegaRenderer::SetTexture (0x00481200)
+typedef int (__thiscall* fnSetTexture)(void* pRenderer, int stage, void* pTexObj);
+static fnSetTexture pOriginalSetTexture = nullptr;
+
+static int __fastcall Hooked_SetTexture(void* pRenderer, void* edx, int stage, void* pTexObj)
+{
+    // Custom mod logic: inspect or swap texture descriptors prior to rendering
+    return pOriginalSetTexture(pRenderer, stage, pTexObj);
+}
+
+void InstallHooks()
+{
+    if (MH_Initialize() == MH_OK)
+    {
+        MH_CreateHook((LPVOID)0x00481200, (LPVOID)&amp;Hooked_SetTexture, (LPVOID*)&amp;pOriginalSetTexture);
+        MH_EnableHook((LPVOID)0x00481200);
+    }
+}
+
+void RemoveHooks()
+{
+    MH_DisableHook((LPVOID)0x00481200);
+    MH_Uninitialize();
+}</code></pre>
+          </div>
+        </div>
+      </details>
+
+      <details class="dev-accordion">
+        <summary>View Reading &amp; Writing Engine State in C++ &amp; Cheat Engine (Pointers &amp; Offsets)</summary>
+        <div class="dev-accordion-content">
+          <p>
+            Example patterns for reading player position, vehicle velocity, and dereferencing multi-level pointer chains safely:
+          </p>
+          <div class="code-window">
+            <div class="code-window-header">
+              <span class="code-window-title">memory_access.cpp</span>
+              <button class="download-pill-btn copy-code-btn" data-copy-target="mem-cpp-code">Copy Memory Code</button>
+            </div>
+            <pre><code id="mem-cpp-code">// 1. Guard check: Only execute during active gameplay (State == 3)
+int* pGameState = (int*)0x016A2CFC;
+if (!pGameState || *pGameState != 3) return;
+
+// 2. Read direct player position and speed
+float posX = *(float*)0x01661574;
+float posY = *(float*)0x01661578; // Important: -Y is Sky / Ascend, +Y is Ground / Descend
+float posZ = *(float*)0x0166157C;
+float speed = *(float*)0x0166158C; // Current speed in game units
+
+// 3. Multi-level pointer resolution for Sega Direct3D 9 Device
+uintptr_t* ppRenderer = (uintptr_t*)0x01B7AC00;
+if (ppRenderer &amp;&amp; *ppRenderer)
+{
+    IDirect3DDevice9* pDevice = *(IDirect3DDevice9**)(*ppRenderer + 0x18);
+    if (pDevice)
+    {
+        // Safe access to native DirectX 9 device
+    }
+}</code></pre>
+          </div>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section id="offsets" class="section section-dark">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-kicker">Reversed Memory Database</p>
+        <h2>3. Complete Memory Offsets, Addresses &amp; Pointers</h2>
+        <p class="section-intro">
+          Full, verified technical documentation from <code>offset.md</code> for <code>Crazy Taxi.exe</code> (Win32 x86, Base Address: <code>0x00400000</code>). 
+          Click any category button below to filter, or use the live search input.
+        </p>
+      </div>
+
+      <div class="offset-filter-bar">
+        <button class="offset-filter-btn active" data-cat="all">All Offsets (70+)</button>
+        <button class="offset-filter-btn" data-cat="global">1. Global &amp; Pointers</button>
+        <button class="offset-filter-btn" data-cat="tex-master">2. Texture Master Table</button>
+        <button class="offset-filter-btn" data-cat="hooks">3. Function Hooks</button>
+        <button class="offset-filter-btn" data-cat="containers">4. Sega Containers (26 Tables)</button>
+        <button class="offset-filter-btn" data-cat="state">5. Game State &amp; Session</button>
+        <button class="offset-filter-btn" data-cat="player">6. Player Taxi &amp; Physics</button>
+        <button class="offset-filter-btn" data-cat="rotation">7. Vehicle Rotation &amp; Matrix</button>
+        <button class="offset-filter-btn" data-cat="camera">8. Camera System &amp; Freecam</button>
+        <button class="offset-filter-btn" data-cat="input">9. Input &amp; Controls</button>
+        <button class="offset-filter-btn" data-cat="economy">10. Economy &amp; Tips</button>
+        <button class="offset-filter-btn" data-cat="cheats">11. Sega Developer Cheats</button>
+        <button class="offset-filter-btn" data-cat="streaming">12. Sectors &amp; Streaming</button>
+        <button class="offset-filter-btn" data-cat="collision">13. Collision &amp; Simulation</button>
+        <button class="offset-filter-btn" data-cat="guards">14. D3D9 Crash Guards</button>
+        <button class="offset-filter-btn" data-cat="restoration">15. Dreamcast Restorations</button>
+      </div>
+
+      <div class="table-search-bar">
+        <div class="search-input-wrapper">
+          <input type="text" id="offset-search-input" placeholder="Type here to search by name, memory address (e.g. 0x016A2CFC), or description..." />
+        </div>
+        <a href="../offset.md" class="download-pill-btn" download>
+          <span>Download Complete Offsets (.md)</span>
+        </a>
+      </div>
+
+      <div class="offsets-table-container">
+        <table class="offsets-table" id="offsets-table">
+          <thead>
+            <tr>
+              <th class="col-offset-id">Identifier / Symbol</th>
+              <th class="col-offset-addr">Memory Address</th>
+              <th class="col-offset-type">Data Type</th>
+              <th class="col-offset-desc">Operational Notes &amp; Subsystem Description</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr class="category-header-row" data-cat-header="global" style="background: rgba(245, 197, 24, 0.08);">
+              <td colspan="4" style="font-weight: 800; color: var(--accent); letter-spacing: 0.05em; text-transform: uppercase;">
+                1. Global Engine Addresses &amp; Pointer Chains
+              </td>
+            </tr>
+            <tr data-offset-cat="global">
+              <td class="col-offset-id"><code>IMAGE_BASE</code></td>
+              <td class="col-offset-addr"><code>0x00400000</code></td>
+              <td class="col-offset-type">ImageBase</td>
+              <td class="col-offset-desc">Base load address of <code>Crazy Taxi.exe</code> in 32-bit virtual memory.</td>
+            </tr>
+            <tr data-offset-cat="global">
+              <td class="col-offset-id"><code>ADDR_MASTER_TEX_TABLE</code></td>
+              <td class="col-offset-addr"><code>0x01B09938</code></td>
+              <td class="col-offset-type">MasterEntry[8192]</td>
+              <td class="col-offset-desc">Global Master Texture Descriptor Array. Manages all active runtime D3D9 texture descriptors (models + stage).</td>
+            </tr>
+            <tr data-offset-cat="global">
+              <td class="col-offset-id"><code>ADDR_ACTIVE_STAGE_TABLE</code></td>
+              <td class="col-offset-addr"><code>0x01B7A838</code></td>
+              <td class="col-offset-type">uint32_t* (Pointer)</td>
+              <td class="col-offset-desc">Points to static Sega table of current stage (<code>0x01364620</code> for texDC1, <code>0x01365B30</code> for texDC2, <code>0x01366F80</code> for texDC3).</td>
+            </tr>
+            <tr data-offset-cat="global">
+              <td class="col-offset-id"><code>ADDR_TEX_BASE_IDX</code></td>
+              <td class="col-offset-addr"><code>0x01B7A6E0</code></td>
+              <td class="col-offset-type">uint32_t (Index)</td>
+              <td class="col-offset-desc">Base index in Master Table for model textures (<code>texDC0</code>). Formula: <code>masterId = tableIndex + baseIdx</code>.</td>
+            </tr>
+            <tr data-offset-cat="global">
+              <td class="col-offset-id"><code>ADDR_SEGA_RENDERER</code></td>
+              <td class="col-offset-addr"><code>0x01B7AC00</code></td>
+              <td class="col-offset-type">uintptr_t* (Pointer)</td>
+              <td class="col-offset-desc">Points to central Sega Renderer structure. Offset <code>+0x18</code> holds the primary <code>IDirect3DDevice9*</code> COM pointer.</td>
+            </tr>
+            <tr data-offset-cat="global">
+              <td class="col-offset-id"><code>ADDR_DEVICE_CONTAINER</code></td>
+              <td class="col-offset-addr"><code>0x01B7AB04</code></td>
+              <td class="col-offset-type">uintptr_t* (Pointer)</td>
+              <td class="col-offset-desc">D3D Container fallback pointer. Offset <code>+0x08</code> provides alternative <code>IDirect3DDevice9*</code> pointer.</td>
+            </tr>
+            <tr data-offset-cat="global">
+              <td class="col-offset-id"><code>IAT_D3DXCreateTexture</code></td>
+              <td class="col-offset-addr"><code>0x005342B4</code></td>
+              <td class="col-offset-type">void** (IAT Entry)</td>
+              <td class="col-offset-desc">Import Address Table entry for <code>d3dx9_43.dll!D3DXCreateTextureFromFileInMemoryEx</code>. Patched for UI and JPK textures.</td>
+            </tr>
+
+            <tr class="category-header-row" data-cat-header="tex-master" style="background: rgba(245, 197, 24, 0.08);">
+              <td colspan="4" style="font-weight: 800; color: var(--accent); letter-spacing: 0.05em; text-transform: uppercase;">
+                2. Master Texture Descriptor Array Layout (0x01B09938)
+              </td>
+            </tr>
+            <tr data-offset-cat="tex-master">
+              <td class="col-offset-id"><code>MasterEntry->pTexObj</code></td>
+              <td class="col-offset-addr"><code>Offset +0x00</code></td>
+              <td class="col-offset-type">void* (4 Bytes)</td>
+              <td class="col-offset-desc">Pointer to internal Sega Texture Object Wrapper. If <code>nullptr</code>, slot is unallocated.</td>
+            </tr>
+            <tr data-offset-cat="tex-master">
+              <td class="col-offset-id"><code>MasterEntry->flags</code></td>
+              <td class="col-offset-addr"><code>Offset +0x04</code></td>
+              <td class="col-offset-type">uint32_t</td>
+              <td class="col-offset-desc">Internal engine rendering status flags and format metadata.</td>
+            </tr>
+            <tr data-offset-cat="tex-master">
+              <td class="col-offset-id"><code>MasterEntry->width</code></td>
+              <td class="col-offset-addr"><code>Offset +0x08</code></td>
+              <td class="col-offset-type">float (IEEE 754)</td>
+              <td class="col-offset-desc">Original texture pixel width (e.g. 128.0f, 256.0f).</td>
+            </tr>
+            <tr data-offset-cat="tex-master">
+              <td class="col-offset-id"><code>MasterEntry->height</code></td>
+              <td class="col-offset-addr"><code>Offset +0x0C</code></td>
+              <td class="col-offset-type">float (IEEE 754)</td>
+              <td class="col-offset-desc">Original texture pixel height (e.g. 128.0f, 256.0f).</td>
+            </tr>
+            <tr data-offset-cat="tex-master">
+              <td class="col-offset-id"><code>MasterEntry->pData</code></td>
+              <td class="col-offset-addr"><code>Offset +0x10</code></td>
+              <td class="col-offset-type">uint32_t</td>
+              <td class="col-offset-desc">VRAM memory pointer into Sega pool (<code>0x0CB40000 + relOffset</code>).</td>
+            </tr>
+            <tr data-offset-cat="tex-master">
+              <td class="col-offset-id"><code>pTexObj->pD3DTexture</code></td>
+              <td class="col-offset-addr"><code>pTexObj +0x0C</code></td>
+              <td class="col-offset-type">IDirect3DTexture9*</td>
+              <td class="col-offset-desc"><strong>Direct Modding Point:</strong> Active Direct3D 9 texture pointer passed to <code>SetTexture(0, ...)</code>. Swapping this pointer replaces textures live!</td>
+            </tr>
+
+            <tr class="category-header-row" data-cat-header="hooks" style="background: rgba(245, 197, 24, 0.08);">
+              <td colspan="4" style="font-weight: 800; color: var(--accent); letter-spacing: 0.05em; text-transform: uppercase;">
+                3. Function Hooks &amp; Native Code Routines
+              </td>
+            </tr>
+            <tr data-offset-cat="hooks">
+              <td class="col-offset-id"><code>LoadModelTexture</code></td>
+              <td class="col-offset-addr"><code>0x00492230</code></td>
+              <td class="col-offset-type">__cdecl / Custom</td>
+              <td class="col-offset-desc">Stack: <code>tableIndex</code>; Reg: <code>edx = tablePtr</code>. Invoked when 3D vehicles, drivers, and props from <code>texDC0.bin</code> are loaded into RAM.</td>
+            </tr>
+            <tr data-offset-cat="hooks">
+              <td class="col-offset-id"><code>LoadStageTexture</code></td>
+              <td class="col-offset-addr"><code>0x0048B7A0</code></td>
+              <td class="col-offset-type">Custom Regs</td>
+              <td class="col-offset-desc">Reg: <code>eax = entryPtr</code>, <code>ecx = id</code>. Invoked when 3D map and world geometry textures are loaded.</td>
+            </tr>
+            <tr data-offset-cat="hooks">
+              <td class="col-offset-id"><code>SegaRenderer::SetTexture</code></td>
+              <td class="col-offset-addr"><code>0x00481200</code></td>
+              <td class="col-offset-type">Custom Regs</td>
+              <td class="col-offset-desc">Reg: <code>eax = pTexObj</code>. Executed immediately before Direct3D 9 <code>SetTexture(0, pTexture)</code>. Used for live pointer swapping.</td>
+            </tr>
+            <tr data-offset-cat="hooks">
+              <td class="col-offset-id"><code>Sega Untwiddle Decoder</code></td>
+              <td class="col-offset-addr"><code>0x0048CBD0</code></td>
+              <td class="col-offset-type">Native Routine</td>
+              <td class="col-offset-desc">Decodes Sega Dreamcast/Naomi PowerVR2 Morton bit-interleaving (Y on even bits, X on odd bits).</td>
+            </tr>
+            <tr data-offset-cat="hooks">
+              <td class="col-offset-id"><code>Sega VQ Decoder</code></td>
+              <td class="col-offset-addr"><code>0x0048ED08</code></td>
+              <td class="col-offset-type">Native Routine</td>
+              <td class="col-offset-desc">Decodes Vector-Quantized texture chunks (2048-byte codebook + 2x2 texel blocks).</td>
+            </tr>
+
+            <tr class="category-header-row" data-cat-header="containers" style="background: rgba(245, 197, 24, 0.08);">
+              <td colspan="4" style="font-weight: 800; color: var(--accent); letter-spacing: 0.05em; text-transform: uppercase;">
+                4. All 26 Sega Container Tables in EXE (.data / .rdata)
+              </td>
+            </tr>
+            <tr data-offset-cat="containers">
+              <td class="col-offset-id"><code>texDC0</code></td>
+              <td class="col-offset-addr"><code>0x01361BA0</code></td>
+              <td class="col-offset-type">0x5436974C (3D)</td>
+              <td class="col-offset-desc"><strong>Primary 3D Vehicles:</strong> Axel, B.D. Joe, Gena, Gus cabs &amp; bikes, NPC traffic cars, pedestrians, and common props.</td>
+            </tr>
+            <tr data-offset-cat="containers">
+              <td class="col-offset-id"><code>texDC1</code></td>
+              <td class="col-offset-addr"><code>0x01364620</code></td>
+              <td class="col-offset-type">0x2331A7DA (3D)</td>
+              <td class="col-offset-desc"><strong>Stage 1 (Arcade / San Francisco):</strong> World roadways, buildings, coastal terrain, bridges, and static scenery.</td>
+            </tr>
+            <tr data-offset-cat="containers">
+              <td class="col-offset-id"><code>texDC2</code></td>
+              <td class="col-offset-addr"><code>0x01365B30</code></td>
+              <td class="col-offset-type">0xBA38F660 (3D)</td>
+              <td class="col-offset-desc"><strong>Stage 2 (Original / Around the Bay):</strong> City terrain, skyscrapers, highways, and stage textures.</td>
+            </tr>
+            <tr data-offset-cat="containers">
+              <td class="col-offset-id"><code>texDC3</code></td>
+              <td class="col-offset-addr"><code>0x01366F80</code></td>
+              <td class="col-offset-type">0xCD3FC6F6 (3D)</td>
+              <td class="col-offset-desc"><strong>Crazy Box:</strong> Mini-game arenas, bowling pins, ski jumps, ramps, and challenge geometry.</td>
+            </tr>
+            <tr data-offset-cat="containers">
+              <td class="col-offset-id"><code>sprDC0</code></td>
+              <td class="col-offset-addr"><code>0x0135EFD0</code></td>
+              <td class="col-offset-type">0x8E8E5F62 (2D)</td>
+              <td class="col-offset-desc">HUD base sprites, tachometer, speedometer, and gear shift indicators.</td>
+            </tr>
+            <tr data-offset-cat="containers">
+              <td class="col-offset-id"><code>sprGAME</code></td>
+              <td class="col-offset-addr"><code>0x0135FAF0</code></td>
+              <td class="col-offset-type">0xFC26A882 (2D)</td>
+              <td class="col-offset-desc">In-game HUD navigation arrows, fare money counter, high scores, combo indicators.</td>
+            </tr>
+            <tr data-offset-cat="containers">
+              <td class="col-offset-id"><code>sprBOX</code></td>
+              <td class="col-offset-addr"><code>0x01360960</code></td>
+              <td class="col-offset-type">0x65DF85B6 (2D)</td>
+              <td class="col-offset-desc">UI dialogue frames, Crazy Box challenge selection boxes and rank icons.</td>
+            </tr>
+            <tr data-offset-cat="containers">
+              <td class="col-offset-id"><code>sprMENU</code></td>
+              <td class="col-offset-addr"><code>0x01360B00</code></td>
+              <td class="col-offset-type">0xA208A39D (2D)</td>
+              <td class="col-offset-desc">Frontend title sequence, driver selection portraits, and settings icons.</td>
+            </tr>
+            <tr data-offset-cat="containers">
+              <td class="col-offset-id"><code>sprCOMM</code></td>
+              <td class="col-offset-addr"><code>0x013637E0</code></td>
+              <td class="col-offset-type">0x77019AED (2D)</td>
+              <td class="col-offset-desc">Common UI interface elements, buttons, dialogue borders, and prompt icons.</td>
+            </tr>
+            <tr data-offset-cat="containers">
+              <td class="col-offset-id"><code>sprPAL</code></td>
+              <td class="col-offset-addr"><code>0x01363CA0</code></td>
+              <td class="col-offset-type">0xFE240B5B (2D)</td>
+              <td class="col-offset-desc">European PAL release refresh rate graphics and localization assets.</td>
+            </tr>
+            <tr data-offset-cat="containers">
+              <td class="col-offset-id"><code>sprCENG / CJAP / CFRE / CGER / CSPA</code></td>
+              <td class="col-offset-addr"><code>0x0135F790..0910</code></td>
+              <td class="col-offset-type">Localized Credits</td>
+              <td class="col-offset-desc">English, Japanese, French, German, and Spanish credits roll and publisher copyright typography.</td>
+            </tr>
+            <tr data-offset-cat="containers">
+              <td class="col-offset-id"><code>sprMENG / MJAP / MFRE / MGER / MSPA</code></td>
+              <td class="col-offset-addr"><code>0x01361480..3790</code></td>
+              <td class="col-offset-type">Localized Menus</td>
+              <td class="col-offset-desc">Language-specific frontend menu text, mode select labels, and control graphic options.</td>
+            </tr>
+            <tr data-offset-cat="containers">
+              <td class="col-offset-id"><code>sprPENG / PFRE / PGER / PSPA</code></td>
+              <td class="col-offset-addr"><code>0x01363F00..4500</code></td>
+              <td class="col-offset-type">Localized Pause</td>
+              <td class="col-offset-desc">In-game pause screen menus, restart/quit prompts, and tutorial instruction overlays.</td>
+            </tr>
+            <tr data-offset-cat="containers">
+              <td class="col-offset-id"><code>sprGENG / GJAP</code></td>
+              <td class="col-offset-addr"><code>0x01364560..45C0</code></td>
+              <td class="col-offset-type">Game Over &amp; Dest</td>
+              <td class="col-offset-desc">Destination landmark billboards, passenger popups, and Game Over banners.</td>
+            </tr>
+
+            <tr class="category-header-row" data-cat-header="state" style="background: rgba(245, 197, 24, 0.08);">
+              <td colspan="4" style="font-weight: 800; color: var(--accent); letter-spacing: 0.05em; text-transform: uppercase;">
+                5. Game State &amp; Session Management
+              </td>
+            </tr>
+            <tr data-offset-cat="state">
+              <td class="col-offset-id"><code>ADDR_GAME_FLAG</code></td>
+              <td class="col-offset-addr"><code>0x016A2CFC</code></td>
+              <td class="col-offset-type">int32_t</td>
+              <td class="col-offset-desc"><strong>Master Game State:</strong> <code>3</code> = Active driving round; <code>1</code> = 3D city in RAM; <code>0</code> = Menus / Attract AI. Always check before writing physics!</td>
+            </tr>
+            <tr data-offset-cat="state">
+              <td class="col-offset-id"><code>ADDR_GAME_MODE</code></td>
+              <td class="col-offset-addr"><code>0x016A2818</code></td>
+              <td class="col-offset-type">int32_t</td>
+              <td class="col-offset-desc"><strong>Game Mode:</strong> <code>4</code> = Arcade Mode; <code>14 (0x0E)</code> = Original City / Crazy Box.</td>
+            </tr>
+            <tr data-offset-cat="state">
+              <td class="col-offset-id"><code>ADDR_GAME_TIMER</code></td>
+              <td class="col-offset-addr"><code>0x016A41A4</code></td>
+              <td class="col-offset-type">uint32_t</td>
+              <td class="col-offset-desc"><strong>Round Timer:</strong> Measured in 60Hz frames (3000 = 50s, 36000 = 10 min, 356400 = 99 min maximum).</td>
+            </tr>
+            <tr data-offset-cat="state">
+              <td class="col-offset-id"><code>ADDR_FARE_CUTSCENE</code></td>
+              <td class="col-offset-addr"><code>0x016F2164</code></td>
+              <td class="col-offset-type">int32_t</td>
+              <td class="col-offset-desc">Passenger cutscene animation tracker (greater than 0 when customer enters or exits cab).</td>
+            </tr>
+            <tr data-offset-cat="state">
+              <td class="col-offset-id"><code>ADDR_PASSENGER_OBJ</code></td>
+              <td class="col-offset-addr"><code>0x016F21B0</code></td>
+              <td class="col-offset-type">void* (Pointer)</td>
+              <td class="col-offset-desc">Memory pointer to passenger currently sitting in the player cab (<code>nullptr</code> when vacant).</td>
+            </tr>
+            <tr data-offset-cat="state">
+              <td class="col-offset-id"><code>ADDR_VEHICLE_STATE</code></td>
+              <td class="col-offset-addr"><code>0x01661474</code></td>
+              <td class="col-offset-type">int32_t</td>
+              <td class="col-offset-desc"><code>8</code> = Attract AI driving; <code>&lt; 8</code> = Player in full control; <code>0</code> = Normal driving.</td>
+            </tr>
+
+            <tr class="category-header-row" data-cat-header="player" style="background: rgba(245, 197, 24, 0.08);">
+              <td colspan="4" style="font-weight: 800; color: var(--accent); letter-spacing: 0.05em; text-transform: uppercase;">
+                6. Player Taxi Coordinates &amp; Driving Physics
+              </td>
+            </tr>
+            <tr data-offset-cat="player">
+              <td class="col-offset-id"><code>ADDR_PLAYER_X</code></td>
+              <td class="col-offset-addr"><code>0x01661574</code></td>
+              <td class="col-offset-type">float</td>
+              <td class="col-offset-desc">Player East/West axis coordinate in 3D world space.</td>
+            </tr>
+            <tr data-offset-cat="player">
+              <td class="col-offset-id"><code>ADDR_PLAYER_Y</code></td>
+              <td class="col-offset-addr"><code>0x01661578</code></td>
+              <td class="col-offset-type">float</td>
+              <td class="col-offset-desc"><strong>Elevation Axis:</strong> <strong>Important:</strong> <code>-Y</code> is HIGHER (Sky) and <code>+Y</code> is LOWER (Ground). Subtract to ascend!</td>
+            </tr>
+            <tr data-offset-cat="player">
+              <td class="col-offset-id"><code>ADDR_PLAYER_Z</code></td>
+              <td class="col-offset-addr"><code>0x0166157C</code></td>
+              <td class="col-offset-type">float</td>
+              <td class="col-offset-desc">Player North/South axis coordinate in 3D world space.</td>
+            </tr>
+            <tr data-offset-cat="player">
+              <td class="col-offset-id"><code>ADDR_PLAYER_SPEED</code></td>
+              <td class="col-offset-addr"><code>0x0166158C</code></td>
+              <td class="col-offset-type">float</td>
+              <td class="col-offset-desc">Current forward speedometer velocity in Miles Per Hour (MPH). Modified by speed limit hacks.</td>
+            </tr>
+            <tr data-offset-cat="player">
+              <td class="col-offset-id"><code>ADDR_PLAYER_FALL_SPD</code></td>
+              <td class="col-offset-addr"><code>0x016614B0</code></td>
+              <td class="col-offset-type">float</td>
+              <td class="col-offset-desc">Vertical falling acceleration / gravity momentum accumulator. Locked to 0.0f in fly mode.</td>
+            </tr>
+            <tr data-offset-cat="player">
+              <td class="col-offset-id"><code>ADDR_GROUND_COLLISION</code></td>
+              <td class="col-offset-addr"><code>0x01661596</code></td>
+              <td class="col-offset-type">uint8_t</td>
+              <td class="col-offset-desc"><code>1</code> = Wheels have road/terrain contact; <code>0</code> = Airborne (jump or flight).</td>
+            </tr>
+            <tr data-offset-cat="player">
+              <td class="col-offset-id"><code>ADDR_GRAVITY_CONST</code></td>
+              <td class="col-offset-addr"><code>0x0166148C</code></td>
+              <td class="col-offset-type">float</td>
+              <td class="col-offset-desc">Vehicle gravity constant (default: 5.0f).</td>
+            </tr>
+            <tr data-offset-cat="player">
+              <td class="col-offset-id"><code>ADDR_GRAVITY_RDATA</code></td>
+              <td class="col-offset-addr"><code>0x0059FD4C</code></td>
+              <td class="col-offset-type">float</td>
+              <td class="col-offset-desc">Master gravity constant loaded by physics loop in read-only <code>.rdata</code>. Requires VirtualProtect.</td>
+            </tr>
+
+            <tr class="category-header-row" data-cat-header="rotation" style="background: rgba(245, 197, 24, 0.08);">
+              <td colspan="4" style="font-weight: 800; color: var(--accent); letter-spacing: 0.05em; text-transform: uppercase;">
+                7. Vehicle Rotation &amp; 4x4 World Transformation Matrix
+              </td>
+            </tr>
+            <tr data-offset-cat="rotation">
+              <td class="col-offset-id"><code>ADDR_VEHICLE_YAW_BAM</code></td>
+              <td class="col-offset-addr"><code>0x01661478</code></td>
+              <td class="col-offset-type">int16_t (BAM)</td>
+              <td class="col-offset-desc">Yaw heading angle in Binary Angular Measurement (0 = North, 16384 = East, 32768 = South, 49152 = West).</td>
+            </tr>
+            <tr data-offset-cat="rotation">
+              <td class="col-offset-id"><code>ADDR_VEHICLE_PITCH_BAM</code></td>
+              <td class="col-offset-addr"><code>0x0166147A</code></td>
+              <td class="col-offset-type">int16_t (BAM)</td>
+              <td class="col-offset-desc">Pitch angle (inclination up/down when driving hills or jumping).</td>
+            </tr>
+            <tr data-offset-cat="rotation">
+              <td class="col-offset-id"><code>ADDR_VEHICLE_ROLL_BAM</code></td>
+              <td class="col-offset-addr"><code>0x0166147C</code></td>
+              <td class="col-offset-type">int16_t (BAM)</td>
+              <td class="col-offset-desc">Roll angle (lateral bank angle when taking sharp drifts).</td>
+            </tr>
+            <tr data-offset-cat="rotation">
+              <td class="col-offset-id"><code>ADDR_WORLD_MATRIX</code></td>
+              <td class="col-offset-addr"><code>0x01661530</code></td>
+              <td class="col-offset-type">float[16]</td>
+              <td class="col-offset-desc">Active Direct3D 9 World Matrix: Right (+0x00), Up (+0x10), Forward (+0x20), Position (+0x44).</td>
+            </tr>
+
+            <tr class="category-header-row" data-cat-header="camera" style="background: rgba(245, 197, 24, 0.08);">
+              <td colspan="4" style="font-weight: 800; color: var(--accent); letter-spacing: 0.05em; text-transform: uppercase;">
+                8. Camera Subsystem &amp; 6-DOF Freecam
+              </td>
+            </tr>
+            <tr data-offset-cat="camera">
+              <td class="col-offset-id"><code>ADDR_CAM_EYE_X / Y / Z</code></td>
+              <td class="col-offset-addr"><code>0x01661494..9C</code></td>
+              <td class="col-offset-type">float[3]</td>
+              <td class="col-offset-desc">Camera eye point in 3D world space coordinates. Used by Freecam.</td>
+            </tr>
+            <tr data-offset-cat="camera">
+              <td class="col-offset-id"><code>ADDR_CAM_TARGET_X / Y / Z</code></td>
+              <td class="col-offset-addr"><code>0x016614F8..500</code></td>
+              <td class="col-offset-type">float[3]</td>
+              <td class="col-offset-desc">Camera focal point (LookAt target vector).</td>
+            </tr>
+            <tr data-offset-cat="camera">
+              <td class="col-offset-id"><code>ADDR_CAM_ROLL</code></td>
+              <td class="col-offset-addr"><code>0x016614C8</code></td>
+              <td class="col-offset-type">int16_t (BAM)</td>
+              <td class="col-offset-desc">Camera roll angle in BAM format.</td>
+            </tr>
+            <tr data-offset-cat="camera">
+              <td class="col-offset-id"><code>ADDR_FAR_Z_RDATA</code></td>
+              <td class="col-offset-addr"><code>0x005A0150</code></td>
+              <td class="col-offset-type">float</td>
+              <td class="col-offset-desc">Far-Z clipping plane in <code>.rdata</code> (default: 15,000.0f; can be scaled up to 100x).</td>
+            </tr>
+            <tr data-offset-cat="camera">
+              <td class="col-offset-id"><code>ADDR_CAM_UPDATE_CALL</code></td>
+              <td class="col-offset-addr"><code>0x0051F582</code></td>
+              <td class="col-offset-type">Code Call</td>
+              <td class="col-offset-desc">Hook injection site (<code>call 0x0049B200</code>) where camera coordinates are computed.</td>
+            </tr>
+
+            <tr class="category-header-row" data-cat-header="input" style="background: rgba(245, 197, 24, 0.08);">
+              <td colspan="4" style="font-weight: 800; color: var(--accent); letter-spacing: 0.05em; text-transform: uppercase;">
+                9. Input, Controller &amp; Keybindings
+              </td>
+            </tr>
+            <tr data-offset-cat="input">
+              <td class="col-offset-id"><code>ADDR_INPUT_BUTTONS</code></td>
+              <td class="col-offset-addr"><code>0x016A2848</code></td>
+              <td class="col-offset-type">uint32_t</td>
+              <td class="col-offset-desc">Raw hardware controller and keyboard bitmask buffer.</td>
+            </tr>
+            <tr data-offset-cat="input">
+              <td class="col-offset-id"><code>ADDR_INPUT_STEER_AXIS</code></td>
+              <td class="col-offset-addr"><code>0x016A2858</code></td>
+              <td class="col-offset-type">int16_t</td>
+              <td class="col-offset-desc">Steering deflection: -32767 (full left) to +32767 (full right).</td>
+            </tr>
+            <tr data-offset-cat="input">
+              <td class="col-offset-id"><code>ADDR_INPUT_ACCEL_AXIS</code></td>
+              <td class="col-offset-addr"><code>0x016A285A</code></td>
+              <td class="col-offset-type">uint16_t</td>
+              <td class="col-offset-desc">Progressive gas pedal / trigger: 0 (released) to 65535 (full throttle).</td>
+            </tr>
+            <tr data-offset-cat="input">
+              <td class="col-offset-id"><code>ADDR_INPUT_BRAKE_AXIS</code></td>
+              <td class="col-offset-addr"><code>0x016A285C</code></td>
+              <td class="col-offset-type">uint16_t</td>
+              <td class="col-offset-desc">Progressive brake pedal: 0 to 65535.</td>
+            </tr>
+            <tr data-offset-cat="input">
+              <td class="col-offset-id"><code>ADDR_INPUT_GEAR_STATE</code></td>
+              <td class="col-offset-addr"><code>0x016A2873</code></td>
+              <td class="col-offset-type">uint8_t</td>
+              <td class="col-offset-desc">Transmission gear: <code>0</code> or <code>2</code> = Drive (Forward); <code>1</code> = Reverse.</td>
+            </tr>
+
+            <tr class="category-header-row" data-cat-header="economy" style="background: rgba(245, 197, 24, 0.08);">
+              <td colspan="4" style="font-weight: 800; color: var(--accent); letter-spacing: 0.05em; text-transform: uppercase;">
+                10. Economy, Passengers &amp; Stunt Tips
+              </td>
+            </tr>
+            <tr data-offset-cat="economy">
+              <td class="col-offset-id"><code>ADDR_TOTAL_MONEY</code></td>
+              <td class="col-offset-addr"><code>0x016F10E0</code></td>
+              <td class="col-offset-type">int32_t</td>
+              <td class="col-offset-desc"><strong>Total Cash in Cents:</strong> <code>$1.00 = 100</code>, <code>$5,000.00 = 500000</code>.</td>
+            </tr>
+            <tr data-offset-cat="economy">
+              <td class="col-offset-id"><code>ADDR_CURRENT_FARE_TIPS</code></td>
+              <td class="col-offset-addr"><code>0x016A41C8</code></td>
+              <td class="col-offset-type">int32_t</td>
+              <td class="col-offset-desc">Tip pool accumulated during current fare (credited upon successful dropoff).</td>
+            </tr>
+            <tr data-offset-cat="economy">
+              <td class="col-offset-id"><code>ADDR_STUNT_TIP_ADD</code></td>
+              <td class="col-offset-addr"><code>0x004A8DE7</code></td>
+              <td class="col-offset-type">Opcode</td>
+              <td class="col-offset-desc">Instruction: <code>add [0x16a41c8], ecx</code>. Primary hook site for stunt tip multipliers!</td>
+            </tr>
+            <tr data-offset-cat="economy">
+              <td class="col-offset-id"><code>ADDR_PASSENGER_PICKUP_CALL</code></td>
+              <td class="col-offset-addr"><code>0x004B862D</code></td>
+              <td class="col-offset-type">Code Call</td>
+              <td class="col-offset-desc"><code>call 0x004C1810</code>. Hook site used in fly mode to prevent unwanted passenger pickups.</td>
+            </tr>
+
+            <tr class="category-header-row" data-cat-header="cheats" style="background: rgba(245, 197, 24, 0.08);">
+              <td colspan="4" style="font-weight: 800; color: var(--accent); letter-spacing: 0.05em; text-transform: uppercase;">
+                11. Sega Developer Cheats &amp; Secret Modes
+              </td>
+            </tr>
+            <tr data-offset-cat="cheats">
+              <td class="col-offset-id"><code>ADDR_SEGA_UNLOCK_ALL</code></td>
+              <td class="col-offset-addr"><code>0x0164FA58</code></td>
+              <td class="col-offset-type">uint8_t</td>
+              <td class="col-offset-desc">Value <code>0x3F</code> unlocks all 8 vehicles (4 cabs + 4 bikes) and all Crazy Box challenges.</td>
+            </tr>
+            <tr data-offset-cat="cheats">
+              <td class="col-offset-id"><code>ADDR_SEGA_UNLOCK_MASK</code></td>
+              <td class="col-offset-addr"><code>0x016AA3C0</code></td>
+              <td class="col-offset-type">uint32_t</td>
+              <td class="col-offset-desc">Set to <code>0</code> to stop endless dialog loop of Sega's unlock announcement banner.</td>
+            </tr>
+            <tr data-offset-cat="cheats">
+              <td class="col-offset-id"><code>ADDR_SEGA_CHAR_SELECT</code></td>
+              <td class="col-offset-addr"><code>0x016A9B30</code></td>
+              <td class="col-offset-type">int32_t</td>
+              <td class="col-offset-desc">0..3 = Standard Cabs (Axel, BD Joe, Gena, Gus); 4..7 = Unlockable Crazy Bikes.</td>
+            </tr>
+            <tr data-offset-cat="cheats">
+              <td class="col-offset-id"><code>ADDR_SEGA_ANOTHER_DAY</code></td>
+              <td class="col-offset-addr"><code>0x01662304</code></td>
+              <td class="col-offset-type">int32_t</td>
+              <td class="col-offset-desc"><code>1</code> activates Sega's hidden Another Day mode with alternate passenger routes.</td>
+            </tr>
+            <tr data-offset-cat="cheats">
+              <td class="col-offset-id"><code>ADDR_SEGA_NO_ARROWS</code></td>
+              <td class="col-offset-addr"><code>0x016EF0BC</code></td>
+              <td class="col-offset-type">int32_t</td>
+              <td class="col-offset-desc"><code>1</code> suppresses overhead directional guide arrow.</td>
+            </tr>
+            <tr data-offset-cat="cheats">
+              <td class="col-offset-id"><code>ADDR_SEGA_NO_DEST_MARK</code></td>
+              <td class="col-offset-addr"><code>0x016EEEA0</code></td>
+              <td class="col-offset-type">int32_t</td>
+              <td class="col-offset-desc"><code>1</code> removes colored ground destination target boxes.</td>
+            </tr>
+
+            <tr class="category-header-row" data-cat-header="streaming" style="background: rgba(245, 197, 24, 0.08);">
+              <td colspan="4" style="font-weight: 800; color: var(--accent); letter-spacing: 0.05em; text-transform: uppercase;">
+                12. Sector Streaming, Chunks &amp; Distance Radii
+              </td>
+            </tr>
+            <tr data-offset-cat="streaming">
+              <td class="col-offset-id"><code>ADDR_CHUNK_DIST_CAMERA</code></td>
+              <td class="col-offset-addr"><code>0x005A10A8</code></td>
+              <td class="col-offset-type">float</td>
+              <td class="col-offset-desc">Camera chunk culling distance in <code>.rdata</code> (default: 850.0f).</td>
+            </tr>
+            <tr data-offset-cat="streaming">
+              <td class="col-offset-id"><code>ADDR_CHUNK_DIST_FAR</code></td>
+              <td class="col-offset-addr"><code>0x0059F9F8</code></td>
+              <td class="col-offset-type">float</td>
+              <td class="col-offset-desc">Far chunk culling distance in <code>.rdata</code> (default: 450.0f).</td>
+            </tr>
+            <tr data-offset-cat="streaming">
+              <td class="col-offset-id"><code>ADDR_PROP_STREAM_RAD</code></td>
+              <td class="col-offset-addr"><code>0x005A07CC</code></td>
+              <td class="col-offset-type">float</td>
+              <td class="col-offset-desc">Dynamic props and pedestrian streaming radius (default: 1696.0f).</td>
+            </tr>
+            <tr data-offset-cat="streaming">
+              <td class="col-offset-id"><code>ADDR_LOAD_CHUNKS_AROUND</code></td>
+              <td class="col-offset-addr"><code>0x00504090</code></td>
+              <td class="col-offset-type">__cdecl</td>
+              <td class="col-offset-desc">Sega Master Proximity Evaluator: <code>void(float x, float y, float z, float rad)</code>. Prioritizes 1152-table chunks.</td>
+            </tr>
+            <tr data-offset-cat="streaming">
+              <td class="col-offset-id"><code>ADDR_CHUNK_EVICT_FN</code></td>
+              <td class="col-offset-addr"><code>0x005051D0</code></td>
+              <td class="col-offset-type">__cdecl</td>
+              <td class="col-offset-desc">Sega Streaming State Machine: Binds world textures (<code>0x00499240</code>) and spawns props (<code>0x005045E0</code>).</td>
+            </tr>
+
+            <tr class="category-header-row" data-cat-header="collision" style="background: rgba(245, 197, 24, 0.08);">
+              <td colspan="4" style="font-weight: 800; color: var(--accent); letter-spacing: 0.05em; text-transform: uppercase;">
+                13. Collision &amp; Physics Simulation Routines
+              </td>
+            </tr>
+            <tr data-offset-cat="collision">
+              <td class="col-offset-id"><code>ADDR_COLLISION_WORLD</code></td>
+              <td class="col-offset-addr"><code>0x004DC580</code></td>
+              <td class="col-offset-type">__cdecl void()</td>
+              <td class="col-offset-desc">Master world terrain and boundary collision routine. Executes vehicle render passes.</td>
+            </tr>
+            <tr data-offset-cat="collision">
+              <td class="col-offset-id"><code>ADDR_COLLISION_INTERSECT</code></td>
+              <td class="col-offset-addr"><code>0x0050BED0</code></td>
+              <td class="col-offset-type">Custom Regs</td>
+              <td class="col-offset-desc">Vehicle-to-vehicle collision checker. Returning <code>eax = 0</code> slides cab through traffic without impact.</td>
+            </tr>
+            <tr data-offset-cat="collision">
+              <td class="col-offset-id"><code>ADDR_VEHICLE_UPDATE_FN</code></td>
+              <td class="col-offset-addr"><code>0x0051D940</code></td>
+              <td class="col-offset-type">__cdecl void()</td>
+              <td class="col-offset-desc">Master per-frame vehicle physics simulation routine.</td>
+            </tr>
+
+            <tr class="category-header-row" data-cat-header="guards" style="background: rgba(245, 197, 24, 0.08);">
+              <td colspan="4" style="font-weight: 800; color: var(--accent); letter-spacing: 0.05em; text-transform: uppercase;">
+                14. Direct3D 9 Crash-Guards &amp; Engine Patches
+              </td>
+            </tr>
+            <tr data-offset-cat="guards">
+              <td class="col-offset-id"><code>0x00481100</code></td>
+              <td class="col-offset-addr"><code>hkClearD3DStateNaked</code></td>
+              <td class="col-offset-type">Hook</td>
+              <td class="col-offset-desc">Intercepts <code>ClearD3DState</code> if device pointer <code>[esi+0x18] == NULL</code>, preventing access violations on Win10/11.</td>
+            </tr>
+            <tr data-offset-cat="guards">
+              <td class="col-offset-id"><code>0x0052227E</code></td>
+              <td class="col-offset-addr"><code>hkCreateVertexDeclNaked</code></td>
+              <td class="col-offset-type">Hook</td>
+              <td class="col-offset-desc">Guards <code>CreateVertexDeclaration</code> against invalid vertex format layouts.</td>
+            </tr>
+            <tr data-offset-cat="guards">
+              <td class="col-offset-id"><code>0x00521FD4 / 1F74</code></td>
+              <td class="col-offset-addr"><code>hkCreateShaderNaked</code></td>
+              <td class="col-offset-type">Hook</td>
+              <td class="col-offset-desc">Prevents crash during Vertex and Pixel Shader initialization.</td>
+            </tr>
+            <tr data-offset-cat="guards">
+              <td class="col-offset-id"><code>0x00481BB0</code></td>
+              <td class="col-offset-addr"><code>hkSegaCreateTextureNaked</code></td>
+              <td class="col-offset-type">Hook</td>
+              <td class="col-offset-desc">Protects native texture creation against out-of-range dimensions.</td>
+            </tr>
+            <tr data-offset-cat="guards">
+              <td class="col-offset-id"><code>0x0053432C</code></td>
+              <td class="col-offset-addr"><code>SteamAPI Restart Stub</code></td>
+              <td class="col-offset-type">Patch</td>
+              <td class="col-offset-desc">Prevents game shutdown when running standalone without an active Steam client.</td>
+            </tr>
+
+            <tr class="category-header-row" data-cat-header="restoration" style="background: rgba(245, 197, 24, 0.08);">
+              <td colspan="4" style="font-weight: 800; color: var(--accent); letter-spacing: 0.05em; text-transform: uppercase;">
+                15. Dreamcast Commercial Restoration (CT-DC) Patches
+              </td>
+            </tr>
+            <tr data-offset-cat="restoration">
+              <td class="col-offset-id"><code>0x013B9F0C</code></td>
+              <td class="col-offset-addr"><code>Original Brand Names</code></td>
+              <td class="col-offset-type">Table Pointer</td>
+              <td class="col-offset-desc">Restores Tower Records, Pizza Hut, FILA, KFC, and Levi's commercial names in memory.</td>
+            </tr>
+            <tr data-offset-cat="restoration">
+              <td class="col-offset-id"><code>0x004FDBF3</code></td>
+              <td class="col-offset-addr"><code>FILA Destination</code></td>
+              <td class="col-offset-type">Patch: 75 -> EB</td>
+              <td class="col-offset-desc">Re-activates FILA as a valid passenger fare destination.</td>
+            </tr>
+            <tr data-offset-cat="restoration">
+              <td class="col-offset-id"><code>0x0048BA38</code></td>
+              <td class="col-offset-addr"><code>World Texture Uncheck</code></td>
+              <td class="col-offset-type">Patch (JMP)</td>
+              <td class="col-offset-desc">Bypasses Sega censorship checks and jumps directly to original textures at <code>0x0048C09B</code>.</td>
+            </tr>
+            <tr data-offset-cat="restoration">
+              <td class="col-offset-id"><code>0x004C9C2A</code></td>
+              <td class="col-offset-addr"><code>Passenger Voice Audio</code></td>
+              <td class="col-offset-type">Patch: EB 15</td>
+              <td class="col-offset-desc">Restores original passenger voice lines ("Take me to Pizza Hut!").</td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="downloads" class="section">
+    <div class="container text-center">
+      <p class="section-kicker">Developer Downloads</p>
+      <h2>Open-Source Repositories &amp; References</h2>
+      <p class="section-intro center-block">
+        Download verified C++ source code archives, complete memory guides, and submod templates.
+      </p>
+
+      <div class="download-grid">
+        <div class="download-card">
+          <div class="dl-badge">REAL-TIME TEXTURE ENGINE</div>
+          <h3>Texture Mod Source Code (v0.88)</h3>
+          <p>
+            Complete C++ project for real-time Direct3D 9 texture injection, GDI progress dialog, MinHook detours, and LTMC binary caching algorithms.
+          </p>
+          <div class="dl-meta-info">
+            <span>Package: 7z Compressed</span>
+            <span>Size: ~33.2 KB</span>
+          </div>
+          <a href="../TextureMod_SRC.7z" class="btn btn-primary btn-block" download>
+            Download TextureMod_SRC.7z
+          </a>
+        </div>
+
+        <div class="download-card">
+          <div class="dl-badge">CORE FRAMEWORK &amp; LOADER</div>
+          <h3>Framework Mod Source Code (v0.91)</h3>
+          <p>
+            Full source code for <code>dinput8.dll</code> proxy loader, ImGui menu overlay, memory cheats, 360° freecam, and Direct3D 9 crash guards.
+          </p>
+          <div class="dl-meta-info">
+            <span>Package: 7z Compressed</span>
+            <span>Size: ~64.3 KB</span>
+          </div>
+          <a href="../Open%20Source%20CODE.7z" class="btn btn-ghost btn-block" download>
+            Download Framework Source (.7z)
+          </a>
+        </div>
+
+        <div class="download-card">
+          <div class="dl-badge">OFFSETS DATABASE</div>
+          <h3>Complete Offsets Reference (.md)</h3>
+          <p>
+            The comprehensive raw markdown database documenting all 26 Sega container tables, pointer chains, physics vectors, and memory offsets.
+          </p>
+          <div class="dl-meta-info">
+            <span>Format: Markdown (.md)</span>
+            <span>Size: ~35.8 KB</span>
+          </div>
+          <a href="../offset.md" class="btn btn-ghost btn-block" download>
+            Download offset.md
+          </a>
+        </div>
+
+        <div class="download-card">
+          <div class="dl-badge">SUBMOD SPECIFICATION</div>
+          <h3>Submod Development Guide (.md)</h3>
+          <p>
+            The complete standalone developer markdown guide containing architecture diagrams, C ABI signatures, and CMake build configuration.
+          </p>
+          <div class="dl-meta-info">
+            <span>Format: Markdown (.md)</span>
+            <span>Size: ~10.5 KB</span>
+          </div>
+          <a href="../SUBMOD_DEVELOPMENT_GUIDE.md" class="btn btn-ghost btn-block" download>
+            Download Submod Guide (.md)
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer id="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <img src="../assets/banner.webp" alt="Crazy Taxi Ultimate Mod Framework" class="footer-logo" />
+          <p>Crazy Taxi Mod Developer Hub &amp; Memory Offsets Reference (v0.91)</p>
+        </div>
+        <div class="footer-links">
+          <a href="../index.html">Framework Home</a>
+          <a href="#tutorial">Submod Guide</a>
+          <a href="#texture-internals">Texture Engine</a>
+          <a href="#offsets">Memory Offsets</a>
+          <a href="../Texturemod/index.html">Texture Mod</a>
+          <a href="#downloads">Downloads</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>Created by <strong>Lyra</strong>. Licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a>.</p>
+        <p class="footer-disclaimer">Crazy Taxi is a registered trademark of SEGA Corporation. This non-commercial reverse engineering reference is not affiliated with or endorsed by SEGA.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../script.js"></script>
+</body>
+</html>

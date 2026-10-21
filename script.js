@@ -1,14 +1,11 @@
-/* =============================================
-   Crazy Taxi Ultimate Mod Menu & Restoration Suite
-   Interactive Script (v0.85)
-   ============================================= */
+
 
 (function () {
   'use strict';
 
-  // ----------------------------------------------------
-  // 1. Navigation Scroll Effect & Mobile Hamburger
-  // ----------------------------------------------------
+  
+  
+  
   const nav = document.getElementById('main-nav');
   window.addEventListener('scroll', function () {
     if (nav) {
@@ -33,14 +30,14 @@
     });
   }
 
-  // Helper to generate Google Drive video preview URL with 1080p quality parameters
+  
   function buildDriveVideoUrl(videoId) {
     return 'https://drive.google.com/file/d/' + videoId + '/preview?vq=hd1080&hd=1';
   }
 
-  // ----------------------------------------------------
-  // 2. Feature Matrix: Table Expandable Cinema Players
-  // ----------------------------------------------------
+  
+  
+  
   const demoButtons = document.querySelectorAll('.demo-trigger-btn');
   const drawerRows = document.querySelectorAll('.video-drawer-row');
   const featureRows = document.querySelectorAll('.feature-row');
@@ -78,11 +75,11 @@
 
       const isAlreadyOpen = targetDrawer.classList.contains('open');
 
-      // Close all active drawers first
+      
       closeAllDrawers();
 
       if (!isAlreadyOpen) {
-        // Open the selected drawer
+        
         targetDrawer.classList.add('open');
         parentRow.classList.add('row-active');
         btn.classList.add('active');
@@ -91,11 +88,11 @@
 
         const iframe = targetDrawer.querySelector('iframe');
         if (iframe) {
-          // Set stream URL requesting 1080p resolution
+          
           iframe.src = buildDriveVideoUrl(videoId);
         }
 
-        // Smooth scroll to position player nicely in view
+        
         setTimeout(function () {
           const navOffset = (nav ? nav.offsetHeight : 88) + 16;
           const rect = targetDrawer.getBoundingClientRect();
@@ -110,16 +107,16 @@
     });
   });
 
-  // Drawer Close Buttons
+  
   document.querySelectorAll('.drawer-close-btn').forEach(function (closeBtn) {
     closeBtn.addEventListener('click', function () {
       closeAllDrawers();
     });
   });
 
-  // ----------------------------------------------------
-  // 3. Feature Matrix: Category Filtering
-  // ----------------------------------------------------
+  
+  
+  
   const filterButtons = document.querySelectorAll('.filter-btn');
 
   filterButtons.forEach(function (btn) {
@@ -129,7 +126,7 @@
 
       const selectedFilter = btn.getAttribute('data-filter');
 
-      // Close open video players when switching filters to prevent misalignment
+      
       closeAllDrawers();
 
       featureRows.forEach(function (row) {
@@ -147,9 +144,9 @@
     });
   });
 
-  // ----------------------------------------------------
-  // 4. Installation Walkthrough Large Cinema Player
-  // ----------------------------------------------------
+  
+  
+  
   const launchInstallBtn = document.getElementById('launch-install-video-btn');
   const installContainer = document.getElementById('install-video-container');
   const installIframe = document.getElementById('install-video-iframe');
@@ -160,7 +157,7 @@
       const isVisible = installContainer.style.display !== 'none';
 
       if (!isVisible) {
-        // Set stream URL requesting 1080p resolution
+        
         installIframe.src = buildDriveVideoUrl(videoId);
         installContainer.style.display = 'block';
         launchInstallBtn.textContent = '✕ Close Video Player';
@@ -185,9 +182,9 @@
     });
   }
 
-  // ----------------------------------------------------
-  // 5. Technical Tabs Navigation (Memory Engine)
-  // ----------------------------------------------------
+  
+  
+  
   const tabButtons = document.querySelectorAll('.tab-btn');
   const tabPanes = document.querySelectorAll('.tab-pane');
 
@@ -205,9 +202,9 @@
     });
   });
 
-  // ----------------------------------------------------
-  // 6. Active Nav Highlighting on Scroll
-  // ----------------------------------------------------
+  
+  
+  
   const observedSections = document.querySelectorAll('section[id], header[id]');
   const navAnchorLinks = document.querySelectorAll('.nav-links a[href^="#"]');
 
@@ -233,5 +230,86 @@
 
   window.addEventListener('scroll', updateActiveNav, { passive: true });
   updateActiveNav();
+
+  
+  
+  
+  const offsetSearchInput = document.getElementById('offset-search-input');
+  const offsetFilterBtns = document.querySelectorAll('.offset-filter-btn');
+  let activeOffsetCategory = 'all';
+
+  function filterOffsets() {
+    const term = offsetSearchInput ? offsetSearchInput.value.toLowerCase().trim() : '';
+    const rows = document.querySelectorAll('#offsets-table tbody tr');
+
+    rows.forEach(function (row) {
+      if (row.classList.contains('category-header-row')) {
+        return;
+      }
+      const cat = row.getAttribute('data-offset-cat');
+      const text = row.textContent.toLowerCase();
+
+      const matchesCat = (activeOffsetCategory === 'all' || cat === activeOffsetCategory);
+      const matchesSearch = (term === '' || text.indexOf(term) !== -1);
+
+      row.style.display = (matchesCat && matchesSearch) ? '' : 'none';
+    });
+
+    const catRows = document.querySelectorAll('#offsets-table .category-header-row');
+    catRows.forEach(function (catRow) {
+      const catId = catRow.getAttribute('data-cat-header');
+      if (activeOffsetCategory !== 'all' && catId !== activeOffsetCategory) {
+        catRow.style.display = 'none';
+        return;
+      }
+      let next = catRow.nextElementSibling;
+      let hasVisible = false;
+      while (next && !next.classList.contains('category-header-row')) {
+        if (next.style.display !== 'none') {
+          hasVisible = true;
+          break;
+        }
+        next = next.nextElementSibling;
+      }
+      catRow.style.display = hasVisible ? '' : 'none';
+    });
+  }
+
+  if (offsetSearchInput) {
+    offsetSearchInput.addEventListener('input', filterOffsets);
+  }
+
+  if (offsetFilterBtns.length > 0) {
+    offsetFilterBtns.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        offsetFilterBtns.forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        activeOffsetCategory = btn.getAttribute('data-cat') || 'all';
+        filterOffsets();
+      });
+    });
+  }
+
+  
+  
+  
+  document.querySelectorAll('.copy-code-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      const targetId = btn.getAttribute('data-copy-target');
+      const targetEl = document.getElementById(targetId);
+      if (!targetEl) return;
+
+      const codeText = targetEl.innerText || targetEl.textContent;
+      navigator.clipboard.writeText(codeText).then(function () {
+        const origText = btn.textContent;
+        btn.textContent = '✓ Copied!';
+        setTimeout(function () {
+          btn.textContent = origText;
+        }, 2000);
+      }).catch(function () {
+        btn.textContent = 'Press Ctrl+C';
+      });
+    });
+  });
 
 })();
