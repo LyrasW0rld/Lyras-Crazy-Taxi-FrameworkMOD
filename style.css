@@ -1370,6 +1370,23 @@ pre code {
   opacity: 0.7;
 }
 
+.footer-counter {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  margin-top: 16px;
+}
+.footer-counter img {
+  height: 22px;
+  opacity: 0.85;
+  transition: opacity 0.2s ease;
+}
+.footer-counter a:hover img {
+  opacity: 1;
+}
+
+
 
 
 
