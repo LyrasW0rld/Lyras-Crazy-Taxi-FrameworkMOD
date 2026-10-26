@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Project Statistics — Lyra's Crazy Taxi Framework MOD</title>
+  <meta name="description"
+    content="Hidden statistics page: unique visitors and download counts for the Ultimate Crazytaxi Mod 18 Mods fan project." />
+  <meta name="robots" content="noindex, follow" />
+  <link rel="canonical" href="https://lyrasw0rld.github.io/Lyras-Crazy-Taxi-FrameworkMOD/counts/" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23f5c518'/%3E%3Cpath d='M7 16l6 6 12-12' stroke='%230a0a0f' stroke-width='4' fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3C/path%3E%3C/svg%3E" />
+</head>
+
+<body>
+
+  <nav id="main-nav">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-brand" aria-label="Back to the Framework Home">
+        <img src="../assets/banner.webp" alt="Crazy Taxi Ultimate Mod Framework" class="nav-brand-img" />
+      </a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="../index.html">← Framework Home</a></li>
+        <li><a href="../Texturemod/index.html">Texture Mod</a></li>
+        <li><a href="../Mod-Developer/index.html">Mod Developer</a></li>
+        <li><a href="../contact.html">Support</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <section class="section" style="padding-top: 160px;">
+    <div class="container">
+      <div class="section-header text-center">
+        <p class="section-kicker">Internal Project Statistics</p>
+        <h2>Visitors &amp; Download Counts</h2>
+        <p class="section-intro center-block">
+          A static overview of all tracked counters for this unofficial, non-commercial Crazy Taxi fan project.
+          Visit counts are deduplicated per visitor per day (localStorage) — one visit per person per day.
+        </p>
+      </div>
+
+      <!-- ============ UNIQUE VISITORS (deduplicated per device + day) ============ -->
+      <div class="matrix-summary-box" style="margin-bottom: 32px;">
+        <div class="summary-item">
+          <span class="summary-count count-working" id="stat-unique-visits">—</span>
+          <span class="summary-label">👁 Unique Visits (this browser, stored locally)</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-count" id="stat-total-pagevisits">—</span>
+          <span class="summary-label">Total Page Views (all visitors, hits.sh counter)</span>
+        </div>
+      </div>
+
+      <!-- ============ DOWNLOAD COUNTERS (static baseline — edit these numbers) ============ -->
+      <p class="section-kicker" style="margin-bottom: 14px;">File Downloads</p>
+      <div class="download-grid">
+
+        <div class="download-card">
+          <div class="dl-badge">FRAMEWORK RELEASE</div>
+          <h3>Lyras Framwork MOD.zip</h3>
+          <p data-dl-file="Lyras Framwork MOD.zip">Complete ready-to-run package (<code>dinput8.dll</code>,
+            <code>mods/</code>, Texture Modder, Dreamcast Restoration textures).</p>
+          <div class="dl-meta-info">
+            <span>Package: ZIP Archive</span>
+            <span>Size: ~44.5 MB</span>
+          </div>
+          <div class="count-display-box">
+            <span class="count-num" data-download-count-for="Lyras Framwork MOD.zip" data-baseline="0">0</span>
+            <span class="count-unit">Downloads</span>
+          </div>
+        </div>
+
+        <div class="download-card">
+          <div class="dl-badge">TEXTURE PACK</div>
+          <h3>LyrasTextureMod.zip</h3>
+          <p data-dl-file="LyrasTextureMod.zip">Standalone texture mod package with pre-sorted texture directory and
+            caching engine.</p>
+          <div class="dl-meta-info">
+            <span>Package: ZIP Archive</span>
+            <span>Size: ~42.5 MB</span>
+          </div>
+          <div class="count-display-box">
+            <span class="count-num" data-download-count-for="LyrasTextureMod.zip" data-baseline="0">0</span>
+            <span class="count-unit">Downloads</span>
+          </div>
+        </div>
+
+        <div class="download-card">
+          <div class="dl-badge">SOURCE CODE</div>
+          <h3>Open Source CODE.7z</h3>
+          <p data-dl-file="Open Source CODE.7z">Full C++ source code of the framework: Direct3D 9 hooks, memory
+            offsets, build scripts.</p>
+          <div class="dl-meta-info">
+            <span>Package: 7z Compressed</span>
+            <span>Size: ~64.3 KB</span>
+          </div>
+          <div class="count-display-box">
+            <span class="count-num" data-download-count-for="Open Source CODE.7z" data-baseline="0">0</span>
+            <span class="count-unit">Downloads</span>
+          </div>
+        </div>
+
+        <div class="download-card">
+          <div class="dl-badge">SOURCE CODE</div>
+          <h3>TextureMod_SRC.7z</h3>
+          <p data-dl-file="TextureMod_SRC.7z">C++ source code of the real-time texture injection engine (LTMC cache,
+            MinHook detours).</p>
+          <div class="dl-meta-info">
+            <span>Package: 7z Compressed</span>
+            <span>Size: ~33.2 KB</span>
+          </div>
+          <div class="count-display-box">
+            <span class="count-num" data-download-count-for="TextureMod_SRC.7z" data-baseline="0">0</span>
+            <span class="count-unit">Downloads</span>
+          </div>
+        </div>
+
+        <div class="download-card">
+          <div class="dl-badge">DOCUMENTATION</div>
+          <h3>offset.md</h3>
+          <p data-dl-file="offset.md">Complete reverse-engineered memory offset &amp; address reference for Crazy
+            Taxi.exe.</p>
+          <div class="dl-meta-info">
+            <span>Format: Markdown</span>
+            <span>Size: ~150 KB</span>
+          </div>
+          <div class="count-display-box">
+            <span class="count-num" data-download-count-for="offset.md" data-baseline="0">0</span>
+            <span class="count-unit">Downloads</span>
+          </div>
+        </div>
+
+        <div class="download-card">
+          <div class="dl-badge">DOCUMENTATION</div>
+          <h3>Crazy Taxi Texture Modding Guide.pdf</h3>
+          <p data-dl-file="Crazy Taxi Texture Modding Guide.pdf">Step-by-step PDF guide for creating your own HD
+            texture packs.</p>
+          <div class="dl-meta-info">
+            <span>Format: PDF</span>
+            <span>Size: ~138 KB</span>
+          </div>
+          <div class="count-display-box">
+            <span class="count-num" data-download-count-for="Crazy Taxi Texture Modding Guide.pdf"
+              data-baseline="0">0</span>
+            <span class="count-unit">Downloads</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="license-banner" style="margin-top: 40px;">
+        How counting works: every visitor is counted at most once per calendar day in their own browser
+        (deduplication via <code>localStorage</code>). Download clicks are counted locally per file and added on top
+        of the static baseline value set in the HTML (<code>data-baseline</code>). GitHub Pages is fully static, so no
+        server-side database is involved.
+      </div>
+    </div>
+  </section>
+
+  <footer id="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>Created by <strong>Lyra</strong>. Licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/"
+            target="_blank" rel="noopener">CC BY-NC 4.0</a>.</p>
+        <p class="footer-disclaimer">Crazy Taxi is a registered trademark of SEGA Corporation. This project is an
+          independent non-commercial fan modification and is not affiliated with, authorized, or endorsed by SEGA.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../script.js"></script>
+</body>
+
+</html>

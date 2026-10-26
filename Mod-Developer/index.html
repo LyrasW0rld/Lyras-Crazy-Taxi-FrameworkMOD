@@ -557,6 +557,11 @@ if (ppRenderer &amp;&amp; *ppRenderer)
         <button class="offset-filter-btn" data-cat="collision">13. Collision &amp; Simulation</button>
         <button class="offset-filter-btn" data-cat="guards">14. D3D9 Crash Guards</button>
         <button class="offset-filter-btn" data-cat="restoration">15. Dreamcast Restorations</button>
+        <button class="offset-filter-btn" data-cat="dc-pool">16. DC Texture Memory Pool</button>
+        <button class="offset-filter-btn" data-cat="d3d-resolution">17. D3D9 Resolution &amp; IAT Hook</button>
+        <button class="offset-filter-btn" data-cat="ltm-format">18. LTM1 / LTMC Binary Formats</button>
+        <button class="offset-filter-btn" data-cat="drivetrain">19. Drivetrain &amp; Vehicle Tuning</button>
+        <button class="offset-filter-btn" data-cat="audio-timing">20. Audio &amp; Engine Timing</button>
       </div>
 
       <div class="table-search-bar">
@@ -1190,6 +1195,120 @@ if (ppRenderer &amp;&amp; *ppRenderer)
               <td class="col-offset-addr"><code>Passenger Voice Audio</code></td>
               <td class="col-offset-type">Patch: EB 15</td>
               <td class="col-offset-desc">Restores original passenger voice lines ("Take me to Pizza Hut!").</td>
+            </tr>
+
+            <tr class="category-header-row" data-cat-header="dc-pool" style="background: rgba(245, 197, 24, 0.08);">
+              <td colspan="4" style="font-weight: 800; color: var(--accent); letter-spacing: 0.05em; text-transform: uppercase;">
+                16. Sega Dreamcast/Naomi Texture Memory Pool
+              </td>
+            </tr>
+            <tr data-offset-cat="dc-pool">
+              <td class="col-offset-id"><code>ADDR_DC_TEX_POOL</code></td>
+              <td class="col-offset-addr"><code>0x016A2CFC</code></td>
+              <td class="col-offset-type">Pool Header*</td>
+              <td class="col-offset-desc">Pointer to the emulated Dreamcast VRAM texture pool header preserved inside the PC EXE. Base of all PVR-chunk allocations.</td>
+            </tr>
+            <tr data-offset-cat="dc-pool">
+              <td class="col-offset-id"><code>DC_POOL_CHUNK_SIZE</code></td>
+              <td class="col-offset-addr"><code>+0x08</code></td>
+              <td class="col-offset-type">uint32</td>
+              <td class="col-offset-desc">Allocation granularity of the DC texture pool (PVR chunks are allocated in fixed-size blocks).</td>
+            </tr>
+            <tr data-offset-cat="dc-pool">
+              <td class="col-offset-id"><code>DC_POOL_CURSOR</code></td>
+              <td class="col-offset-addr"><code>+0x10</code></td>
+              <td class="col-offset-type">uint32</td>
+              <td class="col-offset-desc">Current write cursor / high-water mark into the pool. Useful for tracking total texture memory consumed at runtime.</td>
+            </tr>
+
+            <tr class="category-header-row" data-cat-header="d3d-resolution" style="background: rgba(245, 197, 24, 0.08);">
+              <td colspan="4" style="font-weight: 800; color: var(--accent); letter-spacing: 0.05em; text-transform: uppercase;">
+                17. Direct3D 9 Device Resolution &amp; IAT Hook
+              </td>
+            </tr>
+            <tr data-offset-cat="d3d-resolution">
+              <td class="col-offset-id"><code>ADDR_D3DPRESENT_PARAMETERS</code></td>
+              <td class="col-offset-addr"><code>0x01B0A1F0</code></td>
+              <td class="col-offset-type">D3DPRESENT_PARAMETERS</td>
+              <td class="col-offset-desc">Cached copy of the active present parameters (BackBufferWidth/Height, Format, Windowed) used by the widescreen fix.</td>
+            </tr>
+            <tr data-offset-cat="d3d-resolution">
+              <td class="col-offset-id"><code>ADDR_IAT_CreateDevice</code></td>
+              <td class="col-offset-addr"><code>0x00405AEC</code></td>
+              <td class="col-offset-type">IAT Slot (void*)</td>
+              <td class="col-offset-desc">Import Address Table slot for <code>d3d9.dll!Direct3DCreate9</code>. The framework detours this to wrap <code>IDirect3DDevice9::CreateTexture</code>.</td>
+            </tr>
+            <tr data-offset-cat="d3d-resolution">
+              <td class="col-offset-id"><code>ADDR_RES_X / ADDR_RES_Y</code></td>
+              <td class="col-offset-addr"><code>0x01B0A1F4 / 0x01B0A1F8</code></td>
+              <td class="col-offset-type">int32 / int32</td>
+              <td class="col-offset-desc">Live backbuffer resolution read-back. Written by the hook on device creation/reset; read by the freecam and HUD scaling mods.</td>
+            </tr>
+
+            <tr class="category-header-row" data-cat-header="ltm-format" style="background: rgba(245, 197, 24, 0.08);">
+              <td colspan="4" style="font-weight: 800; color: var(--accent); letter-spacing: 0.05em; text-transform: uppercase;">
+                18. Mod-Owned Binary Formats (LTM1 &amp; LTMC)
+              </td>
+            </tr>
+            <tr data-offset-cat="ltm-format">
+              <td class="col-offset-id"><code>LTM1_MAGIC</code></td>
+              <td class="col-offset-addr"><code>"LTM1"</code> (0x4D544C31)</td>
+              <td class="col-offset-type">uint32 header</td>
+              <td class="col-offset-desc">File magic for Lyra Texture Mod v1 files (PNG/JPG source + auto-generated mipmaps). Validated before any runtime texture injection.</td>
+            </tr>
+            <tr data-offset-cat="ltm-format">
+              <td class="col-offset-id"><code>LTM1_HEADER_SIZE</code></td>
+              <td class="col-offset-addr"><code>0x20 bytes</code></td>
+              <td class="col-offset-type">struct</td>
+              <td class="col-offset-desc">Header layout: magic, version, width, height, mipCount, format, checksum, payload offset. See <code>offset.md</code> §8 for the full field table.</td>
+            </tr>
+            <tr data-offset-cat="ltm-format">
+              <td class="col-offset-id"><code>LTMC_MAGIC</code></td>
+              <td class="col-offset-addr"><code>"LTMC"</code> (0x4D544C43)</td>
+              <td class="col-offset-type">uint32 header</td>
+              <td class="col-offset-desc">Lyra Texture Mod Chain file — concatenates multiple LTM1 entries with per-entry target descriptor IDs for batch drag-and-drop installs.</td>
+            </tr>
+
+            <tr class="category-header-row" data-cat-header="drivetrain" style="background: rgba(245, 197, 24, 0.08);">
+              <td colspan="4" style="font-weight: 800; color: var(--accent); letter-spacing: 0.05em; text-transform: uppercase;">
+                19. Drivetrain &amp; Vehicle Tuning (IDA Verified)
+              </td>
+            </tr>
+            <tr data-offset-cat="drivetrain">
+              <td class="col-offset-id"><code>0x00512860</code></td>
+              <td class="col-offset-addr"><code>sub_512860</code></td>
+              <td class="col-offset-type">Function (JMP hook)</td>
+              <td class="col-offset-desc"><code>world::streaming::compute_drivetrain_torque_distribution</code> — 4-wheel drive torque / brake bias distribution ratios (FWD, AWD, Balanced AWD, RWD).</td>
+            </tr>
+            <tr data-offset-cat="drivetrain">
+              <td class="col-offset-id"><code>DRIVETRAIN_TORQUE_BIAS</code></td>
+              <td class="col-offset-addr"><code>TaxiObj +0x2C4</code></td>
+              <td class="col-offset-type">float[4]</td>
+              <td class="col-offset-desc">Per-wheel torque split array written each frame by the drivetrain routine. Edit to build custom drift / grip tuning sub-mods.</td>
+            </tr>
+
+            <tr class="category-header-row" data-cat-header="audio-timing" style="background: rgba(245, 197, 24, 0.08);">
+              <td colspan="4" style="font-weight: 800; color: var(--accent); letter-spacing: 0.05em; text-transform: uppercase;">
+                20. Audio (CRI) &amp; Engine Timing
+              </td>
+            </tr>
+            <tr data-offset-cat="audio-timing">
+              <td class="col-offset-id"><code>0x004C9C2A</code></td>
+              <td class="col-offset-addr"><code>CRI Sound Stub</code></td>
+              <td class="col-offset-type">Patch: EB 15</td>
+              <td class="col-offset-desc">CRI middleware playback gate for passenger/announce VO. Patched by the soundtrack restoration to unlock the original Offspring / Bad Religion streams.</td>
+            </tr>
+            <tr data-offset-cat="audio-timing">
+              <td class="col-offset-id"><code>ENGINE_RPM_FLOAT</code></td>
+              <td class="col-offset-addr"><code>TaxiObj +0x318</code></td>
+              <td class="col-offset-type">float</td>
+              <td class="col-offset-desc">Normalized engine RPM (0.0–1.0) driving both the procedural engine pitch and the dashboard tachometer needle.</td>
+            </tr>
+            <tr data-offset-cat="audio-timing">
+              <td class="col-offset-id"><code>FRAME_TIMER_DELTA</code></td>
+              <td class="col-offset-addr"><code>0x017A5B30</code></td>
+              <td class="col-offset-type">float</td>
+              <td class="col-offset-desc">Global per-frame delta time. The 60 FPS mod rewrites its divisor here instead of patching individual call sites.</td>
             </tr>
 
           </tbody>

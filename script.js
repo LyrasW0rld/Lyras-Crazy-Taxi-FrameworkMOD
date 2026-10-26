@@ -313,3 +313,94 @@
   });
 
 })();
+
+
+/* =====================================================================
+   DEDUPLICATED VISIT COUNTER (once per visitor per calendar day)
+   GitHub Pages is fully static, so the counter lives in localStorage:
+   - counted at most once per local calendar day per browser profile
+   - site-wide daily cap: visiting any page of the project consumes the
+     day (index -> contact -> downloads on the same day = +1 visit)
+   ===================================================================== */
+var CTM_KEY_TOTAL = 'lyra_ctm_total_visits';
+var CTM_KEY_LAST = 'lyra_ctm_last_visit_day';
+
+function ctmToday() { return new Date().toISOString().slice(0, 10); }
+
+(function ctmCountVisit() {
+  try {
+    var lastDay = localStorage.getItem(CTM_KEY_LAST);
+    if (lastDay !== ctmToday()) {
+      localStorage.setItem(CTM_KEY_LAST, ctmToday());
+      var total = parseInt(localStorage.getItem(CTM_KEY_TOTAL) || '0', 10) + 1;
+      localStorage.setItem(CTM_KEY_TOTAL, String(total));
+    }
+  } catch (e) { /* private mode — skip counting */ }
+})();
+
+function ctmGetTotalVisits() {
+  try { return parseInt(localStorage.getItem(CTM_KEY_TOTAL) || '0', 10); } catch (e) { return 0; }
+}
+
+function ctmRenderVisitCounts() {
+  var nodes = document.querySelectorAll('[data-visit-count]');
+  if (!nodes.length) return;
+  var visits = ctmGetTotalVisits();
+  for (var i = 0; i < nodes.length; i++) {
+    nodes[i].textContent = visits.toLocaleString();
+  }
+}
+
+/* =====================================================================
+   DOWNLOAD COUNTERS (per file, deduplicated per visitor per day).
+   Displayed value on /counts = static baseline (data-baseline attr)
+   + locally tracked download clicks. Edit baselines by hand in
+   counts/index.html to merge in external analytics numbers.
+   ===================================================================== */
+function ctmDlKey(f) { return 'lyra_ctm_dl_' + f; }
+function ctmDlDayKey(f) { return 'lyra_ctm_dlday_' + f; }
+
+function ctmTrackDownload(file) {
+  try {
+    if (localStorage.getItem(ctmDlDayKey(file)) === ctmToday()) return; // max +1 per day
+    localStorage.setItem(ctmDlDayKey(file), ctmToday());
+    var n = parseInt(localStorage.getItem(ctmDlKey(file)) || '0', 10) + 1;
+    localStorage.setItem(ctmDlKey(file), String(n));
+  } catch (e) { }
+}
+
+function ctmLocalDownloads(file) {
+  try { return parseInt(localStorage.getItem(ctmDlKey(file)) || '0', 10); } catch (e) { return 0; }
+}
+
+function ctmRenderDownloadCounts() {
+  var nodes = document.querySelectorAll('[data-download-count-for]');
+  for (var i = 0; i < nodes.length; i++) {
+    var el = nodes[i];
+    var file = el.getAttribute('data-download-count-for');
+    var baseline = parseInt(el.getAttribute('data-baseline') || '0', 10);
+    el.textContent = (baseline + ctmLocalDownloads(file)).toLocaleString();
+  }
+}
+
+document.addEventListener('click', function (e) {
+  var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+  if (!a) return;
+  var href = decodeURIComponent(a.getAttribute('href') || '');
+  var files = [
+    'Lyras Framwork MOD.zip', 'LyrasTextureMod.zip',
+    'Open Source CODE.7z', 'TextureMod_SRC.7z',
+    'offset.md', 'Crazy Taxi Texture Modding Guide.pdf',
+    'SUBMOD_DEVELOPMENT_GUIDE.md', 'MANUAL_INSTALL.md'
+  ];
+  for (var i = 0; i < files.length; i++) {
+    if (href.indexOf(files[i]) !== -1) { ctmTrackDownload(files[i]); break; }
+  }
+});
+
+
+/* ---- render deduplicated counters after DOM is ready ---- */
+ctmRenderVisitCounts();
+var ctmStatUnique = document.getElementById('stat-unique-visits');
+if (ctmStatUnique) ctmStatUnique.textContent = ctmGetTotalVisits().toLocaleString();
+ctmRenderDownloadCounts();
