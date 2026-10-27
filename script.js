@@ -404,3 +404,187 @@ ctmRenderVisitCounts();
 var ctmStatUnique = document.getElementById('stat-unique-visits');
 if (ctmStatUnique) ctmStatUnique.textContent = ctmGetTotalVisits().toLocaleString();
 ctmRenderDownloadCounts();
+
+/* =====================================================================
+   FUCHSHILFE BERLIN SUPPORT BANNER, MODAL & TOP-RIGHT FOX LOGO
+   ===================================================================== */
+(function initFoxSupport() {
+  var FOX_SVG = '<svg viewBox="0 0 64 42" fill="none" xmlns="http://www.w3.org/2000/svg" class="walking-fox-svg" aria-label="LCV Walking Fox Silhouette">' +
+    '<path d="M4 23 C9 17, 15 17, 21 21 L25 19 C32 18, 39 18, 45 16 L48 8 L51 13 L54 7 L55 14 L62 17 L61 20 L55 21 C53 24, 49 26, 47 28 L53 26 L56 23 L58 25 L54 29 L46 31 L44 39 L41 39 L42 29 C36 29, 30 29, 25 28 L22 39 L19 39 L21 27 L16 36 L13 36 L17 25 C11 26, 6 26, 4 23 Z" fill="#FFCC00"/>' +
+    '</svg>';
+
+  var QR_URL = 'https://fuchshilfe-berlin.de/.cm4all/uproc.php/0/.qrcode_www.amazon.de.png/picture-1600?_=1993dea75cf';
+  var WISHLIST_URL = 'https://fuchshilfe-berlin.de/IHR-WOLLT-UNS-UNTERSTUeTZEN';
+
+  function openModal() {
+    var modal = document.getElementById('fox-support-modal');
+    if (modal) modal.classList.add('open');
+  }
+
+  function closeModal() {
+    var modal = document.getElementById('fox-support-modal');
+    if (modal) modal.classList.remove('open');
+  }
+
+  window.openFoxSupportModal = openModal;
+  window.closeFoxSupportModal = closeModal;
+
+  // 1. Ensure Top-Right Walking Fox Logo in #main-nav .nav-inner
+  function setupNavFoxLogo() {
+    var navInner = document.querySelector('#main-nav .nav-inner');
+    if (!navInner) return;
+    var existingBtn = document.getElementById('nav-fox-logo-btn');
+    if (!existingBtn) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.id = 'nav-fox-logo-btn';
+      btn.className = 'nav-fox-btn';
+      btn.title = 'Support Wild Foxes — Fuchshilfe Berlin';
+      btn.setAttribute('aria-label', 'Support Wild Foxes — Fuchshilfe Berlin');
+      btn.innerHTML = FOX_SVG + '<span class="nav-fox-btn-text">Support Foxes</span>';
+      navInner.appendChild(btn);
+      existingBtn = btn;
+    }
+    existingBtn.onclick = function (e) {
+      e.preventDefault();
+      openModal();
+    };
+  }
+
+  // 2. Ensure Floating Banner & Modal in document.body
+  function setupWidgetAndModal() {
+    if (!document.getElementById('fox-support-container')) {
+      var container = document.createElement('div');
+      container.id = 'fox-support-container';
+      container.innerHTML =
+        '<div id="fox-support-widget">' +
+          '<div class="fox-widget-header">' +
+            '<div class="fox-widget-title-group" id="fox-widget-open-modal" title="Open Full Details">' +
+              FOX_SVG +
+              '<span class="fox-widget-title">Support Wild Foxes</span>' +
+            '</div>' +
+            '<div class="fox-widget-controls">' +
+              '<button type="button" class="fox-ctrl-btn" id="fox-ctrl-expand" title="Open Full Details">↗</button>' +
+              '<button type="button" class="fox-ctrl-btn" id="fox-ctrl-collapse" title="Collapse Banner">▼</button>' +
+            '</div>' +
+          '</div>' +
+          '<div class="fox-widget-body">' +
+            '<p>This tool is free. Instead of donating to the developer, please consider supporting <strong style="color:#FFCC00;">Fuchshilfe Berlin</strong>!</p>' +
+            '<p style="font-size:11.8px; color:#A1A1AA; margin-bottom:10px;">Your support helps ensure wild foxes live safely and sick or injured foxes receive medical care.</p>' +
+            '<div class="fox-widget-preview">' +
+              '<a href="' + WISHLIST_URL + '" target="_blank" rel="noopener noreferrer" title="Scan or click QR code to support">' +
+                '<img src="' + QR_URL + '" alt="Fuchshilfe Berlin QR Code" class="fox-widget-qr-thumb" />' +
+              '</a>' +
+              '<div class="fox-widget-cta-col">' +
+                '<a href="' + WISHLIST_URL + '" target="_blank" rel="noopener noreferrer" class="fox-btn-primary">' +
+                  '<span>Amazon Wishlist</span> <span>↗</span>' +
+                '</a>' +
+                '<button type="button" class="fox-btn-secondary" id="fox-btn-show-qr">' +
+                  'QR Code & Details' +
+                '</button>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+        '<button type="button" id="fox-support-collapsed-btn" title="Expand Fuchshilfe Berlin Support Banner">' +
+          FOX_SVG +
+          '<span>Support Wild Foxes 🦊</span>' +
+          '<span>▲</span>' +
+        '</button>';
+      document.body.appendChild(container);
+    }
+
+    if (!document.getElementById('fox-support-modal')) {
+      var modal = document.createElement('div');
+      modal.id = 'fox-support-modal';
+      modal.setAttribute('role', 'dialog');
+      modal.setAttribute('aria-modal', 'true');
+      modal.innerHTML =
+        '<div class="fox-modal-box">' +
+          '<div class="fox-modal-header">' +
+            '<div class="fox-modal-title-wrap">' +
+              FOX_SVG +
+              '<h3 class="fox-modal-title">Support Wild Foxes — Fuchshilfe Berlin</h3>' +
+            '</div>' +
+            '<button type="button" class="fox-modal-close-btn" id="fox-modal-close">CLOSE</button>' +
+          '</div>' +
+          '<div class="fox-modal-content">' +
+            '<a href="' + WISHLIST_URL + '" target="_blank" rel="noopener noreferrer" class="fox-modal-qr-link" title="Open Fuchshilfe Berlin Amazon Wishlist">' +
+              '<img src="' + QR_URL + '" alt="Fuchshilfe Berlin Amazon QR Code" class="fox-modal-qr-img" />' +
+            '</a>' +
+            '<div class="fox-modal-text-wrap">' +
+              '<p>This tool is free. Instead of donating to the developer, please consider supporting <strong style="color:#FFCC00;">Fuchshilfe Berlin</strong>!</p>' +
+              '<p style="color:#D4D4D8;">Your support helps ensure that wild foxes can live a safe, good life and that sick or injured foxes receive medical care to recover and get healthy again.</p>' +
+              '<a href="' + WISHLIST_URL + '" target="_blank" rel="noopener noreferrer" class="fox-modal-donate-btn">' +
+                '<span>Donate Goods on Amazon Wishlist</span> <span>↗</span>' +
+              '</a>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      document.body.appendChild(modal);
+    }
+
+    bindEvents();
+  }
+
+  function bindEvents() {
+    var widget = document.getElementById('fox-support-widget');
+    var collapsedBtn = document.getElementById('fox-support-collapsed-btn');
+    var collapseBtn = document.getElementById('fox-ctrl-collapse');
+    var expandBtn = document.getElementById('fox-ctrl-expand');
+    var openModalGroup = document.getElementById('fox-widget-open-modal');
+    var showQrBtn = document.getElementById('fox-btn-show-qr');
+    var modal = document.getElementById('fox-support-modal');
+    var closeBtn = document.getElementById('fox-modal-close');
+
+    function setCollapsed(isCollapsed) {
+      if (isCollapsed) {
+        if (widget) widget.style.display = 'none';
+        if (collapsedBtn) collapsedBtn.style.display = 'inline-flex';
+        try { localStorage.setItem('fuchshilfe_banner_collapsed', '1'); } catch (e) {}
+      } else {
+        if (widget) widget.style.display = 'block';
+        if (collapsedBtn) collapsedBtn.style.display = 'none';
+        try { localStorage.setItem('fuchshilfe_banner_collapsed', '0'); } catch (e) {}
+      }
+    }
+
+    // Check saved state
+    var savedState = null;
+    try { savedState = localStorage.getItem('fuchshilfe_banner_collapsed'); } catch (e) {}
+    if (savedState === '1') {
+      setCollapsed(true);
+    } else {
+      setCollapsed(false);
+    }
+
+    if (collapseBtn) collapseBtn.onclick = function() { setCollapsed(true); };
+    if (collapsedBtn) collapsedBtn.onclick = function() { setCollapsed(false); };
+    if (expandBtn) expandBtn.onclick = function() { openModal(); };
+    if (openModalGroup) openModalGroup.onclick = function() { openModal(); };
+    if (showQrBtn) showQrBtn.onclick = function() { openModal(); };
+    if (closeBtn) closeBtn.onclick = function() { closeModal(); };
+
+    if (modal) {
+      modal.onclick = function(e) {
+        if (e.target === modal) closeModal();
+      };
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' || e.keyCode === 27) {
+        closeModal();
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      setupNavFoxLogo();
+      setupWidgetAndModal();
+    });
+  } else {
+    setupNavFoxLogo();
+    setupWidgetAndModal();
+  }
+})();

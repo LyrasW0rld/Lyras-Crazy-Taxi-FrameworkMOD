@@ -2836,5 +2836,441 @@ pre code {
   margin-bottom: 0;
 }
 
+/* ============================================================
+   WALKING FOX LOGO & FUCHSHILFE BERLIN SUPPORT STYLES
+   ============================================================ */
 
+.walking-fox-svg {
+  display: block;
+  overflow: visible;
+}
 
+.walking-fox-svg path {
+  fill: #FFCC00;
+  transition: fill 0.2s ease;
+}
+
+/* Nav Fox Button (Top Right in Navigation Bar) */
+.nav-fox-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: rgba(12, 12, 14, 0.9);
+  border: 2px solid #FFCC00;
+  border-radius: 6px;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 10px rgba(255, 204, 0, 0.2);
+  margin-left: 12px;
+  flex-shrink: 0;
+  color: #FFCC00;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+}
+
+.nav-fox-btn .walking-fox-svg {
+  width: 34px;
+  height: 22px;
+}
+
+.nav-fox-btn:hover {
+  background: #FFCC00;
+  color: #000000;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 204, 0, 0.45);
+}
+
+.nav-fox-btn:hover .walking-fox-svg path {
+  fill: #000000;
+}
+
+@media (max-width: 840px) {
+  .nav-fox-btn {
+    padding: 5px 9px;
+    margin-left: 8px;
+    margin-right: 8px;
+  }
+  .nav-fox-btn .nav-fox-btn-text {
+    display: none;
+  }
+  .nav-fox-btn .walking-fox-svg {
+    width: 28px;
+    height: 18px;
+  }
+}
+
+/* Bottom-Right Floating Fox Support Widget */
+#fox-support-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Expanded Card: 10% larger (width 352px) */
+#fox-support-widget {
+  width: 352px;
+  max-width: calc(100vw - 32px);
+  background: rgba(12, 12, 14, 0.96);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 2px solid #FFCC00;
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.9), 0 0 20px rgba(255, 204, 0, 0.18);
+  color: #F4F4F5;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fox-widget-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  padding-bottom: 10px;
+  margin-bottom: 12px;
+}
+
+.fox-widget-title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.fox-widget-title-group:hover .fox-widget-title {
+  color: #FFE066;
+}
+
+.fox-widget-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: #FFCC00;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1.2;
+}
+
+.fox-widget-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.fox-ctrl-btn {
+  background: transparent;
+  border: none;
+  color: #A1A1AA;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.fox-ctrl-btn:hover {
+  color: #FFCC00;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.fox-widget-body {
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: #E4E4E7;
+}
+
+.fox-widget-body p {
+  margin: 0 0 10px 0;
+}
+
+.fox-widget-body strong {
+  color: #FFCC00;
+}
+
+.fox-widget-preview {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 204, 0, 0.25);
+  border-radius: 6px;
+  padding: 8px 10px;
+  margin-bottom: 12px;
+}
+
+.fox-widget-qr-thumb {
+  width: 58px;
+  height: 58px;
+  background: #ffffff;
+  padding: 3px;
+  border: 1px solid #FFCC00;
+  border-radius: 4px;
+  flex-shrink: 0;
+  cursor: pointer;
+  object-fit: contain;
+}
+
+.fox-widget-cta-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fox-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: #FFCC00;
+  color: #000000;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 8px 12px;
+  border-radius: 4px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  box-shadow: 0 2px 8px rgba(255, 204, 0, 0.25);
+}
+
+.fox-btn-primary:hover {
+  background: #FFD633;
+  color: #000000;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(255, 204, 0, 0.4);
+}
+
+.fox-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: #18181B;
+  color: #FFCC00;
+  border: 1px solid #FFCC00;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 6px 10px;
+  border-radius: 4px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.fox-btn-secondary:hover {
+  background: #FFCC00;
+  color: #000000;
+}
+
+/* Collapsed Toggle Button (10% larger) */
+#fox-support-collapsed-btn {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  background: #0C0C0E;
+  border: 2px solid #FFCC00;
+  border-radius: 8px;
+  padding: 10px 16px;
+  color: #FFCC00;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 16px rgba(255, 204, 0, 0.25);
+  transition: all 0.25s ease;
+}
+
+#fox-support-collapsed-btn:hover {
+  background: #FFCC00;
+  color: #000000;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(255, 204, 0, 0.45);
+}
+
+#fox-support-collapsed-btn:hover .walking-fox-svg path {
+  fill: #000000;
+}
+
+/* Fullscreen Modal */
+#fox-support-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  background: rgba(0, 0, 0, 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+}
+
+#fox-support-modal.open {
+  display: flex;
+}
+
+.fox-modal-box {
+  background: #0C0C0E;
+  border: 2px solid #FFCC00;
+  border-radius: 10px;
+  max-width: 580px;
+  width: 100%;
+  padding: 26px;
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.95), 0 0 35px rgba(255, 204, 0, 0.2);
+  position: relative;
+  animation: foxModalFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes foxModalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.94) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.fox-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  padding-bottom: 14px;
+  margin-bottom: 20px;
+  gap: 12px;
+}
+
+.fox-modal-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.fox-modal-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 15px;
+  font-weight: 700;
+  color: #FFCC00;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.fox-modal-close-btn {
+  background: #FFCC00;
+  color: #000000;
+  border: none;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 6px 14px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.fox-modal-close-btn:hover {
+  background: #FFD633;
+  transform: translateY(-1px);
+}
+
+.fox-modal-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 22px;
+}
+
+.fox-modal-qr-link {
+  background: #ffffff;
+  padding: 8px;
+  border: 2px solid #FFCC00;
+  border-radius: 6px;
+  display: inline-block;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.fox-modal-qr-link:hover {
+  transform: scale(1.03);
+}
+
+.fox-modal-qr-img {
+  width: 154px;
+  height: 154px;
+  object-fit: contain;
+  display: block;
+}
+
+.fox-modal-text-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: #E4E4E7;
+}
+
+.fox-modal-text-wrap p {
+  margin: 0;
+}
+
+.fox-modal-donate-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #FFCC00;
+  color: #000000;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  padding: 12px 18px;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  margin-top: 4px;
+  box-shadow: 0 4px 14px rgba(255, 204, 0, 0.3);
+}
+
+.fox-modal-donate-btn:hover {
+  background: #FFD633;
+  color: #000000;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 204, 0, 0.45);
+}
+
+@media (max-width: 640px) {
+  .fox-modal-content {
+    flex-direction: column;
+    text-align: center;
+  }
+  .fox-modal-title {
+    font-size: 13px;
+  }
+}
