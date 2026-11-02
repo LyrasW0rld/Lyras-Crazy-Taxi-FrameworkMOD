@@ -20,6 +20,7 @@ Diese Datei dient als vollständige technische Referenz für Entwickler und Modd
     - [12.8 CRI ADXF, XECI VFS & CRS Mutex (0x004209D0 - 0x0042A130)](#128-entdeckungen--korrekturen-aus-batch-6-400er-batch-rebuild-0x004209d0--0x0042a130)
     - [12.9 CRI ADX Voice & Sofdec Video/Audio Demuxer (0x0042A180 - 0x00439190)](#129-entdeckungen--erweiterungen-cri-adx-voice--sofdec-videoaudio-demuxer-0x0042a180--0x00439190)
     - [12.10 Vollständige Funktions- & Adressmatrix des Rust Clean-Room Rebuilds](#1210-vollständige-funktions--und-adressmatrix-des-rust-clean-room-rebuilds)
+    - [12.18 Fahrzeugdynamik, 4-Rad-Lenkung (4WS), Glatteis-Physik & World Streaming Pipeline](#1218-fahrzeugdynamik-4-rad-lenkung-4ws-glatteis-physik--world-streaming-pipeline-ida--live-memory-verified)
 
 ---
 
@@ -48,6 +49,14 @@ Diese Datei dient als vollständige technische Referenz für Entwickler und Modd
 | `0x016A2CFC` | `int32_t` | `g_GameFlag` | Haupt-Spielstatus (0 = Menü/Attract, 1 = WorldLoaded, 2 = Fade, 3 = ActiveGameplay, 7 = QuitToMenu). |
 | `0x016A2804` | `int32_t` | `g_SessionState` | Sitzungszustand / JumpTable-Index (0..15) im 3D-WorldLoaded Status. |
 | `0x016A2818` | `int32_t` | `g_GameMode` | Spielmodus (4 = Arcade Stage 1, 14 = Original Stage 2, 15 = CrazyBox Stage 3). |
+| `0x016620C8` | `float` | `ADDR_VEHICLE_YAW_RATE` | Aktive Fahrzeuggierrate / Drehbeschleunigung um Hochachse (integriert von `sub_512F00`). |
+| `0x01662150` | `int16_t` / `int32_t` | `ADDR_WHEEL_FL_STEER_BAM` | Front Left Rad-Lenkwinkel in BAM (+0x80 in Radstruktur 0x016620D0). |
+| `0x016621D4` | `int16_t` / `int32_t` | `ADDR_WHEEL_FR_STEER_BAM` | Front Right Rad-Lenkwinkel in BAM (+0x80 in Radstruktur 0x01662154). |
+| `0x01662258` | `int16_t` / `int32_t` | `ADDR_WHEEL_RL_STEER_BAM` | Rear Left Rad-Lenkwinkel in BAM (+0x80 in Radstruktur 0x016621D8, 4WS). |
+| `0x016622DC` | `int16_t` / `int32_t` | `ADDR_WHEEL_RR_STEER_BAM` | Rear Right Rad-Lenkwinkel in BAM (+0x80 in Radstruktur 0x0166225C, 4WS). |
+| `0x005A04EC` | `float` | `ADDR_LOAD_CHUNKS_RADIUS` | Chunk-Abfrageradius (`flt_5A04EC`) für `load_chunks_around` in `sub_519890` (Vanilla 1800.0f). |
+| `0x0059FAF0` | `float` | `ADDR_CHUNK_TTL_DIST_K` | Chunk Textur-Eviction Abklingfaktor (`0.02f`). |
+| `0x016A2D04` | `float` | `ADDR_INPUT_THROTTLE_FLOAT` | Roher Gaspedal-Eingabewert (0.0..1.0), für Traktionskontrolle auf Glatteis. |
 | `0x016A28E4` | `int32_t` | `g_SessionRuleSubMode` | Spielregeln-Submodus (z. B. 2 = Arcade/Original Standardregeln). |
 | `0x016A28F0` | `int32_t` | `g_SessionParamFlags` | Sekundäre Sitzungsflags / Navigationsrouting-Parameter. |
 | `0x016A41A4` | `uint32_t` | `g_GameTimer` | In-Game Runden-Timer in 60Hz Frames (Standard 3000 = 50s, 36000 = 10 Min). |
@@ -204,7 +213,7 @@ Jede der oben genannten 26 Tabellen ist ein Array von **16-Byte Einträgen**. Da
 
 ### 5.2 Bitmasken für `dims` (+0x00)
 - **Breite (Width)**: `dims & 0xFFFF`
-- **Höhe (Height)**: `(dims >> 16) & 0xFFFF`
+- **Höhe (He\right)**: `(dims >> 16) & 0xFFFF`
 
 ### 5.3 Bitmasken für `fmt` (+0x04)
 
@@ -377,6 +386,7 @@ Diese Dokumentation listet alle relevanten Speicheradressen, Offsets, Datenstruk
     - [12.8 CRI ADXF, XECI VFS & CRS Mutex (Batch 6: 0x004209D0 - 0x0042A130)](#128-entdeckungen--korrekturen-aus-batch-6-400er-batch-rebuild-0x004209d0--0x0042a130)
     - [12.9 CRI ADX Voice & Sofdec Video/Audio Demuxer (Batch 7: 0x0042A180 - 0x00439190)](#129-entdeckungen--erweiterungen-cri-adx-voice--sofdec-videoaudio-demuxer-0x0042a180--0x00439190)
     - [12.10 Vollständige Funktions- & Adressmatrix des Rust Clean-Room Rebuilds](#1210-vollständige-funktions--und-adressmatrix-des-rust-clean-room-rebuilds)
+    - [12.18 Fahrzeugdynamik, 4-Rad-Lenkung (4WS), Glatteis-Physik & World Streaming Pipeline](#1218-fahrzeugdynamik-4-rad-lenkung-4ws-glatteis-physik--world-streaming-pipeline-ida--live-memory-verified)
 
 ---
 
@@ -481,6 +491,9 @@ Offset  | Vektor-Komponente | Typ   | Speicheradresse | Bedeutung
 | `ADDR_INPUT_BUTTONS_2` | `0x016A287C` | `uint32_t` | Verzögerter/gefilterter Puffer (von der Fahrphysik genutzt). |
 | `ADDR_INPUT_BUFFER_DELTA`| `+0x34` | Offset | Offset zwischen Rohpuffer und Spieler-1-Fahrphysik-Puffer. |
 | `ADDR_INPUT_STEER_AXIS` | `0x016A2858` | `int16_t` | Lenkachse Analog-Stick: `-32767` (Voll links) bis `+32767` (Voll rechts). |
+| `ADDR_INPUT_STEER_FLOAT`| `0x016A2D10` | `float` | **Live-Lenkwinkel Float [-1.0f .. +1.0f]:** Wird von `sub_4E99A0` berechnet und von der echten Fahrphysik `sub_519890` bei `0x00519908` direkt eingelesen! |
+| `ADDR_INPUT_STEER_FLOAT_RAW` | `0x016A2810` | `float` | Unbegrenzter Roh-Lenkwinkel aus Hardware-Werten. |
+| `ADDR_VEHICLE_WHEEL_STEER_BAM` | `0x01662044` | `int16_t` | Vorderrad-Lenkwinkel in BAM-Einheiten: `[-4352, +4352]` (~23.9°). Steuert optische Radstellung (`sub_4C37F0`) und Kurvenverhalten. |
 | `ADDR_INPUT_ACCEL_AXIS` | `0x016A285A` | `uint16_t` | Gaspedal / Trigger: `0` (Losgelassen) bis `65535` (Vollgas). |
 | `ADDR_INPUT_BRAKE_AXIS` | `0x016A285C` | `uint16_t` | Bremspedal / Trigger: `0` bis `65535`. |
 | `ADDR_INPUT_BTN_ACCEL` | `0x016A2863` | `uint8_t` | Gas-Button (`1` = gedrückt, `0` = frei). |
@@ -557,6 +570,9 @@ Sega lädt die Map in **Chunks** (Array 1) und **Sektoren** (Array 2) über eine
 | `ADDR_COLLISION_TRAFFIC_1` | `0x004DCA60` | `__cdecl void(float)` | Mode 1 Aktiver Gameplay Sektor-Streamer. |
 | `ADDR_COLLISION_TRAFFIC_2` | `0x004DC660` | `__cdecl void()` | Mode 2 Sektor-Streamer. |
 | `ADDR_COLLISION_INTERSECT` | `0x0050BED0` | Custom Regs (`esi`, `edx`) | **Echte Fahrzeug-zu-Fahrzeug-Kollision:** Prüft Trefferboxen. Wenn `eax = 0` zurückgegeben wird, gleitet das Taxi widerstandslos durch den Verkehr. |
+| `ADDR_SOLVE_RIGID_BODY` | `0x00510400` | `__cdecl int(void*, void*, ...)` | **Car <-> Car Impulskollision:** Löst physikalische Rückstöße zwischen Fahrzeugen auf (21x21 Tabelle bei `0x01663390`). MinHook-Ziel für `No Traffic Collision`. |
+| `ADDR_SPEED_MULT_PATCH` | `0x00519E90` | Inline JMP Cave | **Speed- & Nitro-Multiplikator Hook:** Skaliert die Geschwindigkeit `flt_166208C` in `sub_519890` direkt vor der Geschwindigkeitszerlegung (`vX`/`vZ`). |
+| `ADDR_VEHICLE_SPEED_SCALAR` | `0x0166208C` | `float` | **Fahrzeug-Geschwindigkeitsskalar:** Wird in `sub_519890` berechnet und durch `hkSpeedScalarCave` mit dem Nitro-Faktor multipliziert. |
 | `ADDR_VEHICLE_UPDATE_FN` | `0x0051D940` | `__cdecl void()` | Haupt-Fahrphysik Routine pro Frame. |
 | `ADDR_VEHICLE_UPDATE_CALL_1` | `0x0051139B` | Code-Call | Primäre Hook-Stelle für Physik-Vor-/Nachbereitung (`PreVehiclePhysics` / `PostVehiclePhysics`). |
 | `ADDR_VEHICLE_UPDATE_CALL_2` | `0x00511F86` | Code-Call | Sekundäre Physik-Aufrufstelle. |
@@ -1474,3 +1490,270 @@ In Phase 3B verifizierte und übersetzte Kernroutinen für dynamische Fahrzeug-E
 | `0x00432560` | `__cdecl` | `SofdecVideoIdctColStep` | Führt 8-Punkt IDCT Spaltentransformation durch. |
 | `0x00432660` | `__cdecl` | `SofdecVideoReconstructBlock`| Rekonstruiert 8x8 Bildblock aus IDCT-Residuen [0..255]. |
 | `0x00433E50` | `__cdecl` | `SofdecVideoLockSurface` | Sperrt D3D-Texturoberfläche für Sofdec Frame-Upload. |
+
+### 12.18 Fahrzeugdynamik, 4-Rad-Lenkung (4WS), Glatteis-Physik & World Streaming Pipeline (IDA & Live Memory Verified)
+
+Diese Sektion dokumentiert die durch Reverse Engineering (IDA Pro 9.1 & Live-Speicher-Tracing) gewonnenen Erkenntnisse über die Fahrzeugphysik-Engine, die Einzelrad-Lenkstruktur, das Driftverhalten und die Streaming-Mechanismen der PC-Version von *Crazy Taxi*.
+
+#### 1. Vierrad-Aufhängung und Einzelrad-Lenkstruktur (0x016620D0 - 0x016622E0)
+Die Fahrzeugsimulation berechnet alle 4 Räder in einer festen Struktur-Matrix über die Routine `solve_4wheel_suspension_and_forces` (`0x00516460`). Jedes Rad belegt eine Struktur von `0x84` Bytes:
+
+| Rad | Basisadresse | Steer BAM Offset | Absolute Adresse | Datentyp | Wertebereich / Bedeutung |
+|---|---|---|---|---|---|
+| **Front Left (FL)** | `0x016620D0` | `+0x80` | `0x01662150` | `int16_t` / `int32_t` | Lenkwinkel Vorderrad links in BAM (-4600..+4600 vanilla, getunt bis 5400). |
+| **Front Right (FR)** | `0x01662154` | `+0x80` | `0x016621D4` | `int16_t` / `int32_t` | Lenkwinkel Vorderrad rechts in BAM. |
+| **Rear Left (RL)** | `0x016621D8` | `+0x80` | `0x01662258` | `int16_t` / `int32_t` | Lenkwinkel Hinterrad links in BAM. Nativ von Sega ignoriert, vom Framework für 4WS angesteuert. |
+| **Rear Right (RR)** | `0x0166225C` | `+0x80` | `0x016622DC` | `int16_t` / `int32_t` | Lenkwinkel Hinterrad rechts in BAM. |
+
+#### 2. Sega Spinout-Bremse und Gierraten-Integrator (0x016620C8 & 0x00519F33)
+* **Problem beim naiven Drehen des Taxis**: Ein direktes Überschreiben des Ausrichtungswinkels `bodyYaw` (`0x01661FF4`) im Frame führt dazu, dass der Schlupfwinkel (Slip Angle = `dword_1662024 - bodyYaw`) die 90°-Schwelle (`0x4000 BAM`) überschreitet.
+* **Sega Spinout Clamp (`0x00519F33`)**:
+  ```c
+  if ( abs((int16_t)(dword_1662024 - bodyYaw)) > 0x4000 ) {
+      flt_166208C = -currentSpeed; // Löst eine sofortige Vollbremsung aus!
+  }
+  ```
+  Dadurch fühlte sich das Fahrzeug bei modifizierter Lenkung wie ein unlenkbarer „Steinblock“ mit riesigem Wendekreis an.
+* **Lösung**: Die Drehung des Fahrzeugs muss über die physikalische Drehbeschleunigung `ADDR_VEHICLE_YAW_RATE` (`0x016620C8`) sowie die physischen Radwinkel (`0x01662150` / `0x016621D4`) erfolgen. Der Integrator `sub_512F00` integriert `flt_16620C8` sauber in Orientierung und Geschwindigkeitsvektor ein, ohne die Sega-Notbremse auszulösen.
+
+#### 3. Allradlenkung (4WS) mit kontinuierlichem Speed-Blending
+Um ein realistisches und wendiges 4WS-Verhalten ohne Steuerungs-Inversion zu gewährleisten, wird der Hinterradwinkel $\delta_r$ anhand der Fahrzeuggeschwindigkeit $v$ kontinuierlich geregelt:
+$$\delta_r = \delta_f \cdot \text{clamp}\left(\frac{v - v_{\text{neutral}}}{v_{\text{scale}}}, -k_{\text{max}}, +k_{\text{min}}
+\right)$$
+* **Gegenphasig (Counter-Phase) bei $v < 50\text{ km/h}$**: Die Hinterräder lenken entgegengesetzt zu den Vorderrädern ($k_{\text{max}} = 0{,}75$). Der Wendekreis verringert sich massiv, das Fahrzeug dreht agil um den Schwerpunkt.
+* **Gleichphasig (In-Phase) bei $v > 50\text{ km/h}$**: Die Hinterräder schlagen in dieselbe Richtung ein wie die Vorderräder ($k_{\text{min}} = 0{,}25$). Ermöglicht diagonales Versetzen („Crab Walk“) bei Spurwechseln auf Autobahnen bei voller Spurstabilität.
+
+#### 4. Glatteis-Physikmodell (Slippery Ice)
+* **Aufhebung der Querbeschleunigungsdämpfung**: Auf Asphalt dämpft die Sega-Engine die Quergeschwindigkeit $v_{\text{lat}}$ pro Frame zu ~90% ab. Auf Glatteis wird $v_{\text{lat}}$ zu $98{,}5\%$ erhalten ($\mu \approx 0{,}1$), wodurch das Fahrzeug tangential in seiner Massenträgheit weiterrutscht.
+* **Entkopplung von Fahrzeugausrichtung und Geschwindigkeitsvektor**: Das Taxi kann sich um die Hochachse drehen (Power-Slide / Donuts), während der Bewegungsvektor in die ursprüngliche Rutschrichtung weiterläuft.
+* **Traction Loss (Wheelspin)**: Beim Beschleunigen auf Eis wird der Motorschub am Throttle-Float (`0x016A2D04`) auf $35\%$ gekappt, um durchdrehende Räder und Haftungsverlust zu simulieren.
+
+#### 5. World Streaming & Chunk-Multiplikator: Textur-Eviction & Fußgänger-Spawns
+* **Der 40%-Bug bei Gebäudetexturen (`sub_5051D0`)**:
+  - `sub_519890` ruft pro Frame `load_chunks_around(..., flt_5A04EC)` auf (`ADDR_SPAWN_DIST_TRAFFIC` bei `0x005A04EC`, Vanilla `1800.0f`).
+  - Alle Chunks außerhalb von `1800.0f` behielten einen Zugriffs-Zähler `chunkEntry[4] <= 0`.
+  - Die Textur-Streaming-Routine `sub_5051D0` überprüfte:
+    ```c
+    if (chunkEntry[4] <= 0) {
+        if (*chunkEntry == 4) *chunkEntry = 0; // Textur wird sofort aus dem VRAM geworfen!
+    }
+    ```
+    Dadurch wurden entfernte Gebäude zwar als Geometrie gerendert, ihre Texturen jedoch in jedem Frame verworfen (graue / weiße Chunks).
+  - **Lösung**: Skalierung von `0x005A04EC` auf `STREAM_RAD_CAP` (`4000.0f`), damit distant Chunks als aktiv markiert bleiben.
+* **Fußgänger- und Figuren-Despawn (`sub_4A9A10`)**:
+  - `ADDR_VIEW_RAD_NORMAL` (`0x005A0788`, Vanilla `1100.0f`) wird in `sub_4AA130` nach `flt_16F59DC` kopiert.
+  - Im Fußgänger-Spawner `sub_4A9A10`:
+    ```c
+    if ( flt_16F59DC * 0.5 > Math_Vec3Distance(taxiPos, spawnPos) )
+        return 0; // Kein Spawn, da innerhalb der "Inner Exclusion Bubble"!
+    ```
+  - Wird `ADDR_VIEW_RAD_NORMAL` über 6000 vergrößert, entsteht eine Sperrzone von 3000+ Einheiten um das Taxi. Da Passagiere und Fußgänger bei 2000 Einheiten despawnen, wurden alle Figuren gelöscht.
+  - **Lösung**: `ADDR_VIEW_RAD_NORMAL` (`0x005A0788`) verbleibt strikt auf `1100.0f`.
+
+### 12.19 Stage-Texturen Zensur-Switch, Arcade 3-Digit Timer Clamping & Fly Mode Kamera-Locks (IDA & Live Memory Verified)
+
+Diese Sektion dokumentiert die detaillierten Reverse-Engineering-Ergebnisse zu Segas PC-Zensurschalter für Welt-Texturen, dem 3-stelligen Arcade-HUD-Timer-Clamping und den Kamera-Schnittstellen im Framework.
+
+#### 1. Segas PC-Zensurschalter für Welt-Texturen (`0x0048BA38` in `sub_48B7A0`)
+* **Hintergrund**: In der PC-Fassung von 2002 wurden die lizenzierten Markengeschäfte (The Original Levi's Store, Pizza Hut, KFC, Tower Records, FILA) zensiert und durch fiktive generische Texturen aus `common.jpk` ersetzt.
+* **Architektur von `load_stage_texture` (`sub_48B7A0`)**:
+  1. Zuerst lädt `decode_pvr_texture` (`0x0048DDB0`) die native Textur aus den Stage-Dateien (`texDC1.bin` für Arcade / `texDC2.bin` für Original City) in das Texturobjekt `dword_1B09938[v5]`.
+  2. Bei `0x0048BA38` prüft die Engine die VRAM-/Mesh-Identifikator-Adresse `*(int*)((char*)&dword_1B09948 + v5)` über ein Switch-Statement:
+     - `0x0CC0DBC0` und `0x0CC00780`: **The Original Levi's Store**.
+       - Springt zu `loc_48BD41`.
+       - Ruft `sub_40AB80` mit Key `6Dh` (109) auf, um die Textur 109 aus `common.jpk` zu laden.
+       - **Die Ursache für das umgedrehte Levi's-Schild**: Die PC-Ersatztextur 109 in `common.jpk` besitzt invertierte UV-Koordinaten, die für das PC-Zensur-Mesh modelliert wurden. Auf dem Dreamcast-Mesh oder mit authentischen Stage-Texturen rendert Textur 109 auf dem Kopf / spiegelverkehrt!
+     - `0x0CC0A640` & `0x0CBFD200`: Pizza Hut (lädt `common.jpk` Key 101).
+     - `0x0CC04B40` & `0x0CBF7700`: Tower Records (lädt `common.jpk` Key 102).
+     - `0x0CC46F80`, `0x0CC47CE0`, `0x0CC48A40`: FILA Schuhgeschäft (lädt `common.jpk` Keys 104, 105, 106).
+     - `0x0CC08E20` & `0x0CBFB9E0`: KFC (lädt `common.jpk` Key 103).
+  3. Bei ungemoddetem Code wird das in Schritt 1 geladene authentische Texturobjekt freigegeben (`operator delete`) und durch die zensierte Textur überschrieben.
+* **CT-DC Patch (`0x0048BA38`)**:
+  - Patch-Bytes: `E9 5E 06 00 00` (`jmp loc_48C09B`).
+  - Überspringt das gesamte Switch-Statement direkt nach `loc_48C09B`.
+  - **Effekt**: Die in Schritt 1 aus `texDC1.bin` / `texDC2.bin` geladenen authentischen Dreamcast-Texturen bleiben im Texturspeicher erhalten. Levi's, Pizza Hut, KFC und Tower Records rendern aufrecht, originalgetreu und unverzerrt.
+
+#### 2. Arcade 3-Digit Round Timer HUD Clamping (`0x004D7E40`)
+* **Adresse des Runden-Timers**: `ADDR_GAME_TIMER` (`0x016A41A4`) speichert die verbleibende Rundenzeit in Frames (60 fps).
+* **HUD-Rendermathematik in `sub_4D7E40`**:
+  ```c
+  v4 = *ADDR_GAME_TIMER / 60; // Verbleibende Sekunden
+  v5 = 999;
+  if ( v4 <= 999 )
+      v5 = v4;
+  v3 = v5 / 100;       // Hunderterstelle
+  v7 = (v5 % 100) / 10;// Zehnerstelle
+  v15 = v5 % 10;       // Einerstelle
+  ```
+* **Das 999-Sekunden Freeze-Phänomen**:
+  - Die Arcade-Anzeige oben auf dem Bildschirm besitzt physisch nur 3 Ziffern (`000` bis `999`).
+  - Wenn ein Custom-Timer mit mehr als 999 Sekunden injiziert wird (z. B. 24 Minuten = 1440 Sekunden oder 99 Minuten = 5940 Sekunden), klemmt `sub_4D7E40` die Anzeige strikt auf `999`.
+  - Während die Engine intern von 1440 auf 999 Sekunden herunterzählt (über 7 Minuten Echtzeit), bleibt die Zahl auf dem Bildschirm permanent als `999` eingefroren.
+* **Lösung**: Der Custom-Timer wird auf maximal 16 Minuten ($16 	imes 60 = 960	ext{ Sekunden} \le 999	ext{ Sekunden}$) kalibriert, sodass der Zähler jederzeit die korrekte Restzeit darstellt und ab der ersten Sekunde sichtbar herunterzählt.
+
+#### 3. Taxi Fly Mode Kamera-Lock Koordinaten
+Im Fly Mode wird die Kamera automatisch an eine optimierte Verfolgerposition gekoppelt:
+* **Positionsoffsets**:
+  - $X = 2{,}3\,	ext{m}$ (Lateraler Offset)
+  - $Y = 19{,}6\,	ext{m}$ (Elevation nach oben)
+  - $Z = -110{,}0\,	ext{m}$ (Distanz nach hinten)
+* **Rotationswinkel**:
+  - $	ext{Pitch} = 3{,}4^\circ$
+  - $	ext{Yaw} = 180{,}0^\circ$
+  - $	ext{Roll} = -2{,}0^\circ$
+* Beim Deaktivieren des Fly Mode werden nahtlos die benutzerdefinierten Standard-Kamera-Offsets aus `g_Config` wiederhergestellt.
+
+#### 4. Bereinigte Lenkungsmodi-Matrix
+* **Modus 0**: Standard (Originales Sega-Arcade-Handling)
+* **Modus 1**: Allradlenkung (4-Wheel Steering / 4WS mit stufenlosem Speed-Blending)
+* **Modus 2**: Drunk Driver (Sinusförmiges Taumeln & verzögerte Lenkimpulse)
+* **Modus 3**: Glatteis-Physik (Slippery Ice: $98{,}5\%$ Erhalt des Querimpulses, Richtungsentkopplung, Throttle-Traktionsverlust)
+
+### 12.20 Fly Mode Koordinatenmetrik (-Y Elevation), Fahrgast-Dropoff Zustandsautomat, Integrierte Tacho-Nitro-Leiste & Feminine GUI Modus
+
+Diese Sektion dokumentiert die finalen Implementierungsdetails zur Behebung der Fly-Mode-Steuerungsinversion, dem fehlerfreien Abschluss von Kundenabsetz-Sequenzen mit automatischem Wiederabheben, der nahtlosen Integration der Nitro-Anzeige in das Tachometer sowie dem neuen femininen Designmodus.
+
+#### 1. Taxi Fly Mode Steuerungs- und Koordinatenarchitektur
+* **Gierwinkel-Lenkungsvektor (Yaw Steering)**:
+  Im Fly Mode steuert der Spieler den Azimutwinkel des Taxis direkt über Tastatur oder Gamepad. Die Richtungszuordnung wurde auf das Sega-Koordinatensystem kalibriert:
+  - **Linkseinschlag** (Taste `A`, Pfeiltaste `Links`, Pad-Lenkachse `< -4000`): Der Gierwinkel wird inkrementiert (`s_FlyYawDeg += 2.2f`), wodurch das Fahrzeug sauber nach links dreht.
+  - **Rechtseinschlag** (Taste `D`, Pfeiltaste `Rechts`, Pad-Lenkachse `> 4000`): Der Gierwinkel wird dekrementiert (`s_FlyYawDeg -= 2.2f`), wodurch das Fahrzeug nach rechts eindreht.
+  - Vorwärtsvektor der Flugbewegung:
+    $$ec{v}_{	ext{fwd}} = egin{pmatrix} \sin(	heta_{	ext{yaw}}) \ 0 \ \cos(	heta_{	ext{yaw}}) \end{pmatrix}$$
+
+* **Vertikale Höhenmetrik (+Y ist OBEN / Skyward)**:
+  In der 3D-Weltkoordinaten-Engine von Crazy Taxi ist die vertikale Achse positiv nach oben gerichtet (+Y = Elevation/Himmel, -Y = Tiefe/Asphalt):
+  - **Steigen** (`Space`): $\Delta Y = +	ext{flySpeed} \cdot 0{,}8	ext{f}$ (addiert Höhe, um das Taxi in den Himmel steigen zu lassen).
+  - **Sinken** (`Shift` / `Strg`): $\Delta Y = -	ext{flySpeed} \cdot 0{,}8	ext{f}$ (subtrahiert Höhe, um das Taxi zum Boden zu senken).
+
+#### 2. Fahrgast-Dropoff & Zielerreicht-Zustandsautomat (`0x004B82F0`, `ADDR_VEHICLE_STATE`)
+* **Hintergrund & Glitch-Prävention**:
+  Erreicht das Taxi die Zielzone mit einem Fahrgast, wechselt Segas Zustandsautomat in `sub_4B82F0` den Fahrzeugstatus `ADDR_VEHICLE_STATE` (`0x01661474`) auf Zustand `11` (`0x0B` = Dropoff Transition).
+* **Lösung**:
+  1. **Autonome Dropoff-Animation**: Während `vehState == 11` pausiert der Mod die Flugkoordinaten-Überschreibung. Sega setzt das Fahrzeug sauber am Zielort ab und spielt die Aussteige-Animation ab.
+  2. **Automatisches Wiederabheben (+8.0f Einheiten)**: Sobald der Kunde ausgestiegen ist (`vehState != 11`), liest das Framework die neue Bodenposition $Y_{	ext{ground}}$ aus und hebt das Taxi selbstständig um 8 Einheiten aufwärts in die Luft:
+     $$Y_{	ext{flight}} = Y_{	ext{ground}} + 8{,}0	ext{f}$$
+  3. **Re-Initialisierung**: Die Flugkoordinaten (`s_FlyPosX`, `s_FlyCurrentAltitude`, `s_FlyPosZ`) und Sega-Physikblöcke (`ROOT`, `BLOCK`, `PREV`) werden synchronisiert und alle Stoßimpulse genullt. Das Taxi schwebt sofort stabil und fahrbereit weiter.
+
+#### 3. Integrierte Tacho-Nitro-HUD-Leiste
+* **Ablösung des Standalone-HUDs**:
+  Das separate, große NOS-Flaschen-HUD in der unteren rechten Bildschirmecke wurde zugunsten einer aufgeräumten Benutzeroberfläche vollständig deaktiviert.
+* **Geometrische Integration im Instrumenten-Cluster**:
+  Die Nitro-Energie wird als horizontale Statusleiste direkt zwischen der oberen Geschwindigkeitsskala und dem unteren Kilometerzähler eingebettet:
+  - Position: $Y_{	ext{nitro}} = 	ext{scaleY} + 8{,}5	ext{f}$, Höhe $4{,}0	ext{f}$, Breite entspricht exakt der Skalenbreite.
+  - Dynamische Farbgebung:
+    - Normalbetrieb: Leuchtendes Elektro-Kobaltblau (`#2396FF`).
+    - Aktiver Boost (+70% Beschleunigung): Flammendes Warn-Orange (`#FF9619`).
+    - Cooldown / Sperre: Warn-Rot (`#EB2D2D`).
+    - Femininer Modus: Strahlendes Orchideen- und Magenta-Pink (`#DC4BAF`).
+
+#### 4. Femininer GUI-Modus (`g_Config.feminineGuiMode`)
+* **Konfiguration**:
+  In den Mod-Einstellungen unter *Settings & Persistence* $
+ightarrow$ *Interface* befindet sich der Schalter `Feminine GUI Mode` (standardmäßig deaktiviert).
+* **Visuelle Transformation**:
+  - **Mod Manager & Overlays**: Dunkles Samtbeere (`ImGuiCol_WindowBg`), mattes Roségold für Titel und Buttons sowie zartes Pastell-Pink für Regler, Checkboxen und Schriftakzente.
+  - **Tachometer-Instrument**:
+    - Äußere Einfassung: Edles mattes Roségold mit zartrosa Zierkontur.
+    - Zifferblatt-Hintergrund: Sanftes Magentapink-Dashboard-Glühen.
+    - Zeigernadel: Fluoreszierendes Magenta-Pink.
+    - Nitro-Leiste: Strahlendes Orchideen-Pink.
+    - Zehntel-Kilometertrommel: Stilvolles Rosenholz-Rot.
+
+
+---
+
+## 17. Neueste Erkenntnisse: Flug-Koordinaten, Dropoff-Zyklus, Audio-Stream-Mapping & Barbie-Design
+
+### 17.1 Crazy Taxi Koordinatensystem & Flug-Kamerageometrie
+* **Koordinaten-Konvention**:
+  In der Render- und Physik-Engine von Crazy Taxi gilt:
+  - $-Y$ ist **AUFWÄRTS** (in den Himmel / Steigen).
+  - $+Y$ ist **ABWÄRTS** (in den Asphalt / Sinken).
+* **Kamera-Elevation im Flugmodus**:
+  Die frühere fehlerhafte Addition ($+14.0\text{f}$) platzierte das Kameraauge unterhalb des Fahrzeugs (unter der Straße) mit Blick nach oben. Die korrigierte Geometrie subtrahiert die Offsets in den Himmelsraum:
+  $$\text{elevatedEye.y} = \text{s\_FlyLastCarPos.y} - 14{,}0\text{f}$$
+  $$\text{elevatedAt.y}  = \text{s\_FlyLastCarPos.y} - 3{,}0\text{f}$$
+  $$v_{\text{up}} = (0{,}0\text{f}, -1{,}0\text{f}, 0{,}0\text{f})$$
+* **Flugsteuerung**:
+  - `Spacebar` (Steigen): Reduziert $Y$ (wird negativer, $\Delta Y < 0$).
+  - `Shift` / `Ctrl` (Sinken): Erhöht $Y$ (wird positiver / weniger negativ, $\Delta Y > 0$).
+
+### 17.2 Fahrzeugzustände (`0x01661474`) & Dropoff-Zyklus
+* **Zustandswerte (`ADDR_VEHICLE_STATE`)**:
+  - `0`: Normaler Fahrbetrieb des Spielers.
+  - `8`: CPU-Attract-Mode Demo (Titelbildschirm-Fahrsimulation).
+  - `10`: Fahrgast steigt ein (Boarding-Zwischensequenz).
+  - `11`: Fahrgast steigt am Zielort aus (Dropoff-Zwischensequenz).
+* **`IsInGame()` Überprüfung**:
+  Darf **nur** bei Zustand 8 abbrechen (`vehState == 8`). Zustände 10 und 11 sind aktive Spielzustände; ein Abbruch bei `>= 8` führte dazu, dass Frame-Updates während des Fahrgast-Ausstiegs einfroren.
+* **Automatischer Dropoff-Zyklus**:
+  Sobald der Fahrgast am Zielort abgesetzt wurde (`vehState == 11` beendet, `ADDR_FARE_CUTSCENE == 0`):
+  1. Bodenposition an der Haltestelle erfassen (`groundX`, `groundY`, `groundZ`).
+  2. Taxi hebt automatisch $+5\text{m}$ in die Luft ab ($\text{liftY} = \text{groundY} - 5{,}0\text{f}$).
+  3. Flugkoordinaten und Yaw-BAM neu synchronisieren (`s_FlyInitialized = true`).
+  4. Root-, Block- und Prev-Felder aktualisieren und Impulse nullen (`0x00519CAF`).
+
+### 17.3 CRI ADX Audio-Streaming & Original-Soundtrack-Wiederherstellung
+* **Streaming-Engine**:
+  Funktion `sub_4A72B0` (`0x004A72B0`) initialisiert und streamt ADX-Audiodateien direkt aus dem Verzeichnis `SoundData/music_adx/`.
+* **ADX-Datei-Zuordnung (Arcade/Dreamcast -> Steam)**:
+  | Steam ADX-Dateiname | Originaler lizenzierter Track | Interpret |
+  | :--- | :--- | :--- |
+  | `Black_Radio.adx` | *All I Want* | The Offspring |
+  | `Orange_Wednesday.adx` | *Ten in 2010* | Bad Religion |
+  | `Escape_Artist.adx` | *Way Down the Line* | The Offspring |
+  | `Flinch.adx` | *Them and Us* | Bad Religion |
+  | `Your_Mouth_Is_A_Guillotine.adx` | *Hear It* / *Inner Logic* | Bad Religion |
+  | `Radiator.adx` | Arcade Result Jingle | SEGA Sound Team |
+  | `The_Chase.adx` | Attract / The Chase Theme | SEGA Sound Team |
+* **Verzeichnisstruktur**:
+  - `SoundData/music_adx/`: Aktives Spielverzeichnis.
+  - `SoundData/music_adx_original/`: Echte CRI ADX Streams der Original-Bands.
+  - `SoundData/music_adx_steam/`: Sicherung der generischen Steam-Tracks.
+
+### 17.4 Nitro Taxi: Verbrauchsrate & Eingabelogik
+* **Verbrauchsrate (`NITRO_DRAIN_PER_SEC`)**:
+  Von 5,0 auf 18,0 Einheiten/Sekunde erhöht. Ein voller 75-Einheiten-Tank reicht für ca. 4,2 Sekunden Dauerschub, wodurch die Leiste im Tacho dynamisch und deutlich sichtbar von rechts nach links abnimmt.
+* **Eingabeunterstützung**:
+  Erkennt neben Pfeiltaste Oben und `'W'` nun auch die Standard-Crazy-Taxi-PC-Taste `'D'`, DirectInput BTN 2 und Gamepad-Trigger. Direktzündung über `Shift` oder `'N'` im Vorwärtsgang (`gear != 1`).
+
+### 17.5 Barbie-Glamour GUI & Vektor-Schnörkel
+* **Farbpalette**:
+  - Hot Barbie Pink (`#FF1493` / `ImVec4(0.88f, 0.12f, 0.55f, 0.96f)`).
+  - Elektrisches Magenta (`ImVec4(1.00f, 0.20f, 0.65f, 1.00f)`).
+  - Zartes Kaugummi- & Puderrosa (`#FF69B4` / `#FFB6C1`).
+  - Tiefes Samtbeeren-Hintergrunddesign.
+* **Vektor-Schnörkel**:
+  - Doppelte Zierkontur um das Mod-Fenster (Hot Pink & Perlmutt).
+  - 4 kunstvolle Bézier-Eckornamente mit Glitzerkreuzen und Perlenzentren.
+  - Perlen-Rosetten als Tachometer-Eckschrauben und Kilometerzähler-Verzierungen.
+  - Schleifen-Ornament (`~ ୨୧ ~`) an der oberen Tachoeinfassung.
+
+
+---
+
+## 18. Finale Architektur: Pfad-Dynamik & Standalone-Mod-Packaging
+
+### 18.1 Vollständige Pfad-Neutralisierung (Zero Hardcoded Paths)
+* **Problemstellung**:
+  Feste Pfadfragmente (`C:\Users\...`, Steam-Standardpfade) machten die Mod-DLL portabilitätsuntauglich und erzeugten Bindungsfehler auf anderen Benutzerkonten oder Installationslaufwerken.
+* **Dynamische Pfad-Hierarchie**:
+  Das Mod-Framework ermittelt alle Dateipfade zur Laufzeit relativ zu seinem eigenen DLL-Speicherort:
+  1. **Mod-Verzeichnis (`GetModDirectory()`)**:
+     Ermittelt via `GetModuleFileNameA(g_hModule, ...)` den vollständigen Pfad der geladenen `Framework_MOD.dll` und extrahiert den Verzeichnisanteil:
+     `...\Crazy Taxi\mods\Framework_MOD\`
+  2. **Spiel-Wurzelverzeichnis (`GetGameDirectory()`)**:
+     Navigiert vom Mod-Verzeichnis zwei Ebenen nach oben (`..\..\`) und kanonisiert den Pfad via `GetFullPathNameA`:
+     `...\Crazy Taxi\`
+  3. **Ressourcen & Logging**:
+     - Konfigurationsdatei: `mods\Framework_MOD\crazytaxi_mod_config.json`
+     - Diagnose-Log: `mods\Framework_MOD\mod.log`
+     - ADX-Original-Soundtracks: `SoundData\music_adx_original\`
+     - System-Schriftarten: Dynamisch über `GetWindowsDirectoryA(winDir, MAX_PATH)` -> `%WINDIR%\Fonts\segoeui.ttf`.
+
+### 18.2 Release-Paketstruktur (`CrazyTaxi_Framework_MOD.zip`)
+* **Archiv-Inhalt für Endanwender**:
+  - `dinput8.dll` (DirectInput8 DirectX-Proxy-Loader direkt im Archiv-Root des Spielverzeichnisses).
+  - `mods\Framework_MOD\Framework_MOD.dll` (Das kompilierte Hauptmodul).
+  - `mods\Framework_MOD\crazytaxi_mod_config.json` (Konfigurationsdatei mit Standard-Werten).

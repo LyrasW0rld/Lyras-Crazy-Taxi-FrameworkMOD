@@ -488,7 +488,7 @@ ctmRenderDownloadCounts();
         '</div>' +
         '<button type="button" id="fox-support-collapsed-btn" title="Expand Fuchshilfe Berlin Support Banner">' +
           FOX_SVG +
-          '<span>Support Wild Foxes 🦊</span>' +
+          '<span>Support Wild Foxes</span>' +
           '<span>▲</span>' +
         '</button>';
       document.body.appendChild(container);

@@ -1,4 +1,4 @@
-# robots.txt — Lyra's Crazy Taxi Framework MOD (unofficial fan project)
+# robots.txt — LFM / Crazy Taxi 1 MOD 2027 (unofficial fan project)
 # All crawlers, bots and AI models are explicitly allowed to fetch this site.
 
 User-agent: *
