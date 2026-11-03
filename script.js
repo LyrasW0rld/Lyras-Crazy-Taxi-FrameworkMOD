@@ -509,7 +509,7 @@
       const codeText = targetEl.innerText || targetEl.textContent;
       navigator.clipboard.writeText(codeText).then(function () {
         const origText = btn.textContent;
-        btn.textContent = '✓ Copied!';
+        btn.textContent = '✅ Copied!';
         setTimeout(function () {
           btn.textContent = origText;
         }, 2000);

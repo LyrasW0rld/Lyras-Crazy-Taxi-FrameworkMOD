@@ -137,7 +137,7 @@
         </p>
         <div class="compat-box-list" style="margin-bottom: 24px;">
           <div class="compat-box-item">
-            <span class="compat-check">✓</span>
+            <span class="compat-check">✅</span>
             <div>
               <strong>Shared ImGui &amp; Direct3D 9 Context:</strong> The framework passes its active
               <code>ImGuiContext*</code> and <code>IDirect3DDevice9*</code> pointer directly to your submod. Your mod
@@ -145,7 +145,7 @@
             </div>
           </div>
           <div class="compat-box-item">
-            <span class="compat-check">✓</span>
+            <span class="compat-check">✅</span>
             <div>
               <strong>Zero Device Reset Conflicts:</strong> You never need to hook D3D9 <code>EndScene</code> or window
               procedures (WndProc) yourself. The host framework manages device resets, fullscreen transitions, and input
@@ -181,7 +181,7 @@
           <tbody>
             <tr>
               <td><code>const char* GetSubModName()</code></td>
-              <td><span class="badge-status status-working">✓ Required</span></td>
+              <td><span class="badge-status status-working">✅ Required</span></td>
               <td>Identifies the DLL as a submod and sets the name displayed in the Shift+F1 sidebar menu.</td>
             </tr>
             <tr>
@@ -201,23 +201,23 @@
             </tr>
             <tr>
               <td><code>bool IsSubModEnabled()</code></td>
-              <td><span class="badge-status status-working">✓ Required</span></td>
+              <td><span class="badge-status status-working">✅ Required</span></td>
               <td>Returns whether your mod's background hooks and logic are currently active.</td>
             </tr>
             <tr>
               <td><code>void SetSubModEnabled(bool)</code></td>
-              <td><span class="badge-status status-working">✓ Required</span></td>
+              <td><span class="badge-status status-working">✅ Required</span></td>
               <td>Called when the user toggles the Enable/Disable switch in the menu.</td>
             </tr>
             <tr>
               <td><code>void InitSubMod(void* ctx, IDirect3DDevice9* dev)</code></td>
-              <td><span class="badge-status status-working">✓ Required</span></td>
+              <td><span class="badge-status status-working">✅ Required</span></td>
               <td>Called once upon detection. Passes the host <code>ImGuiContext*</code> and Direct3D 9 device pointer.
               </td>
             </tr>
             <tr>
               <td><code>void RenderSubModUI(void* ctx)</code></td>
-              <td><span class="badge-status status-working">✓ Required</span></td>
+              <td><span class="badge-status status-working">✅ Required</span></td>
               <td>Called every frame when your tab is active. Render your custom ImGui buttons, sliders, and checkboxes
                 here!</td>
             </tr>
@@ -401,16 +401,16 @@ target_link_libraries(TurboTaxiMod PRIVATE d3d9)
         <summary>View Best Practices &amp; Crash Prevention Guidelines</summary>
         <div class="dev-accordion-content">
           <ul class="rule-list">
-            <li><span class="bullet">✓</span> <strong>Do NOT hook D3D9 EndScene or Reset again:</strong>
+            <li><span class="bullet">✅</span> <strong>Do NOT hook D3D9 EndScene or Reset again:</strong>
               <code>Framework_MOD.dll</code> already manages EndScene and device resets. Hooking it a second time
               introduces race conditions and device lost crashes. Always render UI via <code>RenderSubModUI</code>.</li>
-            <li><span class="bullet">✓</span> <strong>Do NOT install a second WndProc hook:</strong>
+            <li><span class="bullet">✅</span> <strong>Do NOT install a second WndProc hook:</strong>
               <code>Framework_MOD.dll</code> intercepts input for Dear ImGui. Installing another window procedure hook
               breaks menu toggling.</li>
-            <li><span class="bullet">✓</span> <strong>Always check in-game state:</strong> Verify
+            <li><span class="bullet">✅</span> <strong>Always check in-game state:</strong> Verify
               <code>*(int*)0x016A2CFC == 3</code> before writing coordinates. Memory structures are unallocated during
               menus and intro videos.</li>
-            <li><span class="bullet">✓</span> <strong>Use VirtualProtect for .rdata:</strong> If changing engine
+            <li><span class="bullet">✅</span> <strong>Use VirtualProtect for .rdata:</strong> If changing engine
               constants (e.g. Far-Z or Gravity), invoke <code>VirtualProtect</code> with
               <code>PAGE_EXECUTE_READWRITE</code> first.</li>
           </ul>
@@ -437,7 +437,7 @@ target_link_libraries(TurboTaxiMod PRIVATE d3d9)
         </p>
         <div class="compat-box-list" style="margin-bottom: 24px;">
           <div class="compat-box-item">
-            <span class="compat-check">✓</span>
+            <span class="compat-check">✅</span>
             <div>
               <strong>Hot-Swapping pD3DTexture:</strong> At offset <code>+0x00</code> lies <code>pTexObj</code>.
               Following this pointer to <code>+0x0C</code> yields the active <code>IDirect3DTexture9*</code> COM
@@ -446,7 +446,7 @@ target_link_libraries(TurboTaxiMod PRIVATE d3d9)
             </div>
           </div>
           <div class="compat-box-item">
-            <span class="compat-check">✓</span>
+            <span class="compat-check">✅</span>
             <div>
               <strong>GBIX Hash Lookups:</strong> Sega maps VRAM to virtual addresses from <code>0x0CB40000</code> to
               <code>0x0F000000</code>. The relative offset <code>pData, 0x0CB40000</code> matches the texture's GBIX
