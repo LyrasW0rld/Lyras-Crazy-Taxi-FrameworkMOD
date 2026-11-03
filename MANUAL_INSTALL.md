@@ -1,4 +1,4 @@
-# Crazy Taxi Mod Framework - Manuelle Installationsanleitung / Manual Installation Guide
+# Crazy Taxi Mod Framework, Manuelle Installationsanleitung / Manual Installation Guide
 
 <a name="english"></a>
 

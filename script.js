@@ -234,65 +234,272 @@
   
   
   
-  const offsetSearchInput = document.getElementById('offset-search-input');
-  const offsetFilterBtns = document.querySelectorAll('.offset-filter-btn');
-  let activeOffsetCategory = 'all';
+  /* ============================================================
+     DYNAMIC DEV OFFSETS TABLE (LOADED FROM offset_list.json / offset_data.js)
+     ============================================================ */
+  function initDynamicOffsetsTable() {
+    const table = document.getElementById('offsets-table');
+    const tbody = document.getElementById('offsets-tbody');
+    const searchInput = document.getElementById('offset-search-input');
+    const filterBar = document.getElementById('offset-filter-bar');
+    const countBadge = document.getElementById('offset-count-badge');
 
-  function filterOffsets() {
-    const term = offsetSearchInput ? offsetSearchInput.value.toLowerCase().trim() : '';
-    const rows = document.querySelectorAll('#offsets-table tbody tr');
+    if (!table || !tbody) {
+      return; // Not on Mod-Developer page
+    }
 
-    rows.forEach(function (row) {
-      if (row.classList.contains('category-header-row')) {
-        return;
-      }
-      const cat = row.getAttribute('data-offset-cat');
-      const text = row.textContent.toLowerCase();
+    let offsetData = [];
+    let categories = [];
+    let categoryCounts = {};
+    let activeCategory = 'all';
 
-      const matchesCat = (activeOffsetCategory === 'all' || cat === activeOffsetCategory);
-      const matchesSearch = (term === '' || text.indexOf(term) !== -1);
+    function escapeHtml(str) {
+      if (str === null || str === undefined) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
 
-      row.style.display = (matchesCat && matchesSearch) ? '' : 'none';
-    });
+    function formatNotes(notes) {
+      if (!notes) return '';
+      let escaped = escapeHtml(notes);
+      escaped = escaped.replace(/\`([^\`]+)\`/g, '<code>$1</code>');
+      return escaped;
+    }
 
-    const catRows = document.querySelectorAll('#offsets-table .category-header-row');
-    catRows.forEach(function (catRow) {
-      const catId = catRow.getAttribute('data-cat-header');
-      if (activeOffsetCategory !== 'all' && catId !== activeOffsetCategory) {
-        catRow.style.display = 'none';
-        return;
-      }
-      let next = catRow.nextElementSibling;
-      let hasVisible = false;
-      while (next && !next.classList.contains('category-header-row')) {
-        if (next.style.display !== 'none') {
-          hasVisible = true;
-          break;
-        }
-        next = next.nextElementSibling;
-      }
-      catRow.style.display = hasVisible ? '' : 'none';
-    });
-  }
+    function renderCategoryButtons() {
+      if (!filterBar) return;
+      filterBar.innerHTML = '';
 
-  if (offsetSearchInput) {
-    offsetSearchInput.addEventListener('input', filterOffsets);
-  }
-
-  if (offsetFilterBtns.length > 0) {
-    offsetFilterBtns.forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        offsetFilterBtns.forEach(function (b) { b.classList.remove('active'); });
-        btn.classList.add('active');
-        activeOffsetCategory = btn.getAttribute('data-cat') || 'all';
-        filterOffsets();
+      const allBtn = document.createElement('button');
+      allBtn.className = 'offset-filter-btn' + (activeCategory === 'all' ? ' active' : '');
+      allBtn.setAttribute('data-cat', 'all');
+      allBtn.textContent = 'All Offsets (' + offsetData.length + ')';
+      allBtn.addEventListener('click', function () {
+        setActiveCategory('all');
       });
+      filterBar.appendChild(allBtn);
+
+      categories.forEach(function (cat, idx) {
+        const count = categoryCounts[cat] || 0;
+        const btn = document.createElement('button');
+        btn.className = 'offset-filter-btn' + (activeCategory === cat ? ' active' : '');
+        btn.setAttribute('data-cat', cat);
+        btn.textContent = (idx + 1) + '. ' + cat + ' (' + count + ')';
+        btn.addEventListener('click', function () {
+          setActiveCategory(cat);
+        });
+        filterBar.appendChild(btn);
+      });
+    }
+
+    function setActiveCategory(cat) {
+      activeCategory = cat;
+      if (filterBar) {
+        const btns = filterBar.querySelectorAll('.offset-filter-btn');
+        btns.forEach(function (btn) {
+          if (btn.getAttribute('data-cat') === cat) {
+            btn.classList.add('active');
+          } else {
+            btn.classList.remove('active');
+          }
+        });
+      }
+      applyFilterAndRender();
+    }
+
+    function applyFilterAndRender() {
+      const term = searchInput ? searchInput.value.toLowerCase().trim() : '';
+      const tokens = term ? term.split(/\s+/).filter(Boolean) : [];
+
+      const filtered = offsetData.filter(function (item) {
+        if (activeCategory !== 'all' && item.category !== activeCategory) {
+          return false;
+        }
+        if (tokens.length === 0) {
+          return true;
+        }
+        const haystack = (
+          (item.identifier || '') + ' ' +
+          (item.memory_address || '') + ' ' +
+          (item.category || '') + ' ' +
+          (item.data_type || '') + ' ' +
+          (item.operational_notes || '') + ' ' +
+          (item.subsystem_description || '') + ' ' +
+          (item.functions || '') + ' ' +
+          (item.additional_infos || '') + ' ' +
+          (item.search_tags || '')
+        ).toLowerCase();
+
+        return tokens.every(function (tok) {
+          return haystack.indexOf(tok) !== -1;
+        });
+      });
+
+      if (countBadge) {
+        if (filtered.length === offsetData.length) {
+          countBadge.textContent = 'Showing all ' + offsetData.length + ' offsets';
+        } else {
+          countBadge.textContent = 'Showing ' + filtered.length + ' of ' + offsetData.length + ' offsets';
+        }
+      }
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 48px 20px; color: var(--text-muted);">' +
+          '<strong style="color: var(--accent); font-size: 1.05rem; display: block; margin-bottom: 8px;">No matching memory offsets found</strong>' +
+          '<span style="font-size: 0.88rem; color: var(--text-secondary);">Try adjusting your search query or switching categories.</span>' +
+          '</td></tr>';
+        return;
+      }
+
+      const groups = new Map();
+      filtered.forEach(function (item) {
+        const cat = item.category || 'General';
+        if (!groups.has(cat)) {
+          groups.set(cat, []);
+        }
+        groups.get(cat).push(item);
+      });
+
+      const fragment = document.createDocumentFragment();
+
+      groups.forEach(function (items, catName) {
+        const catRow = document.createElement('tr');
+        catRow.className = 'category-header-row';
+        const catTd = document.createElement('td');
+        catTd.colSpan = 4;
+        catTd.innerHTML = escapeHtml(catName) + ' <span style="font-size: 0.82rem; font-weight: 500; opacity: 0.85; margin-left: 8px;">(' + items.length + ' entries)</span>';
+        catRow.appendChild(catTd);
+        fragment.appendChild(catRow);
+
+        items.forEach(function (item) {
+          const tr = document.createElement('tr');
+          tr.setAttribute('data-offset-cat', escapeHtml(item.category || ''));
+
+          const tdId = document.createElement('td');
+          tdId.className = 'col-offset-id';
+          tdId.innerHTML = '<code>' + escapeHtml(item.identifier || 'N/A') + '</code>';
+
+          const tdAddr = document.createElement('td');
+          tdAddr.className = 'col-offset-addr';
+          tdAddr.innerHTML = '<code>' + escapeHtml(item.memory_address || 'N/A') + '</code>';
+
+          const tdType = document.createElement('td');
+          tdType.className = 'col-offset-type';
+          tdType.textContent = item.data_type || 'N/A';
+
+          const tdDesc = document.createElement('td');
+          tdDesc.className = 'col-offset-desc';
+
+          let descHtml = '<div class="offset-op-notes">' + formatNotes(item.operational_notes || '') + '</div>';
+
+          if (item.subsystem_description) {
+            descHtml += '<div class="offset-subsystem-desc">' + escapeHtml(item.subsystem_description) + '</div>';
+          }
+
+          if (item.functions && item.functions !== 'Engine Initialization / Global State') {
+            descHtml += '<div class="offset-subsystem-desc" style="color: var(--text-secondary); margin-top: 4px;"><strong>Routines:</strong> ' + escapeHtml(item.functions) + '</div>';
+          }
+
+          if (item.search_tags) {
+            const tags = item.search_tags.split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+            if (tags.length > 0) {
+              descHtml += '<div class="offset-tags-wrap">';
+              tags.slice(0, 4).forEach(function (tag) {
+                descHtml += '<span class="offset-tag-pill">' + escapeHtml(tag) + '</span>';
+              });
+              descHtml += '</div>';
+            }
+          }
+
+          tdDesc.innerHTML = descHtml;
+
+          tr.appendChild(tdId);
+          tr.appendChild(tdAddr);
+          tr.appendChild(tdType);
+          tr.appendChild(tdDesc);
+          fragment.appendChild(tr);
+        });
+      });
+
+      tbody.innerHTML = '';
+      tbody.appendChild(fragment);
+    }
+
+    const candidateUrls = ['../offset_list.json', 'offset_list.json', './offset_list.json'];
+    
+    async function loadData() {
+      // 1. Zero-CORS offline browsing for local file:// protocol
+      if (typeof window !== 'undefined' && window.OFFSET_DATA && Array.isArray(window.OFFSET_DATA) && window.OFFSET_DATA.length > 0) {
+        if (window.location.protocol === 'file:') {
+          return window.OFFSET_DATA;
+        }
+      }
+
+      // 2. Fetch from HTTP/HTTPS server with cache-busting
+      let lastError = null;
+      for (let i = 0; i < candidateUrls.length; i++) {
+        try {
+          const url = candidateUrls[i] + '?t=' + Date.now();
+          const response = await fetch(url);
+          if (response.ok) {
+            const json = await response.json();
+            if (Array.isArray(json) && json.length > 0) {
+              return json;
+            }
+          }
+        } catch (err) {
+          lastError = err;
+        }
+      }
+
+      // 3. Fallback to preloaded OFFSET_DATA if fetch fails
+      if (typeof window !== 'undefined' && window.OFFSET_DATA && Array.isArray(window.OFFSET_DATA) && window.OFFSET_DATA.length > 0) {
+        return window.OFFSET_DATA;
+      }
+
+      throw lastError || new Error('Failed to load offset_list.json');
+    }
+
+    loadData().then(function (data) {
+      offsetData = data;
+
+      const catMap = new Map();
+      offsetData.forEach(function (item) {
+        const cat = item.category || 'General';
+        catMap.set(cat, (catMap.get(cat) || 0) + 1);
+      });
+
+      categories = Array.from(catMap.keys());
+      categoryCounts = Object.fromEntries(catMap);
+
+      renderCategoryButtons();
+      applyFilterAndRender();
+
+      if (searchInput) {
+        searchInput.addEventListener('input', applyFilterAndRender);
+      }
+    }).catch(function (err) {
+      console.error('Error loading offset database:', err);
+      if (countBadge) {
+        countBadge.textContent = 'Error loading offsets';
+        countBadge.style.color = '#ff6b6b';
+      }
+      tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 40px 20px; color: #ff6b6b;">' +
+        '<strong style="font-size: 1rem; color: #ff9999; display: block; margin-bottom: 8px;">Failed to load offset_list.json directly</strong>' +
+        '<span style="font-size: 0.86rem; color: var(--text-muted);">' +
+        'Please ensure offset_data.js or offset_list.json is present in the mod folder.<br>' +
+        '</span>' +
+        '<a class="btn btn-primary" style="margin-top: 16px; display: inline-block; padding: 8px 18px; font-size: 0.88rem;" download href="../offset_list.json">Download offset_list.json</a>' +
+        '</td></tr>';
     });
   }
 
-  
-  
-  
+  initDynamicOffsetsTable();
+
   document.querySelectorAll('.copy-code-btn').forEach(function (btn) {
     btn.addEventListener('click', function () {
       const targetId = btn.getAttribute('data-copy-target');
@@ -318,8 +525,8 @@
 /* =====================================================================
    DEDUPLICATED VISIT COUNTER (once per visitor per calendar day)
    GitHub Pages is fully static, so the counter lives in localStorage:
-   - counted at most once per local calendar day per browser profile
-   - site-wide daily cap: visiting any page of the project consumes the
+   * counted at most once per local calendar day per browser profile
+   * site-wide daily cap: visiting any page of the project consumes the
      day (index -> contact -> downloads on the same day = +1 visit)
    ===================================================================== */
 var CTM_KEY_TOTAL = 'lyra_ctm_total_visits';
@@ -335,7 +542,7 @@ function ctmToday() { return new Date().toISOString().slice(0, 10); }
       var total = parseInt(localStorage.getItem(CTM_KEY_TOTAL) || '0', 10) + 1;
       localStorage.setItem(CTM_KEY_TOTAL, String(total));
     }
-  } catch (e) { /* private mode — skip counting */ }
+  } catch (e) { /* private mode, skip counting */ }
 })();
 
 function ctmGetTotalVisits() {
@@ -390,7 +597,7 @@ document.addEventListener('click', function (e) {
   var files = [
     'Lyras Framwork MOD.zip', 'LyrasTextureMod.zip',
     'Open Source CODE.7z', 'TextureMod_SRC.7z',
-    'offset.md', 'Crazy Taxi Texture Modding Guide.pdf',
+    'offset_list.json', 'offset.md', 'Crazy Taxi Texture Modding Guide.pdf',
     'SUBMOD_DEVELOPMENT_GUIDE.md', 'MANUAL_INSTALL.md'
   ];
   for (var i = 0; i < files.length; i++) {
@@ -439,8 +646,8 @@ ctmRenderDownloadCounts();
       btn.type = 'button';
       btn.id = 'nav-fox-logo-btn';
       btn.className = 'nav-fox-btn';
-      btn.title = 'Support Wild Foxes — Fuchshilfe Berlin';
-      btn.setAttribute('aria-label', 'Support Wild Foxes — Fuchshilfe Berlin');
+      btn.title = 'Support Wild Foxes: Fuchshilfe Berlin';
+      btn.setAttribute('aria-label', 'Support Wild Foxes: Fuchshilfe Berlin');
       btn.innerHTML = FOX_SVG + '<span class="nav-fox-btn-text">Support Foxes</span>';
       navInner.appendChild(btn);
       existingBtn = btn;
@@ -486,10 +693,9 @@ ctmRenderDownloadCounts();
             '</div>' +
           '</div>' +
         '</div>' +
-        '<button type="button" id="fox-support-collapsed-btn" title="Expand Fuchshilfe Berlin Support Banner">' +
+        '<button type="button" id="fox-support-collapsed-btn" title="Support Wild Foxes: Fuchshilfe Berlin" aria-label="Support Wild Foxes">' +
           FOX_SVG +
-          '<span>Support Wild Foxes</span>' +
-          '<span>▲</span>' +
+          '<span class="fox-collapsed-arrow">▲</span>' +
         '</button>';
       document.body.appendChild(container);
     }
@@ -504,7 +710,7 @@ ctmRenderDownloadCounts();
           '<div class="fox-modal-header">' +
             '<div class="fox-modal-title-wrap">' +
               FOX_SVG +
-              '<h3 class="fox-modal-title">Support Wild Foxes — Fuchshilfe Berlin</h3>' +
+              '<h3 class="fox-modal-title">Support Wild Foxes: Fuchshilfe Berlin</h3>' +
             '</div>' +
             '<button type="button" class="fox-modal-close-btn" id="fox-modal-close">CLOSE</button>' +
           '</div>' +
@@ -549,6 +755,21 @@ ctmRenderDownloadCounts();
       }
     }
 
+    var autoCollapseTimer = null;
+    function startAutoCollapseTimer() {
+      if (autoCollapseTimer) clearTimeout(autoCollapseTimer);
+      autoCollapseTimer = setTimeout(function () {
+        setCollapsed(true);
+      }, 10000);
+    }
+
+    function cancelAutoCollapseTimer() {
+      if (autoCollapseTimer) {
+        clearTimeout(autoCollapseTimer);
+        autoCollapseTimer = null;
+      }
+    }
+
     // Check saved state
     var savedState = null;
     try { savedState = localStorage.getItem('fuchshilfe_banner_collapsed'); } catch (e) {}
@@ -556,14 +777,21 @@ ctmRenderDownloadCounts();
       setCollapsed(true);
     } else {
       setCollapsed(false);
+      startAutoCollapseTimer();
     }
 
-    if (collapseBtn) collapseBtn.onclick = function() { setCollapsed(true); };
-    if (collapsedBtn) collapsedBtn.onclick = function() { setCollapsed(false); };
-    if (expandBtn) expandBtn.onclick = function() { openModal(); };
-    if (openModalGroup) openModalGroup.onclick = function() { openModal(); };
-    if (showQrBtn) showQrBtn.onclick = function() { openModal(); };
+    if (collapseBtn) collapseBtn.onclick = function() { cancelAutoCollapseTimer(); setCollapsed(true); };
+    if (collapsedBtn) collapsedBtn.onclick = function() { cancelAutoCollapseTimer(); setCollapsed(false); };
+    if (expandBtn) expandBtn.onclick = function() { cancelAutoCollapseTimer(); openModal(); };
+    if (openModalGroup) openModalGroup.onclick = function() { cancelAutoCollapseTimer(); openModal(); };
+    if (showQrBtn) showQrBtn.onclick = function() { cancelAutoCollapseTimer(); openModal(); };
     if (closeBtn) closeBtn.onclick = function() { closeModal(); };
+
+    if (widget) {
+      widget.addEventListener('mouseenter', function() {
+        cancelAutoCollapseTimer();
+      });
+    };
 
     if (modal) {
       modal.onclick = function(e) {

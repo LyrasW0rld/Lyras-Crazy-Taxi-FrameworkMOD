@@ -71,7 +71,7 @@ Here is a complete, working example of a sub-mod that adds a **Turbo Boost Hotke
 #include <d3d9.h>
 #include "imgui.h" // Include Dear ImGui headers
 
-// Game Memory Addresses (from offset.md)
+// Game Memory Addresses (from offset_list.json)
 constexpr uintptr_t ADDR_GAME_FLAG   = 0x016A2CFC; // 3 = In active gameplay
 constexpr uintptr_t ADDR_PLAYER_X    = 0x01661574;
 constexpr uintptr_t ADDR_PLAYER_Y    = 0x01661578;

@@ -40,7 +40,7 @@
   --status-red-border:  rgba(248, 113, 113, 0.28);
 
   
-  --nav-height:     88px;
+  --nav-height:     96px;
   --container-max:  1260px;
   --radius-sm:      6px;
   --radius-md:      10px;
@@ -212,10 +212,11 @@ pre code {
 }
 
 .nav-brand-img {
-  height: 48px;
+  height: 72px;
+  max-height: 80px;
   width: auto;
   object-fit: contain;
-  border-radius: 4px;
+  border-radius: 6px;
   filter: drop-shadow(0 2px 8px rgba(0,0,0,0.6));
 }
 
@@ -1357,10 +1358,11 @@ pre code {
   max-width: 480px;
 }
 .footer-logo {
-  height: 42px;
+  height: 68px;
+  max-height: 76px;
   width: auto;
-  margin-bottom: 14px;
-  border-radius: 4px;
+  margin-bottom: 16px;
+  border-radius: 6px;
 }
 .footer-brand p {
   font-size: 0.88rem;
@@ -2214,40 +2216,46 @@ pre code {
 
 .offsets-table-container {
   width: 100%;
-  overflow-x: auto;
+  max-width: 100%;
+  overflow-x: hidden;
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   background: var(--bg-card);
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
-  -webkit-overflow-scrolling: touch;
 }
 
 .offsets-table {
   width: 100%;
-  min-width: 1020px;
+  max-width: 100%;
+  min-width: 0 !important;
   border-collapse: collapse;
   text-align: left;
-  font-size: 0.92rem;
-  table-layout: auto;
+  font-size: 0.88rem;
+  table-layout: fixed;
 }
 
 .offsets-table th {
   background: var(--surface);
   color: var(--text-muted);
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  padding: 16px 20px;
+  letter-spacing: 0.08em;
+  padding: 14px 14px;
   border-bottom: 1px solid var(--border);
-  white-space: nowrap;
+  white-space: normal !important;
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
 }
 
 .offsets-table td {
-  padding: 16px 20px;
+  padding: 14px 14px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.04);
   vertical-align: top;
-  line-height: 1.65;
+  line-height: 1.55;
+  white-space: normal !important;
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
 }
 
 .offsets-table tr:hover td {
@@ -2255,36 +2263,71 @@ pre code {
 }
 
 .col-offset-id {
-  width: 22%;
-  min-width: 180px;
+  width: 26%;
+  min-width: 0 !important;
   font-weight: 700;
   color: #ffffff;
+  white-space: normal !important;
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+}
+
+.col-offset-id code {
+  white-space: normal !important;
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+  display: inline-block;
+  max-width: 100%;
+  line-height: 1.4;
+  font-size: 0.82rem;
 }
 
 .col-offset-addr {
-  width: 14%;
-  min-width: 130px;
+  width: 11%;
+  min-width: 0 !important;
   font-family: 'JetBrains Mono', monospace;
   font-weight: 600;
   color: var(--accent);
-  white-space: nowrap;
+  font-size: 0.82rem;
+  white-space: normal !important;
+  word-break: break-all !important;
+  overflow-wrap: break-word !important;
+}
+
+.col-offset-addr code {
+  font-family: inherit;
+  font-size: inherit;
+  white-space: normal !important;
+  word-break: break-all !important;
+  overflow-wrap: break-word !important;
 }
 
 .col-offset-type {
-  width: 14%;
-  min-width: 130px;
+  width: 11%;
+  min-width: 0 !important;
   color: var(--text-muted);
-  font-size: 0.88rem;
+  font-size: 0.82rem;
+  white-space: normal !important;
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
 }
 
 .col-offset-desc {
-  width: 50%;
-  min-width: 440px;
+  width: 52%;
+  min-width: 0 !important;
   color: var(--text-secondary);
-  line-height: 1.65;
+  line-height: 1.55;
   white-space: normal !important;
-  word-break: normal !important;
-  overflow-wrap: break-word !important;
+  word-break: break-word !important;
+  overflow-wrap: anywhere !important;
+}
+
+.col-offset-desc code {
+  white-space: normal !important;
+  word-break: break-word !important;
+  overflow-wrap: anywhere !important;
+  display: inline;
+  font-size: 0.82rem;
 }
 
 .offset-filter-bar {
@@ -2317,6 +2360,62 @@ pre code {
   border-color: var(--accent);
   color: #000000;
   font-weight: 700;
+}
+
+.offsets-table .category-header-row td {
+  background: rgba(245, 197, 24, 0.08);
+  font-weight: 800;
+  color: var(--accent);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 14px 20px;
+  border-top: 1px solid rgba(245, 197, 24, 0.2);
+  border-bottom: 1px solid rgba(245, 197, 24, 0.15);
+}
+
+.offset-op-notes {
+  color: var(--text-primary);
+  line-height: 1.6;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.offset-subsystem-desc {
+  margin-top: 6px;
+  font-size: 0.84rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.offset-tags-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 8px;
+}
+
+.offset-tag-pill {
+  font-size: 0.72rem;
+  font-family: 'JetBrains Mono', monospace;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-muted);
+  padding: 2px 7px;
+  border-radius: 4px;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.offset-tag-pill.badge-cat {
+  background: rgba(245, 197, 24, 0.12);
+  border-color: rgba(245, 197, 24, 0.3);
+  color: var(--accent);
+  font-family: inherit;
+  font-weight: 600;
 }
 
 /* ============================================================
@@ -2914,11 +3013,12 @@ pre code {
   }
 }
 
-/* Bottom-Right Floating Fox Support Widget */
+/* Bottom-Left Floating Fox Support Widget */
 #fox-support-container {
   position: fixed;
   bottom: 20px;
-  right: 20px;
+  left: 20px;
+  right: auto;
   z-index: 9999;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
@@ -3281,5 +3381,202 @@ pre code {
   }
   .fox-modal-title {
     font-size: 13px;
+  }
+}
+
+
+/* ============================================================
+   CUSTOM SMARTPHONE & TABLET LAYOUT (Mobile Optimization)
+   ============================================================ */
+@media (max-width: 768px) {
+  :root {
+    --nav-height: 78px;
+  }
+
+  .nav-brand-img {
+    height: 52px;
+    max-height: 58px;
+  }
+
+  #hero {
+    padding: calc(var(--nav-height) + 16px) 16px 40px;
+    text-align: center;
+  }
+
+  .hero-content h1 {
+    font-size: 1.95rem;
+    line-height: 1.18;
+    margin-bottom: 14px;
+  }
+
+  .hero-sub {
+    font-size: 0.95rem;
+    line-height: 1.55;
+    margin-bottom: 20px;
+    padding: 0 4px;
+  }
+
+  .hero-compat-bar {
+    gap: 6px;
+    margin-bottom: 24px;
+  }
+
+  .compat-pill {
+    font-size: 0.76rem;
+    padding: 5px 10px;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    margin-bottom: 28px;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+    padding: 15px 20px;
+    font-size: 1.02rem;
+    text-align: center;
+  }
+
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    width: 100%;
+  }
+
+  .stat {
+    padding: 14px 10px;
+  }
+
+  .stat-num {
+    font-size: 1.6rem;
+  }
+
+  .stat-label {
+    font-size: 0.72rem;
+  }
+
+  /* Sticky Mobile Bottom Dock */
+  .mobile-bottom-dock {
+    display: flex !important;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9998;
+    background: rgba(12, 12, 16, 0.96);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-top: 1px solid rgba(245, 197, 24, 0.35);
+    padding: 10px 14px;
+    gap: 10px;
+    box-shadow: 0 -8px 25px rgba(0, 0, 0, 0.7);
+  }
+
+  .mobile-bottom-dock .btn-dock-primary {
+    flex: 1.6;
+    background: var(--accent);
+    color: #000000;
+    font-weight: 800;
+    font-size: 0.92rem;
+    padding: 12px 14px;
+    border-radius: 8px;
+    text-align: center;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .mobile-bottom-dock .btn-dock-secondary {
+    flex: 1.1;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 0.86rem;
+    padding: 12px 12px;
+    border-radius: 8px;
+    text-align: center;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Offset body bottom so content isn't covered by bottom dock */
+  body {
+    padding-bottom: 74px;
+  }
+
+  /* Ensure bottom-left fox widget sits cleanly above mobile dock */
+  #fox-support-container {
+    bottom: 84px !important;
+    left: 14px !important;
+  }
+
+  /* Feature cards & Highlights on smartphone */
+  .v1-highlights-grid,
+  .download-grid,
+  .about-details-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  .card-highlight {
+    padding: 20px 16px !important;
+  }
+
+  /* Hide verbose desktop-only table on mobile */
+  .desktop-only-table {
+    display: none !important;
+  }
+
+  .mobile-features-list {
+    display: grid !important;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .mobile-feature-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .mobile-feature-icon {
+    font-size: 1.5rem;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .mobile-feature-info h4 {
+    margin: 0 0 4px 0;
+    font-size: 0.98rem;
+    color: #ffffff;
+  }
+
+  .mobile-feature-info p {
+    margin: 0;
+    font-size: 0.84rem;
+    color: var(--text-secondary);
+    line-height: 1.45;
+  }
+}
+
+@media (min-width: 769px) {
+  .mobile-bottom-dock {
+    display: none !important;
+  }
+  .mobile-features-list {
+    display: none !important;
   }
 }
