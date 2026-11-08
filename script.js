@@ -595,7 +595,7 @@ document.addEventListener('click', function (e) {
   if (!a) return;
   var href = decodeURIComponent(a.getAttribute('href') || '');
   var files = [
-    'Lyras Framwork MOD.zip', 'LyrasTextureMod.zip',
+    'Lyras Framwork MOD.7z', 'Lyras Framwork MOD.zip', 'LyrasTextureMod.zip',
     'Open Source CODE.7z', 'TextureMod_SRC.7z',
     'offset_list.json', 'offset.md', 'Crazy Taxi Texture Modding Guide.pdf',
     'SUBMOD_DEVELOPMENT_GUIDE.md', 'MANUAL_INSTALL.md'
